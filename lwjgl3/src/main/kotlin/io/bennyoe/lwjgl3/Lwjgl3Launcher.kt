@@ -6,8 +6,8 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import io.bennyoe.Main
 
-const val GAME_WIDTH = 4 * 256
-const val GAME_HEIGHT = 3 * 256
+const val GAME_WIDTH = 48 * 32
+const val GAME_HEIGHT = 27 * 32
 
 fun main() {
     // This handles macOS support and helps on Windows.

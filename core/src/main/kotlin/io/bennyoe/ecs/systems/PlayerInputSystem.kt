@@ -5,8 +5,6 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.viewport.Viewport
-import io.bennyoe.Acceleration
-import io.bennyoe.UNIT_SCALE
 import io.bennyoe.ecs.components.PlayerComponent
 import io.bennyoe.ecs.components.TransformComponent
 import ktx.ashley.allOf
@@ -37,19 +35,18 @@ class PlayerInputSystem(
         viewport.unproject(pedalMaxPosition) // project pixel to wu
         pedalMaxPosition.x -= transform.size.x // subtract the pedal width in wu
 
+        val accDiff = tmpVec.x - transform.position.x
+
         transform.position.x = when {
             tmpVec.x < 0 -> 0f
             tmpVec.x >= pedalMaxPosition.x -> pedalMaxPosition.x
             else -> tmpVec.x
         }
 
-        val accDiff = tmpVec.x - transform.position.x
-        player.acceleration = when {
-            accDiff < 1 -> Acceleration.SLOW
-            accDiff > 10 -> Acceleration.FAST
-            else -> Acceleration.MEDIUM
-        }
+        player.acceleration = map(accDiff,0f, 50f, 1f, 10f)
+    }
 
-//        LOG.debug { "Player acceleration is ${player.acceleration}" }
+    private fun map(value: Float, orgStart: Float, orgStop: Float, targetStart: Float, targetStop: Float): Float {
+        return targetStart + (value - orgStart) * (targetStop - targetStart) / (orgStop - orgStart)
     }
 }

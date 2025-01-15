@@ -11,17 +11,18 @@ import io.bennyoe.ecs.systems.MoveSystem
 import io.bennyoe.ecs.systems.PlayerInputSystem
 import io.bennyoe.ecs.systems.RenderSystem
 import io.bennyoe.ecs.systems.SimpleCollisionSystem
+import io.bennyoe.screens.BreakoutScreen
+import io.bennyoe.screens.GameScreen
 import ktx.app.KtxGame
 import ktx.app.KtxScreen
 import ktx.async.KtxAsync
-import io.bennyoe.screens.BreakoutScreen
-import io.bennyoe.screens.GameScreen
-import ktx.ashley.add
 
 const val UNIT_SCALE = 1 / 256f
+const val WORLD_WIDTH = 48f
+const val WORLD_HEIGHT = 27f
 
 class Main : KtxGame<KtxScreen>() {
-    val viewport by lazy { FitViewport(16f, 12f) }
+    val viewport by lazy { FitViewport(WORLD_WIDTH, WORLD_HEIGHT) }
     val batch: Batch by lazy { SpriteBatch() }
     val engine: Engine by lazy {
         PooledEngine().apply {

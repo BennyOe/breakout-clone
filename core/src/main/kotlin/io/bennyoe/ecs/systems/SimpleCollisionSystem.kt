@@ -2,7 +2,9 @@ package io.bennyoe.ecs.systems
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
-import com.badlogic.gdx.math.Vector2
+import com.badlogic.ashley.utils.ImmutableArray
+import com.badlogic.gdx.math.Intersector
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.viewport.Viewport
 import io.bennyoe.ecs.components.BallComponent
 import io.bennyoe.ecs.components.GraphicComponent
@@ -10,11 +12,11 @@ import io.bennyoe.ecs.components.TransformComponent
 import ktx.ashley.allOf
 import ktx.ashley.get
 
+private const val SAFETY_MARGIN = 0.01f
+
 class SimpleCollisionSystem(val viewport: Viewport) : IteratingSystem(
     allOf(BallComponent::class, TransformComponent::class, GraphicComponent::class).get()
-){
-    private val tmpVec = Vector2()
-
+) {
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val ball = entity[BallComponent.mapper]
         require(ball != null) { "entity has no ball entity" }
@@ -25,9 +27,54 @@ class SimpleCollisionSystem(val viewport: Viewport) : IteratingSystem(
         val graphics = entity[GraphicComponent.mapper]
         require(graphics != null) { "entity has no graphics entity" }
 
+        checkScreenCollision(transform, ball)
+        checkBallCollision(entities, ball, transform)
+
+    }
+
+    private fun checkBallCollision(entities: ImmutableArray<Entity>, ball: BallComponent, transform: TransformComponent) {
+        for (otherEntity in entities) {
+            val otherBall = otherEntity[BallComponent.mapper]
+            val otherTransform = otherEntity[TransformComponent.mapper]
+
+            if (otherBall != null && otherTransform != null && ball != otherBall) {
+                val ballRect = Rectangle(
+                    transform.position.x,
+                    transform.position.y,
+                    transform.size.x,
+                    transform.size.y
+                )
+
+                val otherBallRect = Rectangle(
+                    otherTransform.position.x,
+                    otherTransform.position.y,
+                    otherTransform.size.x,
+                    otherTransform.size.y
+                )
+                if (Intersector.overlaps(ballRect, otherBallRect)) {
+                    if (transform.position.x > otherTransform.position.x) {
+                        transform.position.x += SAFETY_MARGIN
+                    } else {
+                        transform.position.x -= SAFETY_MARGIN
+                    }
+
+                    if (transform.position.y > otherTransform.position.y) {
+                        transform.position.y += SAFETY_MARGIN
+                    } else {
+                        transform.position.y -= SAFETY_MARGIN
+                    }
+
+                    reverseX(ball)
+                    reverseY(ball)
+                }
+            }
+        }
+    }
+
+    private fun checkScreenCollision(transform: TransformComponent, ball: BallComponent) {
         // left collision
-        if (transform.position.x <= transform.size.x) {
-            transform.position.x = transform.size.x
+        if (transform.position.x <= 0) {
+            transform.position.x = 0f
             reverseX(ball)
         }
         // right collision
@@ -41,19 +88,17 @@ class SimpleCollisionSystem(val viewport: Viewport) : IteratingSystem(
             reverseY(ball)
         }
         // bottom collision
-        if (transform.position.y <= 0 + transform.size.y) {
-            transform.position.y = transform.size.y
+        if (transform.position.y <= 0) {
+            transform.position.y = 0f
             reverseY(ball)
         }
-
-
     }
 
-    private fun reverseX(ball: BallComponent){
+    private fun reverseX(ball: BallComponent) {
         ball.xSpeed *= -1
     }
 
-    private fun reverseY(ball: BallComponent){
+    private fun reverseY(ball: BallComponent) {
         ball.ySpeed *= -1
     }
 }
