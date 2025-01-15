@@ -7,11 +7,16 @@ import io.bennyoe.UNIT_SCALE
 import io.bennyoe.WORLD_HEIGHT
 import io.bennyoe.WORLD_WIDTH
 import io.bennyoe.ecs.components.BallComponent
+import io.bennyoe.ecs.components.BrickComponent
 import io.bennyoe.ecs.components.GraphicComponent
 import io.bennyoe.ecs.components.PlayerComponent
 import io.bennyoe.ecs.components.TransformComponent
+import io.bennyoe.ecs.systems.BrickCollisionSystem
+import io.bennyoe.ecs.systems.BrickSystem
 import io.bennyoe.ecs.systems.PlayerCollisionSystem
+import ktx.ashley.allOf
 import ktx.ashley.entity
+import ktx.ashley.getSystem
 import ktx.ashley.with
 import ktx.log.logger
 
@@ -22,6 +27,8 @@ class GameScreen(game: Main) : Screen(game) {
     private val ballTexture = Texture("ball.png")
 
     override fun show() {
+        val brickSystem = engine.getSystem<BrickSystem>()
+        brickSystem.initializeBricks()
         val player = engine.entity {
             with<TransformComponent> {
                 position.set(1f, 1f, 0f)
@@ -38,6 +45,10 @@ class GameScreen(game: Main) : Screen(game) {
 
         val playerCollisionSystem = PlayerCollisionSystem(viewport, player)
         engine.addSystem(playerCollisionSystem)
+
+        val brickEntities = engine.getEntitiesFor(allOf(BrickComponent::class).get())
+        val brickCollisionSystem = BrickCollisionSystem(viewport, brickEntities)
+        engine.addSystem(brickCollisionSystem)
 
         repeat(100) {
             engine.entity {

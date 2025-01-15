@@ -7,11 +7,11 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.viewport.FitViewport
+import io.bennyoe.ecs.systems.BrickSystem
 import io.bennyoe.ecs.systems.MoveSystem
 import io.bennyoe.ecs.systems.PlayerInputSystem
 import io.bennyoe.ecs.systems.RenderSystem
 import io.bennyoe.ecs.systems.SimpleCollisionSystem
-import io.bennyoe.screens.BreakoutScreen
 import io.bennyoe.screens.GameScreen
 import ktx.app.KtxGame
 import ktx.app.KtxScreen
@@ -27,6 +27,7 @@ class Main : KtxGame<KtxScreen>() {
     val engine: Engine by lazy {
         PooledEngine().apply {
             addSystem(PlayerInputSystem(viewport))
+            addSystem(BrickSystem(viewport))
             addSystem(SimpleCollisionSystem(viewport))
             addSystem(MoveSystem(viewport))
             addSystem(RenderSystem(batch, viewport))
@@ -36,7 +37,6 @@ class Main : KtxGame<KtxScreen>() {
     override fun create() {
         Gdx.app.logLevel = LOG_DEBUG
         KtxAsync.initiate()
-        addScreen(BreakoutScreen(this))
         addScreen(GameScreen(this))
         setScreen<GameScreen>()
     }

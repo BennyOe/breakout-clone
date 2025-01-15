@@ -28,14 +28,16 @@ class PlayerInputSystem(
         val player = entity[PlayerComponent.mapper]
         require(player != null) { "entity has no player entity" }
 
-        tmpVec.x = Gdx.input.x.toFloat() // current mouse x
+        val mouseX = Gdx.input.x.toFloat()
+        tmpVec.x = mouseX.coerceIn(0f, Gdx.graphics.width.toFloat())
+
         viewport.unproject(tmpVec) // project pixel to world unit (wu)
 
         pedalMaxPosition.x = Gdx.graphics.width.toFloat() // get width of window
         viewport.unproject(pedalMaxPosition) // project pixel to wu
         pedalMaxPosition.x -= transform.size.x // subtract the pedal width in wu
 
-        val accDiff = tmpVec.x - transform.position.x
+        val accDiff = (tmpVec.x - transform.position.x).coerceIn(0f, 50f)
 
         transform.position.x = when {
             tmpVec.x < 0 -> 0f
@@ -43,7 +45,7 @@ class PlayerInputSystem(
             else -> tmpVec.x
         }
 
-        player.acceleration = map(accDiff,0f, 50f, 1f, 10f)
+        player.acceleration = map(accDiff, 0f, 50f, 1f, 8f)
     }
 
     private fun map(value: Float, orgStart: Float, orgStop: Float, targetStart: Float, targetStop: Float): Float {
