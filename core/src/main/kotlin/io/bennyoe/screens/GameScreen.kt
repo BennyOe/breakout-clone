@@ -32,7 +32,7 @@ class GameScreen(game: Main) : Screen(game) {
         val player = engine.entity {
             with<TransformComponent> {
                 position.set(1f, 1f, 0f)
-                size.set(600 * UNIT_SCALE, 215 * UNIT_SCALE)
+                size.set(4f, 215 * UNIT_SCALE)
             }
             with<GraphicComponent> {
                 sprite.run {
@@ -50,7 +50,7 @@ class GameScreen(game: Main) : Screen(game) {
         val brickCollisionSystem = BrickCollisionSystem(viewport, brickEntities)
         engine.addSystem(brickCollisionSystem)
 
-        repeat(100) {
+        repeat(1) {
             engine.entity {
                 with<TransformComponent> {
                     position.set(random(0, WORLD_WIDTH.toInt()).toFloat(), random(1, WORLD_HEIGHT.toInt()).toFloat(), 0f)

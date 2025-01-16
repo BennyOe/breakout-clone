@@ -10,10 +10,13 @@ import io.bennyoe.ecs.components.PlayerComponent
 import io.bennyoe.ecs.components.TransformComponent
 import ktx.ashley.allOf
 import ktx.ashley.get
+import ktx.log.logger
+import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
 
 private const val SAFETY_MARGIN = 0.001f
+private val LOG = logger<PlayerCollisionSystem>()
 
 class PlayerCollisionSystem(
     private val viewport: Viewport,
@@ -31,7 +34,7 @@ class PlayerCollisionSystem(
         val ball = entity[BallComponent.mapper]
         require(ball != null) { "entity has no ball entity" }
 
-        intersectsPedal(transform,ball)
+        intersectsPedal(transform, ball)
     }
 
     private fun intersectsPedal(transform: TransformComponent, ball: BallComponent) {
@@ -50,16 +53,24 @@ class PlayerCollisionSystem(
                 )
             )
         ) {
-            transform.position.y = playerTransform.position.y + playerTransform.size.y + SAFETY_MARGIN
-            val xDiff = transform.position.x  - playerTransform.position.x
+            val playerTop = playerTransform.position.y + playerTransform.size.y
+
+            transform.position.y = playerTop + SAFETY_MARGIN
+            val xDiff = transform.position.x - playerTransform.position.x
             val angle = map(xDiff, 0f, playerTransform.size.x, Math.toRadians(140.0).toFloat(), Math.toRadians(40.0).toFloat())
-            ball.acceleration = playerComponent.acceleration
+
+            ball.acceleration = when {
+                playerComponent.acceleration <= ball.acceleration -> (ball.acceleration - 0.25f).coerceAtLeast(1.2f)
+                else -> playerComponent.acceleration.coerceAtMost(2.5f)
+            }
+
+            LOG.info { ball.acceleration.toString() }
             ball.xSpeed = (6 * cos(angle) * ball.acceleration)
             ball.ySpeed = (6 * sin(angle) * ball.acceleration)
         }
     }
+}
 
-    private fun map(value: Float, orgStart: Float, orgStop: Float, targetStart: Float, targetStop: Float): Float {
-        return targetStart + (value - orgStart) * (targetStop - targetStart) / (orgStop - orgStart)
-    }
+private fun map(value: Float, orgStart: Float, orgStop: Float, targetStart: Float, targetStop: Float): Float {
+    return targetStart + (value - orgStart) * (targetStop - targetStart) / (orgStop - orgStart)
 }

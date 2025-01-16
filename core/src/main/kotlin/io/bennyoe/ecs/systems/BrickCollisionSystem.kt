@@ -31,11 +31,11 @@ class BrickCollisionSystem(
         for (brickEntity in brickEntities) {
             val brickTransform = brickEntity[TransformComponent.mapper]!!
             val brick = brickEntity[BrickComponent.mapper]!!
-            intersectsPedal(transform, brickTransform, brick, ball)
+            intersectsBrick(transform, brickTransform, brick, ball)
         }
     }
 
-    private fun intersectsPedal(transform: TransformComponent, brickTransform: TransformComponent, brick: BrickComponent, ball: BallComponent) {
+    private fun intersectsBrick(transform: TransformComponent, brickTransform: TransformComponent, brick: BrickComponent, ball: BallComponent) {
         if (Intersector.overlaps(
                 Rectangle(
                     transform.position.x,
@@ -51,34 +51,40 @@ class BrickCollisionSystem(
                 )
             )
         ) {
-            // TODO has to be checked. The detection is not working right
+
+            val ballYMiddle = transform.position.y + (transform.size.y / 2)
+            val ballXMiddle = transform.position.x + (transform.size.x / 2 )
+
+            val brickBottom = brickTransform.position.y
+            val brickTop = brickTransform.position.y + brickTransform.size.y
+            val brickYMiddle = brickTransform.position.y + (brickTransform.size.y / 2)
+            val brickLeft = brickTransform.position.x
+            val brickRight = brickTransform.position.x + brickTransform.size.x
+            val brickXMiddle = brickTransform.position.x + (brickTransform.size.x / 2)
+
             brick.hitpoints--
-            if (abs(transform.position.y - brickTransform.position.y) > abs(
-                    transform.position.y - (brickTransform.position.y + brickTransform.size
-                        .y)
-                )
-            ) {
-                // ball is hitting the brick on the bottom
-                transform.position.y = brickTransform.position.y + transform.size.y + brickTransform.size.y + SAFETY_MARGIN
-                reverseY(ball)
-            } else if (abs(transform.position.y - brickTransform.position.y) < abs(
-                    transform.position.y - (brickTransform.position.y +
-                        brickTransform.position.y
-                        )
-                )
-            ) { // ball is hitting the brick from top
-                transform.position.y = brickTransform.position.y - transform.size.y - SAFETY_MARGIN
-                reverseY(ball)
-            } else if (abs(transform.position.x - brickTransform.position.x) > abs(
-                    transform.position.x - (brickTransform.position.x +
-                        brickTransform.position.x)
-                )
-            ) { // ball is hitting the brick on the right
-                transform.position.x = brickTransform.position.x + transform.size.x + brickTransform.size.x + SAFETY_MARGIN
+
+            val overlapX = abs(ballXMiddle - brickXMiddle) - (brickTransform.size.x / 2 + transform.size.x / 2)
+            val overlapY = abs(ballYMiddle - brickYMiddle) - (brickTransform.size.y / 2 + transform.size.y / 2)
+
+            if (abs(overlapX) < abs(overlapY)) {
+                // horizontal hit
+                if (ballXMiddle > brickXMiddle) {
+                    // hit from the right
+                    transform.position.x = brickRight + SAFETY_MARGIN
+                } else {
+                    transform.position.x = brickLeft - transform.size.x - SAFETY_MARGIN
+                }
                 reverseX(ball)
-            } else { // Ball is hitting brick on the left
-                transform.position.x = brickTransform.position.x - transform.size.x - SAFETY_MARGIN
-                reverseX(ball)
+            } else {
+                // vertical hit
+                if (ballYMiddle > brickYMiddle) {
+                    // hit from the top
+                    transform.position.y = brickTop + SAFETY_MARGIN
+                } else {
+                    transform.position.y = brickBottom - transform.size.y - SAFETY_MARGIN
+                }
+                reverseY(ball)
             }
         }
     }

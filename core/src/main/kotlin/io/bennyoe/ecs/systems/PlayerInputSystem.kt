@@ -10,6 +10,7 @@ import io.bennyoe.ecs.components.TransformComponent
 import ktx.ashley.allOf
 import ktx.ashley.get
 import ktx.log.logger
+import kotlin.math.abs
 
 private val LOG = logger<PlayerInputSystem>()
 
@@ -37,7 +38,7 @@ class PlayerInputSystem(
         viewport.unproject(pedalMaxPosition) // project pixel to wu
         pedalMaxPosition.x -= transform.size.x // subtract the pedal width in wu
 
-        val accDiff = (tmpVec.x - transform.position.x).coerceIn(0f, 50f)
+        val accDiff = abs((tmpVec.x - transform.position.x) * deltaTime)
 
         transform.position.x = when {
             tmpVec.x < 0 -> 0f
@@ -45,7 +46,7 @@ class PlayerInputSystem(
             else -> tmpVec.x
         }
 
-        player.acceleration = map(accDiff, 0f, 50f, 1f, 8f)
+        player.acceleration = map(accDiff, 0f, 0.1f, 1f, 10f)
     }
 
     private fun map(value: Float, orgStart: Float, orgStop: Float, targetStart: Float, targetStop: Float): Float {

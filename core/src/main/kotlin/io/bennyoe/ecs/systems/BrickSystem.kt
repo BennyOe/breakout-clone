@@ -37,12 +37,12 @@ class BrickSystem(
     fun initializeBricks() {
         val brickTexture = Texture("brick.png")
         for (rowCount in 13..WORLD_HEIGHT.toInt()) {
-            for (columnCount in 0 until WORLD_WIDTH.toInt()) {
+            for (columnCount in 0 until WORLD_WIDTH.toInt() / 2) {
                 if (Math.random() >= 0.5) {
                     engine.entity {
                         with<TransformComponent> {
-                            position.set(columnCount.toFloat(), rowCount.toFloat(), 0f)
-                            size.set(1f, 1f)
+                            position.set(columnCount.toFloat() * 2, rowCount.toFloat(), 0f)
+                            size.set(2f, 1f)
                         }
                         with<BrickComponent>()
                         with<GraphicComponent> {
