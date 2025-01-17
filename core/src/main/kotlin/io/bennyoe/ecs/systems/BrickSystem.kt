@@ -42,7 +42,7 @@ class BrickSystem(
                     engine.entity {
                         with<TransformComponent> {
                             position.set(columnCount.toFloat() * 2, rowCount.toFloat(), 0f)
-                            size.set(2f, 1f)
+                            size.set(2f, 0.5f)
                         }
                         with<BrickComponent>()
                         with<GraphicComponent> {

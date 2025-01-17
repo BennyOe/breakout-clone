@@ -18,21 +18,24 @@ import ktx.ashley.allOf
 import ktx.ashley.entity
 import ktx.ashley.getSystem
 import ktx.ashley.with
+import ktx.graphics.use
 import ktx.log.logger
 
 private val LOG = logger<GameScreen>()
 
 class GameScreen(game: Main) : Screen(game) {
-    private val playerTexture = Texture("baer.png")
+    private val playerTexture = Texture("bear-long-border.png")
     private val ballTexture = Texture("ball.png")
+    private val background = Texture("bg2dark.jpg")
 
     override fun show() {
+
         val brickSystem = engine.getSystem<BrickSystem>()
         brickSystem.initializeBricks()
         val player = engine.entity {
             with<TransformComponent> {
                 position.set(1f, 1f, 0f)
-                size.set(4f, 215 * UNIT_SCALE)
+                size.set(128 * UNIT_SCALE, 32 * UNIT_SCALE)
             }
             with<GraphicComponent> {
                 sprite.run {
@@ -54,7 +57,7 @@ class GameScreen(game: Main) : Screen(game) {
             engine.entity {
                 with<TransformComponent> {
                     position.set(random(0, WORLD_WIDTH.toInt()).toFloat(), random(1, WORLD_HEIGHT.toInt()).toFloat(), 0f)
-                    size.set(128 * UNIT_SCALE, 128 * UNIT_SCALE)
+                    size.set(16 * UNIT_SCALE, 16 * UNIT_SCALE)
                 }
                 with<GraphicComponent> {
                     sprite.run {
@@ -70,6 +73,9 @@ class GameScreen(game: Main) : Screen(game) {
     }
 
     override fun render(delta: Float) {
+        batch.use(viewport.camera.combined) {
+            it.draw(background, 0f, 0f, WORLD_WIDTH, WORLD_HEIGHT)
+        }
         engine.update(delta)
     }
 

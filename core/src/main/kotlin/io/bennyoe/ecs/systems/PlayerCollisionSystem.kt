@@ -11,11 +11,11 @@ import io.bennyoe.ecs.components.TransformComponent
 import ktx.ashley.allOf
 import ktx.ashley.get
 import ktx.log.logger
-import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
 
 private const val SAFETY_MARGIN = 0.001f
+private const val SLOW_DOWN_FACTOR = 0.15f
 private val LOG = logger<PlayerCollisionSystem>()
 
 class PlayerCollisionSystem(
@@ -60,7 +60,7 @@ class PlayerCollisionSystem(
             val angle = map(xDiff, 0f, playerTransform.size.x, Math.toRadians(140.0).toFloat(), Math.toRadians(40.0).toFloat())
 
             ball.acceleration = when {
-                playerComponent.acceleration <= ball.acceleration -> (ball.acceleration - 0.25f).coerceAtLeast(1.2f)
+                playerComponent.acceleration <= ball.acceleration -> (ball.acceleration - SLOW_DOWN_FACTOR).coerceAtLeast(1.2f)
                 else -> playerComponent.acceleration.coerceAtMost(2.5f)
             }
 

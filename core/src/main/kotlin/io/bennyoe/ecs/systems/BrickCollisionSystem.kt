@@ -5,6 +5,7 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Rectangle
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.viewport.Viewport
 import io.bennyoe.ecs.components.BallComponent
 import io.bennyoe.ecs.components.BrickComponent
@@ -31,29 +32,21 @@ class BrickCollisionSystem(
         for (brickEntity in brickEntities) {
             val brickTransform = brickEntity[TransformComponent.mapper]!!
             val brick = brickEntity[BrickComponent.mapper]!!
-            intersectsBrick(transform, brickTransform, brick, ball)
+            intersectsBrick(transform, brickTransform, brick, ball, deltaTime)
         }
     }
 
-    private fun intersectsBrick(transform: TransformComponent, brickTransform: TransformComponent, brick: BrickComponent, ball: BallComponent) {
-        if (Intersector.overlaps(
-                Rectangle(
-                    transform.position.x,
-                    transform.position.y,
-                    transform.size.x,
-                    transform.size.y
-                ),
-                Rectangle(
-                    brickTransform.position.x,
-                    brickTransform.position.y,
-                    brickTransform.size.x,
-                    brickTransform.size.y
-                )
-            )
-        ) {
+    private fun intersectsBrick(
+        transform: TransformComponent,
+        brickTransform: TransformComponent,
+        brick: BrickComponent,
+        ball: BallComponent,
+        deltaTime: Float
+    ) {
+        if (checkCollision(brickTransform, transform, ball, deltaTime)) {
 
             val ballYMiddle = transform.position.y + (transform.size.y / 2)
-            val ballXMiddle = transform.position.x + (transform.size.x / 2 )
+            val ballXMiddle = transform.position.x + (transform.size.x / 2)
 
             val brickBottom = brickTransform.position.y
             val brickTop = brickTransform.position.y + brickTransform.size.y
@@ -95,6 +88,32 @@ class BrickCollisionSystem(
 
     private fun reverseY(ball: BallComponent) {
         ball.ySpeed *= -1
+    }
+
+    private fun checkCollision(
+        brickTransform: TransformComponent,
+        ballTransform: TransformComponent,
+        ball: BallComponent,
+        deltaTime: Float
+    ): Boolean {
+        val ballStart = Vector2(
+            ballTransform.position.x + ballTransform.size.x / 2,
+            ballTransform.position.y + ballTransform.size.y / 2
+        )
+        val ballEnd = Vector2(
+            ballStart.x + ball.xSpeed * deltaTime,
+            ballStart.y + ball.ySpeed * deltaTime
+        )
+
+        // Rechteck des Bricks
+        val brickBounds = Rectangle(
+            brickTransform.position.x,
+            brickTransform.position.y,
+            brickTransform.size.x,
+            brickTransform.size.y
+        )
+
+        return Intersector.intersectSegmentRectangle(ballStart, ballEnd, brickBounds)
     }
 
 }

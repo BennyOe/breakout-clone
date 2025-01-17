@@ -17,7 +17,7 @@ import ktx.app.KtxGame
 import ktx.app.KtxScreen
 import ktx.async.KtxAsync
 
-const val UNIT_SCALE = 1 / 256f
+const val UNIT_SCALE = 1 / 32f
 const val WORLD_WIDTH = 48f
 const val WORLD_HEIGHT = 27f
 
@@ -29,7 +29,7 @@ class Main : KtxGame<KtxScreen>() {
             addSystem(PlayerInputSystem(viewport))
             addSystem(BrickSystem(viewport))
             addSystem(SimpleCollisionSystem(viewport))
-            addSystem(MoveSystem(viewport))
+            addSystem(MoveSystem())
             addSystem(RenderSystem(batch, viewport))
         }
     }

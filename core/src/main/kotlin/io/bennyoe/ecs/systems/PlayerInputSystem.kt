@@ -46,7 +46,7 @@ class PlayerInputSystem(
             else -> tmpVec.x
         }
 
-        player.acceleration = map(accDiff, 0f, 0.1f, 1f, 10f)
+        player.acceleration = map(accDiff, 0f, 0.1f, 1f, 12f)
     }
 
     private fun map(value: Float, orgStart: Float, orgStop: Float, targetStart: Float, targetStop: Float): Float {
