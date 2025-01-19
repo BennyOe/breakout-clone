@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import io.bennyoe.ecs.systems.BrickSystem
 import io.bennyoe.ecs.systems.MoveSystem
 import io.bennyoe.ecs.systems.PlayerInputSystem
+import io.bennyoe.ecs.systems.PowerUpMoveSystem
 import io.bennyoe.ecs.systems.RenderSystem
 import io.bennyoe.ecs.systems.SimpleCollisionSystem
 import io.bennyoe.screens.GameScreen
@@ -28,6 +29,7 @@ class Main : KtxGame<KtxScreen>() {
         PooledEngine().apply {
             addSystem(PlayerInputSystem(viewport))
             addSystem(BrickSystem(viewport))
+            addSystem(PowerUpMoveSystem())
             addSystem(SimpleCollisionSystem(viewport))
             addSystem(MoveSystem())
             addSystem(RenderSystem(batch, viewport))

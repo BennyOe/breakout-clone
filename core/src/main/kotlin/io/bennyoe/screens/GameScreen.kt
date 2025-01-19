@@ -1,6 +1,7 @@
 package io.bennyoe.screens
 
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.MathUtils.random
 import io.bennyoe.Main
 import io.bennyoe.UNIT_SCALE
@@ -14,6 +15,8 @@ import io.bennyoe.ecs.components.TransformComponent
 import io.bennyoe.ecs.systems.BrickCollisionSystem
 import io.bennyoe.ecs.systems.BrickSystem
 import io.bennyoe.ecs.systems.PlayerCollisionSystem
+import io.bennyoe.ecs.systems.PowerUpCollisionSystem
+import io.bennyoe.ecs.systems.PowerUpSystem
 import ktx.ashley.allOf
 import ktx.ashley.entity
 import ktx.ashley.getSystem
@@ -24,14 +27,16 @@ import ktx.log.logger
 private val LOG = logger<GameScreen>()
 
 class GameScreen(game: Main) : Screen(game) {
-    private val playerTexture = Texture("bear-long-border.png")
-    private val ballTexture = Texture("ball.png")
-    private val background = Texture("bg2dark.jpg")
+    private val playerTexture = Texture("images/bear-long-border.png")
+    private val background = Texture("images/bg2dark.jpg")
+    private val ballsAtlas by lazy { TextureAtlas("sprites/balls.atlas") }
+    private val bricksAtlas by lazy { TextureAtlas("sprites/bricks.atlas") }
+    private val powerUpsAtlas by lazy { TextureAtlas("sprites/powerUps.atlas") }
 
     override fun show() {
-
+        LOG.info { "size is: ${32 * UNIT_SCALE}" }
         val brickSystem = engine.getSystem<BrickSystem>()
-        brickSystem.initializeBricks()
+        brickSystem.initializeBricks(bricksAtlas)
         val player = engine.entity {
             with<TransformComponent> {
                 position.set(1f, 1f, 0f)
@@ -53,15 +58,21 @@ class GameScreen(game: Main) : Screen(game) {
         val brickCollisionSystem = BrickCollisionSystem(viewport, brickEntities)
         engine.addSystem(brickCollisionSystem)
 
+        val powerUpSystem = PowerUpSystem(powerUpsAtlas)
+        engine.addSystem(powerUpSystem)
+
+        val powerUpCollisionSystem = PowerUpCollisionSystem(player)
+        engine.addSystem(powerUpCollisionSystem)
+
         repeat(1) {
             engine.entity {
                 with<TransformComponent> {
                     position.set(random(0, WORLD_WIDTH.toInt()).toFloat(), random(1, WORLD_HEIGHT.toInt()).toFloat(), 0f)
-                    size.set(16 * UNIT_SCALE, 16 * UNIT_SCALE)
+                    size.set(32 * UNIT_SCALE, 32 * UNIT_SCALE)
                 }
                 with<GraphicComponent> {
                     sprite.run {
-                        setRegion(ballTexture)
+                        setRegion(ballsAtlas.findRegion("Ball_Yellow_Glossy_trans-32x32"))
                         setOriginCenter()
                     }
                 }

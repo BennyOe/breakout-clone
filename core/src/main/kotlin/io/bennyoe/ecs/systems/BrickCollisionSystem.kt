@@ -5,7 +5,6 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Rectangle
-import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.viewport.Viewport
 import io.bennyoe.ecs.components.BallComponent
 import io.bennyoe.ecs.components.BrickComponent
@@ -14,7 +13,7 @@ import ktx.ashley.allOf
 import ktx.ashley.get
 import kotlin.math.abs
 
-private const val SAFETY_MARGIN = 0.001f
+private const val SAFETY_MARGIN = 0.0f
 
 class BrickCollisionSystem(
     private val viewport: Viewport,
@@ -81,7 +80,6 @@ class BrickCollisionSystem(
             }
         }
     }
-
     private fun reverseX(ball: BallComponent) {
         ball.xSpeed *= -1
     }
@@ -96,13 +94,24 @@ class BrickCollisionSystem(
         ball: BallComponent,
         deltaTime: Float
     ): Boolean {
-        val ballStart = Vector2(
-            ballTransform.position.x + ballTransform.size.x / 2,
-            ballTransform.position.y + ballTransform.size.y / 2
+        // Aktuelles Rechteck des Balls
+        val ballBounds = Rectangle(
+            ballTransform.position.x,
+            ballTransform.position.y,
+            ballTransform.size.x,
+            ballTransform.size.y
         )
-        val ballEnd = Vector2(
-            ballStart.x + ball.xSpeed * deltaTime,
-            ballStart.y + ball.ySpeed * deltaTime
+
+        // Zielposition des Balls nach Bewegung
+        val nextPositionX = ballTransform.position.x + ball.xSpeed * deltaTime
+        val nextPositionY = ballTransform.position.y + ball.ySpeed * deltaTime
+
+        // Rechteck des bewegten Balls
+        val expandedBounds = Rectangle(
+            minOf(ballBounds.x, nextPositionX),
+            minOf(ballBounds.y, nextPositionY),
+            ballBounds.width + abs(ball.xSpeed * deltaTime),
+            ballBounds.height + abs(ball.ySpeed * deltaTime)
         )
 
         // Rechteck des Bricks
@@ -113,7 +122,8 @@ class BrickCollisionSystem(
             brickTransform.size.y
         )
 
-        return Intersector.intersectSegmentRectangle(ballStart, ballEnd, brickBounds)
+        // Prüfen, ob der erweiterte Ball-Rechteckstrahl mit dem Brick überlappt
+        return Intersector.overlaps(expandedBounds, brickBounds)
     }
 
 }

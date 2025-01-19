@@ -21,14 +21,14 @@ class MoveSystem : IteratingSystem(
 ) {
     private var accumulator = 0f
 
-    override fun update(deltaTime: Float) {
-        accumulator += deltaTime
-        while (accumulator >= UPDATE_RATE) {
-            accumulator -= UPDATE_RATE
-            super.update(UPDATE_RATE)
-        }
-//        LOG.info { "Update Rate: $accumulator" }
-    }
+//    override fun update(deltaTime: Float) {
+//        accumulator += deltaTime
+//        while (accumulator >= UPDATE_RATE) {
+//            accumulator -= UPDATE_RATE
+//            super.update(UPDATE_RATE)
+//        }
+////        LOG.info { "Update Rate: $accumulator" }
+//    }
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val transform = entity[TransformComponent.mapper]

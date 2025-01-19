@@ -6,7 +6,7 @@ import ktx.ashley.mapperFor
 class BrickComponent : Component {
     var hitpoints: Int = 1
     var isDestructible = true
-    var hasPowerUp = false
+    var hasPowerUp = true
     var type = BrickType.DEFAULT
 
     companion object {

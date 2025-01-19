@@ -2,7 +2,7 @@ package io.bennyoe.ecs.systems
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
-import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.utils.viewport.Viewport
 import io.bennyoe.WORLD_HEIGHT
 import io.bennyoe.WORLD_WIDTH
@@ -34,20 +34,19 @@ class BrickSystem(
         }
     }
 
-    fun initializeBricks() {
-        val brickTexture = Texture("brick.png")
+    fun initializeBricks(textureAtlas: TextureAtlas) {
         for (rowCount in 13..WORLD_HEIGHT.toInt()) {
             for (columnCount in 0 until WORLD_WIDTH.toInt() / 2) {
                 if (Math.random() >= 0.5) {
                     engine.entity {
                         with<TransformComponent> {
                             position.set(columnCount.toFloat() * 2, rowCount.toFloat(), 0f)
-                            size.set(2f, 0.5f)
+                            size.set(2f, 1f)
                         }
                         with<BrickComponent>()
                         with<GraphicComponent> {
                             sprite.run {
-                                setRegion(brickTexture)
+                                setRegion(textureAtlas.findRegion("blue_brick"))
                                 setOriginCenter()
                             }
                         }
