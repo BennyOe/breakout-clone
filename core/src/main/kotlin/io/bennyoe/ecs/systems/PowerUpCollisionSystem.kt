@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle
 import io.bennyoe.ecs.components.PowerUpComponent
 import io.bennyoe.ecs.components.PowerUpType
 import io.bennyoe.ecs.components.TransformComponent
+import io.bennyoe.powerUps.BallSpeedUpEffect
 import io.bennyoe.powerUps.ChangeSizeEffect
 import io.bennyoe.powerUps.MultiballEffect
 import io.bennyoe.powerUps.PowerUpEffect
@@ -43,10 +44,10 @@ class PowerUpCollisionSystem(
         return when (type) {
 //            PowerUpType.SHOOTER -> ShooterPowerUp()
 //            PowerUpType.PENETRATION -> PenetrationPowerUp()
-//            PowerUpType.FAST_BALL -> FastBallPowerUp()
+            PowerUpType.FAST_BALL -> BallSpeedUpEffect()
             PowerUpType.MULTIBALL -> MultiballEffect()
 //            PowerUpType.BONUS_HEART -> BonusHeartPowerUp()
-//            PowerUpType.CHANGE_SIZE -> ChangeSizePowerUp()
+            PowerUpType.CHANGE_SIZE -> ChangeSizeEffect()
 //            PowerUpType.STICKY_BALL -> StickyBallPowerUp()
 //            PowerUpType.EXPLODING_BALL -> ExplodingBallPowerUp()
 //            PowerUpType.REVERSE_CONTROL -> ReverseControlPowerUp()

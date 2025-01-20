@@ -46,9 +46,10 @@ class MoveSystem : IteratingSystem(
         val ball = entity[BallComponent.mapper]
         val powerUp = entity[PowerUpComponent.mapper]
 
+        LOG.info { "Ball Speed: ${ball?.xSpeed}" }
         if (ball != null) {
-            transform.position.x += (ball.xSpeed * deltaTime * ball.acceleration + ball.boost)
-            transform.position.y += (ball.ySpeed * deltaTime * ball.acceleration + ball.boost)
+            transform.position.x += if(ball.xSpeed > 0) (ball.xSpeed * deltaTime * ball.acceleration + ball.boost) else (ball.xSpeed * deltaTime * ball.acceleration - ball.boost)
+            transform.position.y += if(ball.ySpeed > 0) (ball.ySpeed * deltaTime * ball.acceleration + ball.boost) else (ball.ySpeed * deltaTime * ball.acceleration - ball.boost)
         }
 
         if (powerUp != null) {
