@@ -34,7 +34,6 @@ class GameScreen(game: Main) : Screen(game) {
     private val powerUpsAtlas by lazy { TextureAtlas("sprites/powerUps.atlas") }
 
     override fun show() {
-        LOG.info { "size is: ${32 * UNIT_SCALE}" }
         val brickSystem = engine.getSystem<BrickSystem>()
         brickSystem.initializeBricks(bricksAtlas)
         val player = engine.entity {
@@ -61,26 +60,25 @@ class GameScreen(game: Main) : Screen(game) {
         val powerUpSystem = PowerUpSystem(powerUpsAtlas)
         engine.addSystem(powerUpSystem)
 
-        val powerUpCollisionSystem = PowerUpCollisionSystem(player)
-        engine.addSystem(powerUpCollisionSystem)
-
-        repeat(1) {
-            engine.entity {
-                with<TransformComponent> {
-                    position.set(random(0, WORLD_WIDTH.toInt()).toFloat(), random(1, WORLD_HEIGHT.toInt()).toFloat(), 0f)
-                    size.set(32 * UNIT_SCALE, 32 * UNIT_SCALE)
-                }
-                with<GraphicComponent> {
-                    sprite.run {
-                        setRegion(ballsAtlas.findRegion("Ball_Yellow_Glossy_trans-32x32"))
-                        setOriginCenter()
-                    }
-                }
-                with<BallComponent> {
-
+        val ball = engine.entity {
+            with<TransformComponent> {
+                position.set(random(0, WORLD_WIDTH.toInt()).toFloat(), random(1, WORLD_HEIGHT.toInt()).toFloat(), 0f)
+                size.set(32 * UNIT_SCALE, 32 * UNIT_SCALE)
+            }
+            with<GraphicComponent> {
+                sprite.run {
+                    setRegion(ballsAtlas.findRegion("Ball_Yellow_Glossy_trans-32x32"))
+                    setOriginCenter()
                 }
             }
+            with<BallComponent> {
+
+            }
         }
+
+        val powerUpCollisionSystem = PowerUpCollisionSystem(player, ball)
+        engine.addSystem(powerUpCollisionSystem)
+
     }
 
     override fun render(delta: Float) {

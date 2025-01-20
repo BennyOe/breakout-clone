@@ -7,6 +7,7 @@ class BrickComponent : Component {
     var hitpoints: Int = 1
     var isDestructible = true
     var hasPowerUp = true
+    var powerUpType = PowerUpType.SHOOTER
     var type = BrickType.DEFAULT
 
     companion object {

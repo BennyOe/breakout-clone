@@ -8,6 +8,7 @@ import io.bennyoe.WORLD_HEIGHT
 import io.bennyoe.WORLD_WIDTH
 import io.bennyoe.ecs.components.BrickComponent
 import io.bennyoe.ecs.components.GraphicComponent
+import io.bennyoe.ecs.components.PowerUpType
 import io.bennyoe.ecs.components.TransformComponent
 import ktx.ashley.allOf
 import ktx.ashley.entity
@@ -43,7 +44,10 @@ class BrickSystem(
                             position.set(columnCount.toFloat() * 2, rowCount.toFloat(), 0f)
                             size.set(2f, 1f)
                         }
-                        with<BrickComponent>()
+                        with<BrickComponent>() {
+                            hasPowerUp = if (Math.random() >= 0.8) true else false
+                            powerUpType = PowerUpType.entries.toTypedArray().random()
+                        }
                         with<GraphicComponent> {
                             sprite.run {
                                 setRegion(textureAtlas.findRegion("blue_brick"))

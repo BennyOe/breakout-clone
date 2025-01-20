@@ -3,7 +3,8 @@ package io.bennyoe.ecs.components
 import com.badlogic.ashley.core.Component
 import ktx.ashley.mapperFor
 
-class PowerUpComponent : Component {
+class PowerUpComponent(
+) : Component {
     var powerUpType: PowerUpType = PowerUpType.SHOOTER
 
     companion object {

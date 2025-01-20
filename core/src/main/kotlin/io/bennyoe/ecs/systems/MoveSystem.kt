@@ -4,20 +4,26 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import io.bennyoe.ecs.components.BallComponent
 import io.bennyoe.ecs.components.GraphicComponent
+import io.bennyoe.ecs.components.PowerUpComponent
 import io.bennyoe.ecs.components.TransformComponent
 import ktx.ashley.allOf
 import ktx.ashley.get
+import ktx.ashley.oneOf
 import ktx.log.logger
+import com.badlogic.gdx.math.MathUtils.random
 
 private val LOG = logger<BallComponent>()
 private const val UPDATE_RATE = 1 / 60f
 
 class MoveSystem : IteratingSystem(
     allOf(
-        BallComponent::class,
         GraphicComponent::class,
         TransformComponent::class
+    ).oneOf(
+        BallComponent::class,
+        PowerUpComponent::class
     ).get()
+
 ) {
     private var accumulator = 0f
 
@@ -38,10 +44,15 @@ class MoveSystem : IteratingSystem(
         require(graphic != null) { "entity has no graphic entity" }
 
         val ball = entity[BallComponent.mapper]
-        require(ball != null) { "entity has no ball entity" }
+        val powerUp = entity[PowerUpComponent.mapper]
 
-//        LOG.info { ball.acceleration.toString() }
-        transform.position.x += (ball.xSpeed * deltaTime * ball.acceleration + ball.boost)
-        transform.position.y += (ball.ySpeed * deltaTime * ball.acceleration + ball.boost)
+        if (ball != null) {
+            transform.position.x += (ball.xSpeed * deltaTime * ball.acceleration + ball.boost)
+            transform.position.y += (ball.ySpeed * deltaTime * ball.acceleration + ball.boost)
+        }
+
+        if (powerUp != null) {
+            transform.position.y -= random(4,9).toFloat() * deltaTime
+        }
     }
 }

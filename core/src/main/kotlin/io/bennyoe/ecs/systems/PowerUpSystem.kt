@@ -35,11 +35,21 @@ class PowerUpSystem(
                         LOG.info { "Power-Up created at position: ${position.x}, ${position.y}" }
                     }
                     with<PowerUpComponent> {
-                        powerUpType = PowerUpType.SHOOTER
+                        powerUpType = brick.powerUpType
                     }
                     with<GraphicComponent> {
                         sprite.run {
-                            setRegion(powerUpTextureAtlas.findRegion("honeypot_trans"))
+                            when(brick.powerUpType) {
+                                PowerUpType.SHOOTER -> setRegion(powerUpTextureAtlas.findRegion("flint_pxl_sml"))
+                                PowerUpType.PENETRATION -> setRegion(powerUpTextureAtlas.findRegion("muscle_trans"))
+                                PowerUpType.FAST_BALL -> setRegion(powerUpTextureAtlas.findRegion("coffee_mug"))
+                                PowerUpType.MULTIBALL -> setRegion(powerUpTextureAtlas.findRegion("multiball_rounded"))
+                                PowerUpType.BONUS_HEART -> setRegion(powerUpTextureAtlas.findRegion("heart"))
+                                PowerUpType.CHANGE_SIZE -> setRegion(powerUpTextureAtlas.findRegion("pizza_trans"))
+                                PowerUpType.STICKY_BALL -> setRegion(powerUpTextureAtlas.findRegion("honeypot_trans"))
+                                PowerUpType.EXPLODING_BALL -> setRegion(powerUpTextureAtlas.findRegion("bomb_trans"))
+                                PowerUpType.REVERSE_CONTROL -> setRegion(powerUpTextureAtlas.findRegion("confused_trans"))
+                            }
                             setOriginCenter()
                         }
                     }

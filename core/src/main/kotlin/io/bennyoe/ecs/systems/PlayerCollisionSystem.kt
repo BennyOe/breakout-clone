@@ -64,7 +64,7 @@ class PlayerCollisionSystem(
                 else -> playerComponent.acceleration.coerceAtMost(2.5f)
             }
 
-            LOG.info { ball.acceleration.toString() }
+//            LOG.info { ball.acceleration.toString() }
             ball.xSpeed = (6 * cos(angle) * ball.acceleration)
             ball.ySpeed = (6 * sin(angle) * ball.acceleration)
         }
