@@ -8,8 +8,11 @@ import io.bennyoe.ecs.components.PowerUpType
 import io.bennyoe.ecs.components.TransformComponent
 import io.bennyoe.powerUps.BallSpeedUpEffect
 import io.bennyoe.powerUps.ChangeSizeEffect
+import io.bennyoe.powerUps.ExplodingEffect
 import io.bennyoe.powerUps.MultiballEffect
+import io.bennyoe.powerUps.PenetrationEffect
 import io.bennyoe.powerUps.PowerUpEffect
+import io.bennyoe.powerUps.ShooterEffect
 import ktx.ashley.allOf
 import ktx.ashley.get
 import ktx.log.logger
@@ -42,14 +45,14 @@ class PowerUpCollisionSystem(
 
    private fun getPowerUpEffect(type: PowerUpType): PowerUpEffect {
         return when (type) {
-//            PowerUpType.SHOOTER -> ShooterPowerUp()
-//            PowerUpType.PENETRATION -> PenetrationPowerUp()
+            PowerUpType.SHOOTER -> ShooterEffect()
+            PowerUpType.PENETRATION -> PenetrationEffect()
             PowerUpType.FAST_BALL -> BallSpeedUpEffect()
             PowerUpType.MULTIBALL -> MultiballEffect()
 //            PowerUpType.BONUS_HEART -> BonusHeartPowerUp()
             PowerUpType.CHANGE_SIZE -> ChangeSizeEffect()
 //            PowerUpType.STICKY_BALL -> StickyBallPowerUp()
-//            PowerUpType.EXPLODING_BALL -> ExplodingBallPowerUp()
+            PowerUpType.EXPLODING_BALL -> ExplodingEffect()
 //            PowerUpType.REVERSE_CONTROL -> ReverseControlPowerUp()
             else -> ChangeSizeEffect()
         }

@@ -11,6 +11,7 @@ import ktx.ashley.get
 import ktx.ashley.oneOf
 import ktx.log.logger
 import com.badlogic.gdx.math.MathUtils.random
+import io.bennyoe.ecs.components.BulletComponent
 
 private val LOG = logger<BallComponent>()
 private const val UPDATE_RATE = 1 / 60f
@@ -21,7 +22,8 @@ class MoveSystem : IteratingSystem(
         TransformComponent::class
     ).oneOf(
         BallComponent::class,
-        PowerUpComponent::class
+        PowerUpComponent::class,
+        BulletComponent::class,
     ).get()
 
 ) {
@@ -40,13 +42,11 @@ class MoveSystem : IteratingSystem(
         val transform = entity[TransformComponent.mapper]
         require(transform != null) { "entity has no transform entity" }
 
-        val graphic = entity[GraphicComponent.mapper]
-        require(graphic != null) { "entity has no graphic entity" }
-
         val ball = entity[BallComponent.mapper]
         val powerUp = entity[PowerUpComponent.mapper]
+        val bullet = entity[BulletComponent.mapper]
 
-        LOG.info { "Ball Speed: ${ball?.xSpeed}" }
+//        LOG.info { "Ball Speed: ${ball?.xSpeed}" }
         if (ball != null) {
             transform.position.x += if(ball.xSpeed > 0) (ball.xSpeed * deltaTime * ball.acceleration + ball.boost) else (ball.xSpeed * deltaTime * ball.acceleration - ball.boost)
             transform.position.y += if(ball.ySpeed > 0) (ball.ySpeed * deltaTime * ball.acceleration + ball.boost) else (ball.ySpeed * deltaTime * ball.acceleration - ball.boost)
@@ -54,6 +54,10 @@ class MoveSystem : IteratingSystem(
 
         if (powerUp != null) {
             transform.position.y -= random(4,9).toFloat() * deltaTime
+        }
+
+        if (bullet != null) {
+            transform.position.y += 9f * deltaTime
         }
     }
 }

@@ -2,7 +2,6 @@ package io.bennyoe.ecs.components
 
 import com.badlogic.ashley.core.Component
 import ktx.ashley.mapperFor
-import ktx.log.logger
 import java.lang.Math.random
 import kotlin.math.PI
 import kotlin.math.cos
@@ -14,6 +13,8 @@ class BallComponent : Component{
     var ySpeed = 10 * sin(angle).toFloat()
     var acceleration = 1f
     var boost = 0f
+    var isPenetrating = false
+    var isExploding = false
 
     companion object {
         val mapper = mapperFor<BallComponent>()

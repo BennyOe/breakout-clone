@@ -6,16 +6,15 @@ import io.bennyoe.ecs.components.BallComponent
 import io.bennyoe.ecs.systems.addEffectTimer
 import ktx.ashley.get
 
-class BallSpeedUpEffect : PowerUpEffect {
-
+class ExplodingEffect : PowerUpEffect {
     override fun apply(playerEntity: Entity, ballEntity: Entity, engine: Engine) {
         val ballEntities = engine.entities.filter { it[BallComponent.mapper] != null }
 
         ballEntities.forEach { ball ->
             val ballComponent = ball[BallComponent.mapper]!!
-            ballComponent.boost = 0.1f
-            ball.addEffectTimer("BallSpeedUp", 5f) {
-                ballComponent.boost = 0f
+            ballComponent.isExploding = true
+            ball.addEffectTimer("Exploding", 5f) {
+                ballComponent.isExploding = false
             }
         }
     }

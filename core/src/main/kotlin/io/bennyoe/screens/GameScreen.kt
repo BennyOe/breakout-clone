@@ -14,6 +14,8 @@ import io.bennyoe.ecs.components.PlayerComponent
 import io.bennyoe.ecs.components.TransformComponent
 import io.bennyoe.ecs.systems.BrickCollisionSystem
 import io.bennyoe.ecs.systems.BrickSystem
+import io.bennyoe.ecs.systems.DebugSystem
+import io.bennyoe.ecs.systems.ExplosionSystem
 import io.bennyoe.ecs.systems.PlayerCollisionSystem
 import io.bennyoe.ecs.systems.PowerUpCollisionSystem
 import io.bennyoe.ecs.systems.PowerUpSystem
@@ -57,6 +59,9 @@ class GameScreen(game: Main) : Screen(game) {
         val brickCollisionSystem = BrickCollisionSystem(viewport, brickEntities)
         engine.addSystem(brickCollisionSystem)
 
+        val explosionSystem = ExplosionSystem(brickEntities)
+        engine.addSystem(explosionSystem)
+
         val powerUpSystem = PowerUpSystem(powerUpsAtlas)
         engine.addSystem(powerUpSystem)
 
@@ -78,6 +83,10 @@ class GameScreen(game: Main) : Screen(game) {
 
         val powerUpCollisionSystem = PowerUpCollisionSystem(player, ball)
         engine.addSystem(powerUpCollisionSystem)
+
+        val debugSystem = DebugSystem(powerUpsAtlas)
+        engine.addSystem(debugSystem)
+
 
     }
 

@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.viewport.Viewport
 import io.bennyoe.WORLD_HEIGHT
 import io.bennyoe.WORLD_WIDTH
 import io.bennyoe.ecs.components.BrickComponent
+import io.bennyoe.ecs.components.ExplodingComponent
 import io.bennyoe.ecs.components.GraphicComponent
 import io.bennyoe.ecs.components.PowerUpType
 import io.bennyoe.ecs.components.TransformComponent
@@ -54,6 +55,7 @@ class BrickSystem(
                                 setOriginCenter()
                             }
                         }
+                        with<ExplodingComponent>()
                     }
                 }
             }

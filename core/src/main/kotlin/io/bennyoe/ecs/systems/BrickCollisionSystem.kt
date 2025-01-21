@@ -8,12 +8,15 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.viewport.Viewport
 import io.bennyoe.ecs.components.BallComponent
 import io.bennyoe.ecs.components.BrickComponent
+import io.bennyoe.ecs.components.ExplodingComponent
 import io.bennyoe.ecs.components.TransformComponent
 import ktx.ashley.allOf
 import ktx.ashley.get
+import ktx.log.logger
 import kotlin.math.abs
 
 private const val SAFETY_MARGIN = 0.0f
+private val LOG = logger<BrickCollisionSystem>()
 
 class BrickCollisionSystem(
     private val viewport: Viewport,
@@ -29,19 +32,19 @@ class BrickCollisionSystem(
         require(ball != null) { "entity has no ball entity" }
 
         for (brickEntity in brickEntities) {
-            val brickTransform = brickEntity[TransformComponent.mapper]!!
-            val brick = brickEntity[BrickComponent.mapper]!!
-            intersectsBrick(transform, brickTransform, brick, ball, deltaTime)
+            intersectsBrick(transform, brickEntity, ball, deltaTime)
         }
     }
 
     private fun intersectsBrick(
         transform: TransformComponent,
-        brickTransform: TransformComponent,
-        brick: BrickComponent,
+        brickEntity: Entity,
         ball: BallComponent,
         deltaTime: Float
     ) {
+        val brickTransform = brickEntity[TransformComponent.mapper]!!
+        val brick = brickEntity[BrickComponent.mapper]!!
+
         if (checkCollision(brickTransform, transform, ball, deltaTime)) {
 
             val ballYMiddle = transform.position.y + (transform.size.y / 2)
@@ -55,6 +58,8 @@ class BrickCollisionSystem(
             val brickXMiddle = brickTransform.position.x + (brickTransform.size.x / 2)
 
             brick.hitpoints--
+
+            if (ball.isPenetrating) return
 
             val overlapX = abs(ballXMiddle - brickXMiddle) - (brickTransform.size.x / 2 + transform.size.x / 2)
             val overlapY = abs(ballYMiddle - brickYMiddle) - (brickTransform.size.y / 2 + transform.size.y / 2)
@@ -78,52 +83,57 @@ class BrickCollisionSystem(
                 }
                 reverseY(ball)
             }
+            if (ball.isExploding) {
+                val explodingComponent = brickEntity[ExplodingComponent.mapper]!!
+                explodingComponent.isExploding = true
+            }
         }
     }
-    private fun reverseX(ball: BallComponent) {
-        ball.xSpeed *= -1
-    }
-
-    private fun reverseY(ball: BallComponent) {
-        ball.ySpeed *= -1
-    }
-
-    private fun checkCollision(
-        brickTransform: TransformComponent,
-        ballTransform: TransformComponent,
-        ball: BallComponent,
-        deltaTime: Float
-    ): Boolean {
-        // Aktuelles Rechteck des Balls
-        val ballBounds = Rectangle(
-            ballTransform.position.x,
-            ballTransform.position.y,
-            ballTransform.size.x,
-            ballTransform.size.y
-        )
-
-        // Zielposition des Balls nach Bewegung
-        val nextPositionX = ballTransform.position.x + ball.xSpeed * deltaTime
-        val nextPositionY = ballTransform.position.y + ball.ySpeed * deltaTime
-
-        // Rechteck des bewegten Balls
-        val expandedBounds = Rectangle(
-            minOf(ballBounds.x, nextPositionX),
-            minOf(ballBounds.y, nextPositionY),
-            ballBounds.width + abs(ball.xSpeed * deltaTime),
-            ballBounds.height + abs(ball.ySpeed * deltaTime)
-        )
-
-        // Rechteck des Bricks
-        val brickBounds = Rectangle(
-            brickTransform.position.x,
-            brickTransform.position.y,
-            brickTransform.size.x,
-            brickTransform.size.y
-        )
-
-        // Prüfen, ob der erweiterte Ball-Rechteckstrahl mit dem Brick überlappt
-        return Intersector.overlaps(expandedBounds, brickBounds)
-    }
-
 }
+
+private fun reverseX(ball: BallComponent) {
+    ball.xSpeed *= -1
+}
+
+private fun reverseY(ball: BallComponent) {
+    ball.ySpeed *= -1
+}
+
+private fun checkCollision(
+    brickTransform: TransformComponent,
+    ballTransform: TransformComponent,
+    ball: BallComponent,
+    deltaTime: Float
+): Boolean {
+    // Aktuelles Rechteck des Balls
+    val ballBounds = Rectangle(
+        ballTransform.position.x,
+        ballTransform.position.y,
+        ballTransform.size.x,
+        ballTransform.size.y
+    )
+
+    // Zielposition des Balls nach Bewegung
+    val nextPositionX = ballTransform.position.x + ball.xSpeed * deltaTime
+    val nextPositionY = ballTransform.position.y + ball.ySpeed * deltaTime
+
+    // Rechteck des bewegten Balls
+    val expandedBounds = Rectangle(
+        minOf(ballBounds.x, nextPositionX),
+        minOf(ballBounds.y, nextPositionY),
+        ballBounds.width + abs(ball.xSpeed * deltaTime),
+        ballBounds.height + abs(ball.ySpeed * deltaTime)
+    )
+
+    // Rechteck des Bricks
+    val brickBounds = Rectangle(
+        brickTransform.position.x,
+        brickTransform.position.y,
+        brickTransform.size.x,
+        brickTransform.size.y
+    )
+
+    // Prüfen, ob der erweiterte Ball-Rechteckstrahl mit dem Brick überlappt
+    return Intersector.overlaps(expandedBounds, brickBounds)
+}
+
