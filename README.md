@@ -34,3 +34,12 @@
 
 - [ ] Implement sound effects
 - [ ] Implement background music
+
+## Used resources
+
+- Vecteezy.com
+    - https://www.vecteezy.com/vector-art/21795311-realistic-melted-honey-on-transparent-background
+- Itch.io
+    - https://guardian5.itch.io/falcon-10-spaceship-asset?download
+    - https://petraheim.itch.io/breakout-pixelart
+    - https://screamingbrainstudios.itch.io/tinybreakoutpack

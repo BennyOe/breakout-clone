@@ -11,6 +11,7 @@ class PlayerComponent : Component, Pool.Poolable {
     var acceleration = 1f
     var isReversed = false
     var isSticky = false
+    var lastXMousePosition: Float? = null
 
     override fun reset() {
         lives = 5
@@ -19,6 +20,7 @@ class PlayerComponent : Component, Pool.Poolable {
         acceleration = 1f
         isReversed = false
         isSticky = false
+        lastXMousePosition = null
     }
 
     companion object {

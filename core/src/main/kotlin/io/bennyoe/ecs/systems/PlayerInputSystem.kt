@@ -39,20 +39,27 @@ class PlayerInputSystem(
         viewport.unproject(pedalMaxPosition) // Transformiere Begrenzung in Weltkoordinaten
         pedalMaxPosition.x -= transform.size.x // Abziehen der Breite des Pedals
 
-        val accDiff = abs((tmpVec.x - transform.position.x) * deltaTime)
+        if (player.lastXMousePosition == null) {
+            player.lastXMousePosition = tmpVec.x
+        }
+
+        val mouseDeltaX = tmpVec.x - player.lastXMousePosition!!
+        player.lastXMousePosition = tmpVec.x
 
         // Spielerposition anpassen
         transform.position.x = when {
             player.isReversed -> {
-                val invertedMouseX = pedalMaxPosition.x - tmpVec.x
-                invertedMouseX.coerceIn(0f, pedalMaxPosition.x)
+                val invertedMouseDeltaX = -mouseDeltaX
+                (transform.position.x + invertedMouseDeltaX).coerceIn(0f, pedalMaxPosition.x)
             }
-            tmpVec.x < 0 -> 0f
-            tmpVec.x >= pedalMaxPosition.x -> pedalMaxPosition.x
-            else -> tmpVec.x
+            else -> (transform.position.x + mouseDeltaX).coerceIn(0f, pedalMaxPosition.x)
         }
 
-        // Spielerbeschleunigung berechnen
+        calculateAcceleration(mouseDeltaX, deltaTime, player)
+    }
+
+    private fun calculateAcceleration(mouseDeltaX: Float, deltaTime: Float, player: PlayerComponent) {
+        val accDiff = abs(mouseDeltaX * deltaTime)
         player.acceleration = map(accDiff, 0f, 0.1f, 1f, 12f)
     }
 
