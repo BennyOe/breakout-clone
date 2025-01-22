@@ -12,7 +12,9 @@ import io.bennyoe.powerUps.ExplodingEffect
 import io.bennyoe.powerUps.MultiballEffect
 import io.bennyoe.powerUps.PenetrationEffect
 import io.bennyoe.powerUps.PowerUpEffect
+import io.bennyoe.powerUps.ReverseControlsEffect
 import io.bennyoe.powerUps.ShooterEffect
+import io.bennyoe.powerUps.StickyEffect
 import ktx.ashley.allOf
 import ktx.ashley.get
 import ktx.log.logger
@@ -51,9 +53,9 @@ class PowerUpCollisionSystem(
             PowerUpType.MULTIBALL -> MultiballEffect()
 //            PowerUpType.BONUS_HEART -> BonusHeartPowerUp()
             PowerUpType.CHANGE_SIZE -> ChangeSizeEffect()
-//            PowerUpType.STICKY_BALL -> StickyBallPowerUp()
+            PowerUpType.STICKY_BALL -> StickyEffect()
             PowerUpType.EXPLODING_BALL -> ExplodingEffect()
-//            PowerUpType.REVERSE_CONTROL -> ReverseControlPowerUp()
+            PowerUpType.REVERSE_CONTROL -> ReverseControlsEffect()
             else -> ChangeSizeEffect()
         }
     }

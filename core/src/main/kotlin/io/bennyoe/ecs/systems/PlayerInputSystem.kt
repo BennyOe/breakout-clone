@@ -29,23 +29,30 @@ class PlayerInputSystem(
         val player = entity[PlayerComponent.mapper]
         require(player != null) { "entity has no player entity" }
 
+        // Mausposition transformieren
         val mouseX = Gdx.input.x.toFloat()
-        tmpVec.x = mouseX.coerceIn(0f, Gdx.graphics.width.toFloat())
+        tmpVec.set(mouseX, 0f) // Nur X-Wert
+        viewport.unproject(tmpVec) // Transformiere in Weltkoordinaten
 
-        viewport.unproject(tmpVec) // project pixel to world unit (wu)
-
-        pedalMaxPosition.x = Gdx.graphics.width.toFloat() // get width of window
-        viewport.unproject(pedalMaxPosition) // project pixel to wu
-        pedalMaxPosition.x -= transform.size.x // subtract the pedal width in wu
+        // Pedal-Begrenzungen berechnen
+        pedalMaxPosition.set(Gdx.graphics.width.toFloat(), 0f) // Breite in Pixel
+        viewport.unproject(pedalMaxPosition) // Transformiere Begrenzung in Weltkoordinaten
+        pedalMaxPosition.x -= transform.size.x // Abziehen der Breite des Pedals
 
         val accDiff = abs((tmpVec.x - transform.position.x) * deltaTime)
 
+        // Spielerposition anpassen
         transform.position.x = when {
+            player.isReversed -> {
+                val invertedMouseX = pedalMaxPosition.x - tmpVec.x
+                invertedMouseX.coerceIn(0f, pedalMaxPosition.x)
+            }
             tmpVec.x < 0 -> 0f
             tmpVec.x >= pedalMaxPosition.x -> pedalMaxPosition.x
             else -> tmpVec.x
         }
 
+        // Spielerbeschleunigung berechnen
         player.acceleration = map(accDiff, 0f, 0.1f, 1f, 12f)
     }
 

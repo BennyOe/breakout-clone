@@ -34,43 +34,52 @@ class PlayerCollisionSystem(
         val ball = entity[BallComponent.mapper]
         require(ball != null) { "entity has no ball entity" }
 
-        intersectsPedal(transform, ball)
-    }
-
-    private fun intersectsPedal(transform: TransformComponent, ball: BallComponent) {
-        if (Intersector.overlaps(
-                Rectangle(
-                    transform.position.x,
-                    transform.position.y,
-                    transform.size.x,
-                    transform.size.y
-                ),
-                Rectangle(
-                    playerTransform.position.x,
-                    playerTransform.position.y,
-                    playerTransform.size.x,
-                    playerTransform.size.y
-                )
-            )
-        ) {
-            val playerTop = playerTransform.position.y + playerTransform.size.y
-
-            transform.position.y = playerTop + SAFETY_MARGIN
-            val xDiff = transform.position.x - playerTransform.position.x
-            val angle = map(xDiff, 0f, playerTransform.size.x, Math.toRadians(140.0).toFloat(), Math.toRadians(40.0).toFloat())
-
-            ball.acceleration = when {
-                playerComponent.acceleration <= ball.acceleration -> (ball.acceleration - SLOW_DOWN_FACTOR).coerceAtLeast(1.2f)
-                else -> playerComponent.acceleration.coerceAtMost(2.5f)
+        if (intersectsPedal(transform)) {
+            if (playerComponent.isSticky) {
+                ball.isSticky = true
+            } else {
+                ballBounceOffPlayer(transform, ball)
             }
-
-//            LOG.info { ball.acceleration.toString() }
-            ball.xSpeed = (6 * cos(angle) * ball.acceleration)
-            ball.ySpeed = (6 * sin(angle) * ball.acceleration)
         }
     }
+
+    private fun intersectsPedal(transform: TransformComponent): Boolean {
+        return Intersector.overlaps(
+            Rectangle(
+                transform.position.x,
+                transform.position.y,
+                transform.size.x,
+                transform.size.y
+            ),
+            Rectangle(
+                playerTransform.position.x,
+                playerTransform.position.y,
+                playerTransform.size.x,
+                playerTransform.size.y
+            )
+        )
+    }
+
+    private fun ballBounceOffPlayer(transform: TransformComponent, ball: BallComponent) {
+        val playerTop = playerTransform.position.y + playerTransform.size.y
+
+        transform.position.y = playerTop + SAFETY_MARGIN
+        val xDiff = transform.position.x - playerTransform.position.x
+        val angle = map(xDiff, 0f, playerTransform.size.x, Math.toRadians(140.0).toFloat(), Math.toRadians(40.0).toFloat())
+
+        ball.acceleration = when {
+            playerComponent.acceleration <= ball.acceleration -> (ball.acceleration - SLOW_DOWN_FACTOR).coerceAtLeast(1.2f)
+            else -> playerComponent.acceleration.coerceAtMost(2.5f)
+        }
+
+        ball.xSpeed = (6 * cos(angle) * ball.acceleration)
+        ball.ySpeed = (6 * sin(angle) * ball.acceleration)
+    }
+
+
+    private fun map(value: Float, orgStart: Float, orgStop: Float, targetStart: Float, targetStop: Float): Float {
+        return targetStart + (value - orgStart) * (targetStop - targetStart) / (orgStop - orgStart)
+    }
 }
 
-private fun map(value: Float, orgStart: Float, orgStop: Float, targetStart: Float, targetStop: Float): Float {
-    return targetStart + (value - orgStart) * (targetStop - targetStart) / (orgStop - orgStart)
-}
+

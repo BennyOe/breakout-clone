@@ -9,12 +9,16 @@ class PlayerComponent : Component, Pool.Poolable {
     var score = 0
     var name = ""
     var acceleration = 1f
+    var isReversed = false
+    var isSticky = false
 
     override fun reset() {
         lives = 5
         score = 0
         name = ""
         acceleration = 1f
+        isReversed = false
+        isSticky = false
     }
 
     companion object {

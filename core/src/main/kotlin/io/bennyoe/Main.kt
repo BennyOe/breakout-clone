@@ -11,6 +11,7 @@ import io.bennyoe.ecs.systems.BrickSystem
 import io.bennyoe.ecs.systems.MoveSystem
 import io.bennyoe.ecs.systems.PlayerInputSystem
 import io.bennyoe.ecs.systems.RenderSystem
+import io.bennyoe.ecs.systems.ShooterCollisionSystem
 import io.bennyoe.ecs.systems.SimpleCollisionSystem
 import io.bennyoe.ecs.systems.TimerSystem
 import io.bennyoe.screens.GameScreen
@@ -33,6 +34,7 @@ class Main : KtxGame<KtxScreen>() {
             addSystem(MoveSystem())
             addSystem(RenderSystem(batch, viewport))
             addSystem(TimerSystem())
+            addSystem(ShooterCollisionSystem())
         }
     }
 

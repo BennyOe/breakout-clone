@@ -2,6 +2,8 @@ package io.bennyoe.ecs.systems
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import io.bennyoe.ecs.components.BallComponent
 import io.bennyoe.ecs.components.GraphicComponent
 import io.bennyoe.ecs.components.PowerUpComponent
@@ -12,6 +14,9 @@ import ktx.ashley.oneOf
 import ktx.log.logger
 import com.badlogic.gdx.math.MathUtils.random
 import io.bennyoe.ecs.components.BulletComponent
+import io.bennyoe.ecs.components.PlayerComponent
+import kotlin.math.cos
+import kotlin.math.sin
 
 private val LOG = logger<BallComponent>()
 private const val UPDATE_RATE = 1 / 60f
@@ -45,19 +50,58 @@ class MoveSystem : IteratingSystem(
         val ball = entity[BallComponent.mapper]
         val powerUp = entity[PowerUpComponent.mapper]
         val bullet = entity[BulletComponent.mapper]
+        val playerEntity = engine.getEntitiesFor(allOf(PlayerComponent::class).get())[0]
+        val playerTransform = playerEntity[TransformComponent.mapper]!!
+
 
 //        LOG.info { "Ball Speed: ${ball?.xSpeed}" }
         if (ball != null) {
-            transform.position.x += if(ball.xSpeed > 0) (ball.xSpeed * deltaTime * ball.acceleration + ball.boost) else (ball.xSpeed * deltaTime * ball.acceleration - ball.boost)
-            transform.position.y += if(ball.ySpeed > 0) (ball.ySpeed * deltaTime * ball.acceleration + ball.boost) else (ball.ySpeed * deltaTime * ball.acceleration - ball.boost)
+            if (ball.isSticky) {
+                ballFollowsPlayer(transform, playerTransform, ball)
+            } else {
+                transform.position.x += if (ball.xSpeed > 0) (ball.xSpeed * deltaTime * ball.acceleration + ball.boost) else (ball.xSpeed * deltaTime * ball.acceleration - ball.boost)
+                transform.position.y += if (ball.ySpeed > 0) (ball.ySpeed * deltaTime * ball.acceleration + ball.boost) else (ball.ySpeed * deltaTime * ball.acceleration - ball.boost)
+            }
         }
 
         if (powerUp != null) {
-            transform.position.y -= random(4,9).toFloat() * deltaTime
+            transform.position.y -= random(4, 9).toFloat() * deltaTime
         }
 
         if (bullet != null) {
-            transform.position.y += 9f * deltaTime
+            transform.position.y += 22f * deltaTime
         }
+    }
+
+    private fun ballFollowsPlayer(
+        transform: TransformComponent,
+        playerTransform: TransformComponent,
+        ball: BallComponent
+    ) {
+        if (ball.offsetXToPlayer == 0f) {
+            ball.offsetXToPlayer = transform.position.x - playerTransform.position.x
+        }
+
+        transform.position.x = playerTransform.position.x + ball.offsetXToPlayer
+        transform.position.y = playerTransform.position.y + playerTransform.size.y
+
+        ball.xSpeed = 0f
+        ball.ySpeed = 0f
+
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+            LOG.info { "Mausklick registriert - Ball wird losgelassen." }
+            ball.isSticky = false
+
+            val angle = map(ball.offsetXToPlayer, 0f, playerTransform.size.x, Math.toRadians(140.0).toFloat(), Math.toRadians(40.0).toFloat())
+            ball.xSpeed = 6 * cos(angle) * 1.8f
+            ball.ySpeed = 6 * sin(angle) * 1.8f
+            ball.offsetXToPlayer = 0f
+
+            LOG.info { "Ball losgelassen: xSpeed=${ball.xSpeed}, ySpeed=${ball.ySpeed}" }
+        }
+    }
+
+    private fun map(value: Float, orgStart: Float, orgStop: Float, targetStart: Float, targetStop: Float): Float {
+        return targetStart + (value - orgStart) * (targetStop - targetStart) / (orgStop - orgStart)
     }
 }

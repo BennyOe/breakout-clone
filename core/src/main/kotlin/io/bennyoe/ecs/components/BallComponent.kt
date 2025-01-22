@@ -15,6 +15,8 @@ class BallComponent : Component{
     var boost = 0f
     var isPenetrating = false
     var isExploding = false
+    var isSticky = false
+    var offsetXToPlayer = 0f
 
     companion object {
         val mapper = mapperFor<BallComponent>()
