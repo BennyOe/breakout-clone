@@ -46,7 +46,7 @@ class GameScreen(game: Main) : Screen(game) {
         val brickSystem = engine.getSystem<BrickSystem>()
         brickSystem.initializeBricks(bricksAtlas)
 
-        val playerCollisionSystem = PlayerCollisionSystem(viewport, player)
+        val playerCollisionSystem = PlayerCollisionSystem(player)
         engine.addSystem(playerCollisionSystem)
 
         val brickEntities = engine.getEntitiesFor(allOf(BrickComponent::class).get())

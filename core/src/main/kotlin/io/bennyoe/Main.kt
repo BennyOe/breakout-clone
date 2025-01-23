@@ -29,7 +29,7 @@ class Main : KtxGame<KtxScreen>() {
     val engine: Engine by lazy {
         PooledEngine().apply {
             addSystem(PlayerInputSystem(viewport))
-            addSystem(BrickSystem(viewport))
+            addSystem(BrickSystem())
             addSystem(SimpleCollisionSystem(viewport))
             addSystem(MoveSystem())
             addSystem(RenderSystem(batch, viewport))

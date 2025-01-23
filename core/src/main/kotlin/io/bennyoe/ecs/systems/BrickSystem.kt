@@ -3,7 +3,6 @@ package io.bennyoe.ecs.systems
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
-import com.badlogic.gdx.utils.viewport.Viewport
 import io.bennyoe.WORLD_HEIGHT
 import io.bennyoe.WORLD_WIDTH
 import io.bennyoe.ecs.components.BrickComponent
@@ -16,9 +15,7 @@ import ktx.ashley.entity
 import ktx.ashley.get
 import ktx.ashley.with
 
-class BrickSystem(
-    private val viewport: Viewport
-) : IteratingSystem(
+class BrickSystem() : IteratingSystem(
     allOf(BrickComponent::class, TransformComponent::class, GraphicComponent::class).get()
 ) {
     override fun processEntity(entity: Entity, deltaTime: Float) {

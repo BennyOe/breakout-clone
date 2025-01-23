@@ -10,6 +10,7 @@ import io.bennyoe.ecs.components.GraphicComponent
 import io.bennyoe.ecs.components.TransformComponent
 import io.bennyoe.ecs.systems.ShapeRenderingSystem
 import io.bennyoe.ecs.systems.addEffectTimer
+import io.bennyoe.utillity.Mapper.Companion.mapToRange
 import ktx.ashley.get
 import kotlin.math.cos
 import kotlin.math.sin
@@ -35,7 +36,7 @@ class ChangeSizeEffect : PowerUpEffect {
                 val ball = it[BallComponent.mapper]!!
                 ball.isSticky = false
 
-                val angle = map(ball.offsetXToPlayer, 0f, playerTransform.size.x, Math.toRadians(140.0).toFloat(), Math.toRadians(40.0).toFloat())
+                val angle = mapToRange(ball.offsetXToPlayer, 0f, playerTransform.size.x, Math.toRadians(140.0).toFloat(), Math.toRadians(40.0).toFloat())
                 ball.xSpeed = 6 * cos(angle) * 1.8f
                 ball.ySpeed = 6 * sin(angle) * 1.8f
                 ball.offsetXToPlayer = 0f
@@ -46,9 +47,5 @@ class ChangeSizeEffect : PowerUpEffect {
             }
             playerTransform.size.x = 128 * UNIT_SCALE
         }
-    }
-
-    private fun map(value: Float, orgStart: Float, orgStop: Float, targetStart: Float, targetStop: Float): Float {
-        return targetStart + (value - orgStart) * (targetStop - targetStart) / (orgStop - orgStart)
     }
 }

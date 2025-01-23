@@ -10,7 +10,7 @@ import io.bennyoe.WORLD_HEIGHT
 import io.bennyoe.WORLD_WIDTH
 import ktx.graphics.use
 
-class ShapeRenderingSystem(val color: Color) : EntitySystem() {
+class ShapeRenderingSystem(private val color: Color) : EntitySystem() {
     private val shapeRenderer = ShapeRenderer()
 
     override fun update(deltaTime: Float) {

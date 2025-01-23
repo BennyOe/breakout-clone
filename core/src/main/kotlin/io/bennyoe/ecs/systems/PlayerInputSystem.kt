@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.viewport.Viewport
 import io.bennyoe.ecs.components.PlayerComponent
 import io.bennyoe.ecs.components.TransformComponent
+import io.bennyoe.utillity.Mapper.Companion.mapToRange
 import ktx.ashley.allOf
 import ktx.ashley.get
 import ktx.log.logger
@@ -68,10 +69,6 @@ class PlayerInputSystem(
 
     private fun calculateAcceleration(mouseDeltaX: Float, deltaTime: Float, player: PlayerComponent) {
         val accDiff = abs(mouseDeltaX * deltaTime)
-        player.acceleration = map(accDiff, 0f, 0.1f, 1f, 12f)
-    }
-
-    private fun map(value: Float, orgStart: Float, orgStop: Float, targetStart: Float, targetStop: Float): Float {
-        return targetStart + (value - orgStart) * (targetStop - targetStart) / (orgStop - orgStart)
+        player.acceleration = mapToRange(accDiff, 0f, 0.1f, 1f, 12f)
     }
 }

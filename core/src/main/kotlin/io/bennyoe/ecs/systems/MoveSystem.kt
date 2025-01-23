@@ -16,6 +16,7 @@ import ktx.log.logger
 import com.badlogic.gdx.math.MathUtils.random
 import io.bennyoe.ecs.components.BulletComponent
 import io.bennyoe.ecs.components.PlayerComponent
+import io.bennyoe.utillity.Mapper.Companion.mapToRange
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -108,14 +109,10 @@ class MoveSystem : IteratingSystem(
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             ball.isSticky = false
 
-            val angle = map(ball.offsetXToPlayer, 0f, playerTransform.size.x, Math.toRadians(140.0).toFloat(), Math.toRadians(40.0).toFloat())
+            val angle = mapToRange(ball.offsetXToPlayer, 0f, playerTransform.size.x, Math.toRadians(140.0).toFloat(), Math.toRadians(40.0).toFloat())
             ball.xSpeed = 6 * cos(angle) * 1.8f
             ball.ySpeed = 6 * sin(angle) * 1.8f
             ball.offsetXToPlayer = 0f
         }
-    }
-
-    private fun map(value: Float, orgStart: Float, orgStop: Float, targetStart: Float, targetStop: Float): Float {
-        return targetStart + (value - orgStart) * (targetStop - targetStart) / (orgStop - orgStart)
     }
 }
