@@ -14,7 +14,7 @@ import ktx.log.logger
 import kotlin.math.cos
 import kotlin.math.sin
 
-private const val SAFETY_MARGIN = 0.001f
+private const val SAFETY_MARGIN = 0.000f
 private const val SLOW_DOWN_FACTOR = 0.15f
 private val LOG = logger<PlayerCollisionSystem>()
 

@@ -27,7 +27,7 @@ class DebugSystem(
                         powerUpType = PowerUpType.MULTIBALL
                     }
                     with<TransformComponent>() {
-                        position.set(8f, 8f, 0f)
+                        setInitialPosition(8f, 8f, 0f)
                     }
                     with<GraphicComponent> {
                         sprite.run { setRegion(powerUpTextureAtlas.findRegion("multiball_rounded")) }
@@ -40,7 +40,7 @@ class DebugSystem(
                         powerUpType = PowerUpType.EXPLODING_BALL
                     }
                     with<TransformComponent>() {
-                        position.set(8f, 8f, 0f)
+                        setInitialPosition(8f, 8f, 0f)
                     }
                     with<GraphicComponent> {
                         sprite.run { setRegion(powerUpTextureAtlas.findRegion("bomb_trans")) }
@@ -53,7 +53,7 @@ class DebugSystem(
                         powerUpType = PowerUpType.PENETRATION
                     }
                     with<TransformComponent>() {
-                        position.set(8f, 8f, 0f)
+                        setInitialPosition(8f, 8f, 0f)
                     }
                     with<GraphicComponent> {
                         sprite.run { setRegion(powerUpTextureAtlas.findRegion("muscle_trans")) }
@@ -66,7 +66,7 @@ class DebugSystem(
                         powerUpType = PowerUpType.SHOOTER
                     }
                     with<TransformComponent>() {
-                        position.set(8f, 8f, 0f)
+                        setInitialPosition(8f, 8f, 0f)
                     }
                     with<GraphicComponent> {
                         sprite.run { setRegion(powerUpTextureAtlas.findRegion("flint_pxl_sml")) }

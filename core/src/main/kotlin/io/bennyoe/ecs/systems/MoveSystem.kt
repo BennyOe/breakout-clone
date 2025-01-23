@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.math.MathUtils
 import io.bennyoe.ecs.components.BallComponent
 import io.bennyoe.ecs.components.GraphicComponent
 import io.bennyoe.ecs.components.PowerUpComponent
@@ -19,7 +20,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 private val LOG = logger<BallComponent>()
-private const val UPDATE_RATE = 1 / 60f
+private const val UPDATE_RATE = 1 / 80f
 
 class MoveSystem : IteratingSystem(
     allOf(
@@ -34,14 +35,30 @@ class MoveSystem : IteratingSystem(
 ) {
     private var accumulator = 0f
 
-//    override fun update(deltaTime: Float) {
-//        accumulator += deltaTime
-//        while (accumulator >= UPDATE_RATE) {
-//            accumulator -= UPDATE_RATE
-//            super.update(UPDATE_RATE)
-//        }
-////        LOG.info { "Update Rate: $accumulator" }
-//    }
+    override fun update(deltaTime: Float) {
+        accumulator += deltaTime
+        while (accumulator >= UPDATE_RATE) {
+            accumulator -= UPDATE_RATE
+
+            entities.forEach { entity ->
+                entity[TransformComponent.mapper]?.let { transform ->
+                    transform.prevPosition.set(transform.position)
+                }
+            }
+            super.update(UPDATE_RATE)
+        }
+
+        val alpha = accumulator / UPDATE_RATE
+        entities.forEach { entity ->
+            entity[TransformComponent.mapper]?.let { transform ->
+                transform.interpolatedPosition.set(
+                    MathUtils.lerp(transform.prevPosition.x, transform.position.x, alpha),
+                    MathUtils.lerp(transform.prevPosition.y, transform.position.y, alpha),
+                    transform.position.z
+                )
+            }
+        }
+    }
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val transform = entity[TransformComponent.mapper]
@@ -89,15 +106,12 @@ class MoveSystem : IteratingSystem(
         ball.ySpeed = 0f
 
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            LOG.info { "Mausklick registriert - Ball wird losgelassen." }
             ball.isSticky = false
 
             val angle = map(ball.offsetXToPlayer, 0f, playerTransform.size.x, Math.toRadians(140.0).toFloat(), Math.toRadians(40.0).toFloat())
             ball.xSpeed = 6 * cos(angle) * 1.8f
             ball.ySpeed = 6 * sin(angle) * 1.8f
             ball.offsetXToPlayer = 0f
-
-            LOG.info { "Ball losgelassen: xSpeed=${ball.xSpeed}, ySpeed=${ball.ySpeed}" }
         }
     }
 

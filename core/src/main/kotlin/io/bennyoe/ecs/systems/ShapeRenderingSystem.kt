@@ -1,31 +1,25 @@
-//package io.bennyoe.ecs.systems
-//
-//import com.badlogic.ashley.core.Entity
-//import com.badlogic.ashley.systems.IteratingSystem
-//import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-//import com.badlogic.gdx.utils.viewport.Viewport
-//import io.bennyoe.ecs.components.PowerUpComponent
-//import io.bennyoe.ecs.components.TransformComponent
-//import ktx.ashley.allOf
-//import ktx.ashley.get
-//import ktx.graphics.use
-//
-//class ShapeRenderingSystem(val viewport: Viewport, val shapeRenderer: ShapeRenderer) : IteratingSystem(
-//    allOf(PowerUpComponent::class).get()
-//) {
-//    override fun update(deltaTime: Float) {
-//        viewport.apply()
-//        shapeRenderer.use(ShapeRenderer.ShapeType.Filled) {
-//            super.update(deltaTime)
-//        }
-//    }
-//
-//    override fun processEntity(entity: Entity, deltaTime: Float) {
-//        val powerUpTransform = entity[TransformComponent.mapper]!!
-//        powerUpTransform.position.y -= 1f
-//        powerUpTransform.let {
-//            shapeRenderer.circle(it.position.x, it.position.y, 10f)
-//
-//        }
-//    }
-//}
+package io.bennyoe.ecs.systems
+
+import com.badlogic.ashley.core.EntitySystem
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import io.bennyoe.UNIT_SCALE
+import io.bennyoe.WORLD_HEIGHT
+import io.bennyoe.WORLD_WIDTH
+import ktx.graphics.use
+
+class ShapeRenderingSystem(val color: Color) : EntitySystem() {
+    private val shapeRenderer = ShapeRenderer()
+
+    override fun update(deltaTime: Float) {
+        shapeRenderer.use(ShapeRenderer.ShapeType.Filled) {
+            Gdx.gl.glEnable(GL20.GL_BLEND)
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
+            it.color = color
+            it.rect(0f, 0f, WORLD_WIDTH / UNIT_SCALE, WORLD_HEIGHT / UNIT_SCALE)
+        }
+        super.update(deltaTime)
+    }
+}

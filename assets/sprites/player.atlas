@@ -1,0 +1,15 @@
+player.png
+size:2048,128
+repeat:none
+bear
+bounds:904,2,256,64
+bear-sticky
+bounds:1162,2,256,64
+bear_shooter
+bounds:2,2,384,64
+change-size
+bounds:388,2,256,64
+explosion
+bounds:646,2,256,64
+reversed-controlls
+bounds:1420,2,256,64

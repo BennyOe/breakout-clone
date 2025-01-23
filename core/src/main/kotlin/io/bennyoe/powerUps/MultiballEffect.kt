@@ -19,7 +19,7 @@ class MultiballEffect : PowerUpEffect {
         val ball = ballEntity[BallComponent.mapper]!!
         engine.entity {
             with<TransformComponent> {
-                position.set(ballTransform.position.x + 1, ballTransform.position.y + 1, 0f)
+                setInitialPosition(ballTransform.position.x + 1, ballTransform.position.y + 1, 0f)
                 size.set(32 * UNIT_SCALE, 32 * UNIT_SCALE)
             }
             with<GraphicComponent> {

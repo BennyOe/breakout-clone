@@ -40,7 +40,7 @@ class RenderSystem(
         }
 
         graphic.sprite.apply {
-            setBounds(transform.position.x, transform.position.y, transform.size.x, transform.size.y)
+            setBounds(transform.interpolatedPosition.x, transform.interpolatedPosition.y, transform.size.x, transform.size.y)
             draw(batch)
         }
     }

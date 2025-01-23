@@ -2,6 +2,7 @@ package io.bennyoe.screens
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.MathUtils.random
 import io.bennyoe.Main
@@ -26,11 +27,13 @@ import ktx.ashley.getSystem
 import ktx.ashley.with
 import ktx.graphics.use
 import ktx.log.logger
+import kotlin.math.min
 
 private val LOG = logger<GameScreen>()
+private const val  MAX_DELTA_TIME = 1 / 20f
 
 class GameScreen(game: Main) : Screen(game) {
-    private val playerTexture = Texture("images/bear-long-border.png")
+    private val playerAtlas by lazy { TextureAtlas("sprites/player.atlas") }
     private val background = Texture("images/bg2dark.jpg")
     private val ballsAtlas by lazy { TextureAtlas("sprites/balls.atlas") }
     private val bricksAtlas by lazy { TextureAtlas("sprites/bricks.atlas") }
@@ -64,29 +67,31 @@ class GameScreen(game: Main) : Screen(game) {
     }
 
     override fun render(delta: Float) {
+        (game.batch as SpriteBatch).renderCalls = 0
         batch.use(viewport.camera.combined) {
             it.draw(background, 0f, 0f, WORLD_WIDTH, WORLD_HEIGHT)
         }
-        engine.update(delta)
+        engine.update(min(MAX_DELTA_TIME, delta))
+        LOG.info { "Rendercalls: ${(game.batch as SpriteBatch).renderCalls}" }
     }
 
     override fun dispose() {
-        playerTexture.dispose()
         background.dispose()
         ballsAtlas.dispose()
         bricksAtlas.dispose()
         powerUpsAtlas.dispose()
+        playerAtlas.dispose()
     }
 
     private fun createPlayer(): Entity {
         return engine.entity {
             with<TransformComponent> {
-                position.set(1f, 1f, 0f)
+                setInitialPosition(1f, 1f, 0f)
                 size.set(128 * UNIT_SCALE, 32 * UNIT_SCALE)
             }
             with<GraphicComponent> {
                 sprite.run {
-                    setRegion(playerTexture)
+                    setRegion(playerAtlas.findRegion("bear"))
                     setOriginCenter()
                 }
             }
@@ -97,7 +102,7 @@ class GameScreen(game: Main) : Screen(game) {
     private fun createBall(): Entity {
         return engine.entity {
             with<TransformComponent> {
-                position.set(random(0, WORLD_WIDTH.toInt()).toFloat(), random(1, WORLD_HEIGHT.toInt()).toFloat(), 0f)
+                setInitialPosition(random(0, WORLD_WIDTH.toInt()).toFloat(), random(1, WORLD_HEIGHT.toInt()).toFloat(), 0f)
                 size.set(32 * UNIT_SCALE, 32 * UNIT_SCALE)
             }
             with<GraphicComponent> {

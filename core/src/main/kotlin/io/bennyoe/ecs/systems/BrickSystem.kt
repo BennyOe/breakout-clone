@@ -42,7 +42,7 @@ class BrickSystem(
                 if (Math.random() >= 0.5) {
                     engine.entity {
                         with<TransformComponent> {
-                            position.set(columnCount.toFloat() * 2, rowCount.toFloat(), 0f)
+                            setInitialPosition(columnCount.toFloat() * 2, rowCount.toFloat(), 0f)
                             size.set(2f, 1f)
                         }
                         with<BrickComponent>() {

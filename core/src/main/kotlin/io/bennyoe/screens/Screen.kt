@@ -7,7 +7,7 @@ import io.bennyoe.Main
 import ktx.app.KtxScreen
 
 abstract class Screen(
-    private val game: Main,
+    val game: Main,
     val viewport: Viewport = game.viewport,
     val batch: Batch = game.batch,
     val engine: Engine = game.engine
