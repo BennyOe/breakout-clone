@@ -34,7 +34,7 @@ class BrickSystem() : IteratingSystem(
     }
 
     fun initializeBricks(textureAtlas: TextureAtlas) {
-        for (rowCount in 13..WORLD_HEIGHT.toInt()) {
+        for (rowCount in 13..<WORLD_HEIGHT.toInt()) {
             for (columnCount in 0 until WORLD_WIDTH.toInt() / 2) {
                 if (Math.random() >= 0.5) {
                     engine.entity {
