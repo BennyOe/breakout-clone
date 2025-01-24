@@ -6,12 +6,17 @@ import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.viewport.Viewport
+import io.bennyoe.ecs.components.AnimationComponent
+import io.bennyoe.ecs.components.AnimationType
 import io.bennyoe.ecs.components.BallComponent
 import io.bennyoe.ecs.components.BrickComponent
 import io.bennyoe.ecs.components.ExplodingComponent
+import io.bennyoe.ecs.components.GraphicComponent
 import io.bennyoe.ecs.components.TransformComponent
 import ktx.ashley.allOf
+import ktx.ashley.entity
 import ktx.ashley.get
+import ktx.ashley.with
 import ktx.log.logger
 import kotlin.math.abs
 
@@ -84,6 +89,16 @@ class BrickCollisionSystem(
                 reverseY(ball)
             }
             if (ball.isExploding) {
+                engine.entity {
+                    with<TransformComponent> {
+                        size.set(20f, 20f)
+                        setInitialPosition(brickXMiddle - 10, brickYMiddle - 8, 0f)
+                    }
+                    with<AnimationComponent> {
+                        type = AnimationType.EXPLOSION
+                    }
+                    with<GraphicComponent>()
+                }
                 val explodingComponent = brickEntity[ExplodingComponent.mapper]!!
                 explodingComponent.isExploding = true
             }

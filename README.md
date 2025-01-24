@@ -46,7 +46,7 @@
 
 ### Graphics
 
-- [ ] Implement explosion animation
+- [x] Implement explosion animation
 - [ ] Implement powerup text animation
 
 ## Used resources

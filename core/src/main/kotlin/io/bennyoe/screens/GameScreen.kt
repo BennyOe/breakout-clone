@@ -14,6 +14,7 @@ import io.bennyoe.ecs.components.BrickComponent
 import io.bennyoe.ecs.components.GraphicComponent
 import io.bennyoe.ecs.components.PlayerComponent
 import io.bennyoe.ecs.components.TransformComponent
+import io.bennyoe.ecs.systems.AnimationSystem
 import io.bennyoe.ecs.systems.BrickCollisionSystem
 import io.bennyoe.ecs.systems.BrickSystem
 import io.bennyoe.ecs.systems.DebugSystem
@@ -30,7 +31,7 @@ import ktx.log.logger
 import kotlin.math.min
 
 private val LOG = logger<GameScreen>()
-private const val  MAX_DELTA_TIME = 1 / 20f
+private const val MAX_DELTA_TIME = 1 / 20f
 
 class GameScreen(game: Main) : Screen(game) {
     private val playerAtlas by lazy { TextureAtlas("sprites/player.atlas") }
@@ -38,6 +39,7 @@ class GameScreen(game: Main) : Screen(game) {
     private val ballsAtlas by lazy { TextureAtlas("sprites/balls.atlas") }
     private val bricksAtlas by lazy { TextureAtlas("sprites/bricks.atlas") }
     private val powerUpsAtlas by lazy { TextureAtlas("sprites/powerUps.atlas") }
+    private val explosionAtlas by lazy { TextureAtlas("animation/explosion.atlas") }
 
     override fun show() {
         val player = createPlayer()
@@ -52,18 +54,11 @@ class GameScreen(game: Main) : Screen(game) {
         val brickEntities = engine.getEntitiesFor(allOf(BrickComponent::class).get())
         val brickCollisionSystem = BrickCollisionSystem(viewport, brickEntities)
         engine.addSystem(brickCollisionSystem)
-
-        val explosionSystem = ExplosionSystem(brickEntities)
-        engine.addSystem(explosionSystem)
-
-        val powerUpSystem = PowerUpSystem(powerUpsAtlas)
-        engine.addSystem(powerUpSystem)
-
-        val powerUpCollisionSystem = PowerUpCollisionSystem(player, ball)
-        engine.addSystem(powerUpCollisionSystem)
-
-        val debugSystem = DebugSystem(powerUpsAtlas)
-        engine.addSystem(debugSystem)
+        engine.addSystem(ExplosionSystem(brickEntities))
+        engine.addSystem(AnimationSystem(explosionAtlas))
+        engine.addSystem(PowerUpSystem(powerUpsAtlas))
+        engine.addSystem(PowerUpCollisionSystem(player, ball))
+        engine.addSystem(DebugSystem(powerUpsAtlas))
     }
 
     override fun render(delta: Float) {
