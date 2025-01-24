@@ -1,7 +1,7 @@
 package io.bennyoe.ecs.systems
 
 import com.badlogic.ashley.core.Entity
-import com.badlogic.ashley.systems.IteratingSystem
+import com.badlogic.ashley.systems.SortedIteratingSystem
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.utils.viewport.Viewport
 import io.bennyoe.ecs.components.GraphicComponent
@@ -16,11 +16,12 @@ private val LOG = logger<RenderSystem>()
 class RenderSystem(
     private val batch: Batch,
     private val viewport: Viewport
-) : IteratingSystem(
+) : SortedIteratingSystem(
     allOf(TransformComponent::class, GraphicComponent::class).get(),
-
+    compareBy {entity -> entity[TransformComponent.mapper]}
 ) {
     override fun update(deltaTime: Float) {
+        forceSort()
         viewport.apply()
         batch.use(viewport.camera.combined) {
             super.update(deltaTime)

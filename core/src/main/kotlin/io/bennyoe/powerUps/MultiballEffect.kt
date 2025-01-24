@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import io.bennyoe.UNIT_SCALE
 import io.bennyoe.ecs.components.BallComponent
 import io.bennyoe.ecs.components.GraphicComponent
+import io.bennyoe.ecs.components.PowerUpTextComponent
+import io.bennyoe.ecs.components.PowerUpType
 import io.bennyoe.ecs.components.TransformComponent
 import ktx.ashley.entity
 import ktx.ashley.get
@@ -17,6 +19,13 @@ class MultiballEffect : PowerUpEffect {
     override fun apply(playerEntity: Entity, ballEntity: Entity, engine: Engine) {
         val ballTransform = ballEntity[TransformComponent.mapper]!!
         val ball = ballEntity[BallComponent.mapper]!!
+        engine.entity {
+            with<PowerUpTextComponent>{
+                powerUpType = PowerUpType.MULTIBALL
+            }
+            with<TransformComponent>()
+            with<GraphicComponent>()
+        }
         engine.entity {
             with<TransformComponent> {
                 setInitialPosition(ballTransform.position.x + 1, ballTransform.position.y + 1, 0f)

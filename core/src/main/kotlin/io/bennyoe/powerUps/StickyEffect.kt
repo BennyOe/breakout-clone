@@ -6,14 +6,26 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import io.bennyoe.ecs.components.GraphicComponent
 import io.bennyoe.ecs.components.PlayerComponent
+import io.bennyoe.ecs.components.PowerUpTextComponent
+import io.bennyoe.ecs.components.PowerUpType
+import io.bennyoe.ecs.components.TransformComponent
 import io.bennyoe.ecs.systems.ShapeRenderingSystem
 import io.bennyoe.ecs.systems.addEffectTimer
+import ktx.ashley.entity
 import ktx.ashley.get
+import ktx.ashley.with
 
 class StickyEffect : PowerUpEffect {
     private val playerAtlas by lazy { TextureAtlas("sprites/player.atlas") }
 
     override fun apply(playerEntity: Entity, ballEntity: Entity, engine: Engine) {
+        engine.entity {
+            with<PowerUpTextComponent>{
+                powerUpType = PowerUpType.STICKY_BALL
+            }
+            with<TransformComponent>()
+            with<GraphicComponent>()
+        }
         val player = playerEntity[PlayerComponent.mapper]!!
         player.isSticky = true
 

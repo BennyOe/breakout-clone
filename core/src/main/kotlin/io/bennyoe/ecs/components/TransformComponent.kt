@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.mapperFor
 
-class TransformComponent : Component, Pool.Poolable {
+class TransformComponent : Component, Pool.Poolable, Comparable<TransformComponent> {
     val position = Vector3(0f, 0f, 0f)
     val prevPosition = Vector3(0f, 0f, 0f)
     val interpolatedPosition = Vector3(0f, 0f, 0f)
@@ -25,6 +25,10 @@ class TransformComponent : Component, Pool.Poolable {
         interpolatedPosition.set(x, y, z)
     }
 
+    override fun compareTo(other: TransformComponent): Int {
+        val zDiff = other.position.z.compareTo(position.z)
+        return if (zDiff == 0) other.position.y.compareTo(position.y) else zDiff
+    }
     companion object {
         val mapper = mapperFor<TransformComponent>()
     }

@@ -7,11 +7,15 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import io.bennyoe.UNIT_SCALE
 import io.bennyoe.ecs.components.BallComponent
 import io.bennyoe.ecs.components.GraphicComponent
+import io.bennyoe.ecs.components.PowerUpTextComponent
+import io.bennyoe.ecs.components.PowerUpType
 import io.bennyoe.ecs.components.TransformComponent
 import io.bennyoe.ecs.systems.ShapeRenderingSystem
 import io.bennyoe.ecs.systems.addEffectTimer
 import io.bennyoe.utillity.Mapper.Companion.mapToRange
+import ktx.ashley.entity
 import ktx.ashley.get
+import ktx.ashley.with
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -19,6 +23,14 @@ class ChangeSizeEffect : PowerUpEffect {
     private val playerAtlas by lazy { TextureAtlas("sprites/player.atlas") }
 
     override fun apply(playerEntity: Entity, ballEntity: Entity, engine: Engine) {
+        engine.entity {
+            with<PowerUpTextComponent>{
+                powerUpType = PowerUpType.CHANGE_SIZE
+            }
+            with<TransformComponent>()
+            with<GraphicComponent>()
+        }
+
         val playerTransform = playerEntity[TransformComponent.mapper]!!
         playerTransform.size.x = minOf(playerTransform.size.x + 4, 10f)
 

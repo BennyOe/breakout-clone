@@ -22,6 +22,7 @@ import io.bennyoe.ecs.systems.ExplosionSystem
 import io.bennyoe.ecs.systems.PlayerCollisionSystem
 import io.bennyoe.ecs.systems.PowerUpCollisionSystem
 import io.bennyoe.ecs.systems.PowerUpSystem
+import io.bennyoe.ecs.systems.PowerUpTextSystem
 import ktx.ashley.allOf
 import ktx.ashley.entity
 import ktx.ashley.getSystem
@@ -57,6 +58,7 @@ class GameScreen(game: Main) : Screen(game) {
         engine.addSystem(ExplosionSystem(brickEntities))
         engine.addSystem(AnimationSystem(explosionAtlas))
         engine.addSystem(PowerUpSystem(powerUpsAtlas))
+        engine.addSystem(PowerUpTextSystem())
         engine.addSystem(PowerUpCollisionSystem(player, ball))
         engine.addSystem(DebugSystem(powerUpsAtlas))
     }
@@ -67,7 +69,7 @@ class GameScreen(game: Main) : Screen(game) {
             it.draw(background, 0f, 0f, WORLD_WIDTH, WORLD_HEIGHT)
         }
         engine.update(min(MAX_DELTA_TIME, delta))
-        LOG.info { "Rendercalls: ${(game.batch as SpriteBatch).renderCalls}" }
+//        LOG.info { "Rendercalls: ${(game.batch as SpriteBatch).renderCalls}" }
     }
 
     override fun dispose() {
