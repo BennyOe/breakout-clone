@@ -52,13 +52,13 @@ class SimpleCollisionSystem(val viewport: Viewport) : IteratingSystem(
                     otherTransform.size.y
                 )
                 if (Intersector.overlaps(ballRect, otherBallRect)) {
-                    if (transform.position.x > otherTransform.position.x) {
+                    if (transform.position.x + SAFETY_MARGIN > otherTransform.position.x) {
                         transform.position.x += SAFETY_MARGIN
                     } else {
                         transform.position.x -= SAFETY_MARGIN
                     }
 
-                    if (transform.position.y > otherTransform.position.y) {
+                    if (transform.position.y + SAFETY_MARGIN > otherTransform.position.y) {
                         transform.position.y += SAFETY_MARGIN
                     } else {
                         transform.position.y -= SAFETY_MARGIN
@@ -74,22 +74,22 @@ class SimpleCollisionSystem(val viewport: Viewport) : IteratingSystem(
     private fun checkScreenCollision(transform: TransformComponent, ball: BallComponent) {
         // left collision
         if (transform.position.x <= 0) {
-            transform.position.x = 0f
+            transform.position.x = 0f + SAFETY_MARGIN
             reverseX(ball)
         }
         // right collision
         if (transform.position.x >= viewport.worldWidth - transform.size.x) {
-            transform.position.x = viewport.worldWidth - transform.size.x
+            transform.position.x = viewport.worldWidth - transform.size.x + SAFETY_MARGIN
             reverseX(ball)
         }
         // top collision
-        if (transform.position.y >= viewport.worldHeight - transform.size.y) {
-            transform.position.y = viewport.worldHeight - transform.size.y
+        if (transform.position.y >= viewport.worldHeight - transform.size.y - SAFETY_MARGIN) {
+            transform.position.y = viewport.worldHeight - transform.size.y + SAFETY_MARGIN
             reverseY(ball)
         }
         // bottom collision
         if (transform.position.y <= 0) {
-            transform.position.y = 0f
+            transform.position.y = 0f + SAFETY_MARGIN
             reverseY(ball)
         }
     }
