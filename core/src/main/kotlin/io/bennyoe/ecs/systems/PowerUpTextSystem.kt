@@ -7,7 +7,6 @@ import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.ashley.core.Family
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.Interpolation
-import io.bennyoe.UNIT_SCALE
 import io.bennyoe.WORLD_HEIGHT
 import io.bennyoe.WORLD_WIDTH
 import io.bennyoe.ecs.components.GraphicComponent
@@ -27,6 +26,10 @@ class PowerUpTextSystem() : EntitySystem(), EntityListener {
     }
 
     override fun entityAdded(entity: Entity) {
+        // check if there is an text displayed and remove it before showing the new one
+        val entities = engine.getEntitiesFor(Family.all(PowerUpTextComponent::class.java).get())
+        entities.filter { it != entity }.forEach { engine.removeEntity(it) }
+
         val graphic = entity[GraphicComponent.mapper]!!
         val powerUp = entity[PowerUpTextComponent.mapper]!!
         val transform = entity[TransformComponent.mapper]!!
@@ -51,11 +54,11 @@ class PowerUpTextSystem() : EntitySystem(), EntityListener {
                 powerUp.animationTime += deltaTime
 
                 val progress = (powerUp.animationTime / powerUp.duration).coerceIn(0f, 1f)
-                val interpolatedSize = Interpolation.smooth.apply(1f, powerUp.maxSize, progress)
+                val interpolatedSize = Interpolation.fastSlow.apply(1f, powerUp.maxSize, progress)
 
                 transform.size.set(interpolatedSize, interpolatedSize)
-                val offsetX = (interpolatedSize * UNIT_SCALE - transform.size.x * UNIT_SCALE) / 2
-                val offsetY = (interpolatedSize * UNIT_SCALE - transform.size.y * UNIT_SCALE) / 2
+                val offsetX = (interpolatedSize - transform.size.x) / 2
+                val offsetY = (interpolatedSize - transform.size.y) / 2
 
                 transform.interpolatedPosition.set(
                     (WORLD_WIDTH / 2) - offsetX - 4,

@@ -24,7 +24,7 @@ class ChangeSizeEffect : PowerUpEffect {
 
     override fun apply(playerEntity: Entity, ballEntity: Entity, engine: Engine) {
         engine.entity {
-            with<PowerUpTextComponent>{
+            with<PowerUpTextComponent> {
                 powerUpType = PowerUpType.CHANGE_SIZE
             }
             with<TransformComponent>()
@@ -48,7 +48,8 @@ class ChangeSizeEffect : PowerUpEffect {
                 val ball = it[BallComponent.mapper]!!
                 ball.isSticky = false
 
-                val angle = mapToRange(ball.offsetXToPlayer, 0f, playerTransform.size.x, Math.toRadians(140.0).toFloat(), Math.toRadians(40.0).toFloat())
+                val angle =
+                    mapToRange(ball.offsetXToPlayer, 0f, playerTransform.size.x, Math.toRadians(140.0).toFloat(), Math.toRadians(40.0).toFloat())
                 ball.xSpeed = 6 * cos(angle) * 1.8f
                 ball.ySpeed = 6 * sin(angle) * 1.8f
                 ball.offsetXToPlayer = 0f

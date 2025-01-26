@@ -106,7 +106,7 @@ class MoveSystem : IteratingSystem(
         ball.xSpeed = 0f
         ball.ySpeed = 0f
 
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             ball.isSticky = false
 
             val angle = mapToRange(ball.offsetXToPlayer, 0f, playerTransform.size.x, Math.toRadians(140.0).toFloat(), Math.toRadians(40.0).toFloat())

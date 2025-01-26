@@ -3,6 +3,7 @@ package io.bennyoe.ecs.systems
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.viewport.Viewport
 import io.bennyoe.ecs.components.PlayerComponent
@@ -16,7 +17,8 @@ import kotlin.math.abs
 private val LOG = logger<PlayerInputSystem>()
 
 class PlayerInputSystem(
-    private val viewport: Viewport
+    private val viewport: Viewport,
+    private val isKeyboardControls: Boolean = true
 ) : IteratingSystem(
     allOf(PlayerComponent::class).get()
 ) {
@@ -30,30 +32,66 @@ class PlayerInputSystem(
         val player = entity[PlayerComponent.mapper]
         require(player != null) { "entity has no player entity" }
 
-        // Mausposition transformieren
-        val mouseX = Gdx.input.x.toFloat()
-        tmpVec.set(mouseX, 0f, 0f) // Nur X-Wert
-        viewport.unproject(tmpVec) // Transformiere in Weltkoordinaten
+        calculatePlayerBoundaries(transform)
 
-        // Pedal-Begrenzungen berechnen
-        pedalMaxPosition.set(Gdx.graphics.width.toFloat(), 0f, 0f) // Breite in Pixel
-        viewport.unproject(pedalMaxPosition) // Transformiere Begrenzung in Weltkoordinaten
-        pedalMaxPosition.x -= transform.size.x // Abziehen der Breite des Pedals
+        if (isKeyboardControls) {
+            // define keyboard controls
+            keyboardControl(player)
 
-        if (player.lastXMousePosition == null) {
+            if (player.lastXPosition == null) {
+                player.lastXPosition = tmpVec.x
+            }
+            val deltaX = transform.position.x - player.lastXPosition!!
+            player.lastXPosition = transform.position.x
+
+            transform.position.x = (transform.position.x + player.speed * deltaTime).coerceIn(0f, pedalMaxPosition.x)
+            transform.interpolatedPosition.x = transform.position.x
+            calculateAccelerationKeyboard(deltaX, deltaTime, player)
+        } else {
+            // define mouse controls
+            transformMousePosition()
+            if (player.lastXMousePosition == null) {
+                player.lastXMousePosition = tmpVec.x
+            }
+            val deltaX = tmpVec.x - player.lastXMousePosition!!
             player.lastXMousePosition = tmpVec.x
+
+            transform.position.x = calculatePlayerPosition(player, deltaX, transform)
+            transform.interpolatedPosition.x = transform.position.x
+            calculateAccelerationMouse(deltaX, deltaTime, player)
         }
+    }
 
-        val mouseDeltaX = tmpVec.x - player.lastXMousePosition!!
-        player.lastXMousePosition = tmpVec.x
+    private fun keyboardControl(player: PlayerComponent) {
+        when {
+            Gdx.input.isKeyPressed(Input.Keys.LEFT) -> {
+                val adjustment = if (player.isReversed) player.acceleration else -player.acceleration
+                player.speed = (player.speed + adjustment).coerceIn(-player.maxSpeed, player.maxSpeed)
+            }
+            Gdx.input.isKeyPressed(Input.Keys.RIGHT) -> {
+                val adjustment = if (player.isReversed) -player.acceleration else player.acceleration
+                player.speed = (player.speed + adjustment).coerceIn(-player.maxSpeed, player.maxSpeed)
+            }
+            else -> {
+                player.speed = when {
+                    player.speed > 0 -> (player.speed - player.deceleration).coerceAtLeast(0f)
+                    player.speed < 0 -> (player.speed + player.deceleration).coerceAtMost(0f)
+                    else -> 0f
+                }
+            }
+        }
+    }
 
-        // Spielerposition anpassen
-        // graphical representation
-        transform.interpolatedPosition.x = calculatePlayerPosition(player, mouseDeltaX, transform)
-        // collision representation
-        transform.position.x = calculatePlayerPosition(player, mouseDeltaX, transform)
+    private fun transformMousePosition() {
+        val mouseX = Gdx.input.x.toFloat()
+        tmpVec.set(mouseX, 0f, 0f)
+        viewport.unproject(tmpVec)
+    }
 
-        calculateAcceleration(mouseDeltaX, deltaTime, player)
+    private fun calculatePlayerBoundaries(transform: TransformComponent) {
+        pedalMaxPosition.set(Gdx.graphics.width.toFloat(), 0f, 0f)
+        viewport.unproject(pedalMaxPosition)
+        pedalMaxPosition.x -= transform.size.x
     }
 
     private fun calculatePlayerPosition(player: PlayerComponent, mouseDeltaX: Float, transform: TransformComponent): Float {
@@ -67,8 +105,13 @@ class PlayerInputSystem(
         }
     }
 
-    private fun calculateAcceleration(mouseDeltaX: Float, deltaTime: Float, player: PlayerComponent) {
-        val accDiff = abs(mouseDeltaX * deltaTime)
+    private fun calculateAccelerationMouse(deltaX: Float, deltaTime: Float, player: PlayerComponent) {
+        val accDiff = abs(deltaX * deltaTime)
         player.acceleration = mapToRange(accDiff, 0f, 0.1f, 1f, 12f)
+    }
+
+    private fun calculateAccelerationKeyboard(deltaX: Float, deltaTime: Float, player: PlayerComponent) {
+        val accDiff = abs(deltaX * deltaTime)
+        player.acceleration = mapToRange(accDiff, 0f, 0.1f, 1f, 20f)
     }
 }

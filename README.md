@@ -29,6 +29,7 @@
 - [ ] Implement Score
 - [ ] Implement Level System (map editor)
 - [ ] Implement keyboard controls
+- [ ] Implement hit-points and damage for bricks
 
 ### Sound
 
@@ -47,7 +48,7 @@
 ### Graphics
 
 - [x] Implement explosion animation
-- [ ] Implement powerup text animation
+- [x] Implement powerup text animation
 
 ## Used resources
 
