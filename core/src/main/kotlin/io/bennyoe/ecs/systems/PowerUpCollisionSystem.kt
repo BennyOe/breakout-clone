@@ -17,6 +17,7 @@ import io.bennyoe.powerUps.ShooterEffect
 import io.bennyoe.powerUps.StickyEffect
 import ktx.ashley.allOf
 import ktx.ashley.get
+import ktx.assets.async.AssetStorage
 import ktx.log.logger
 
 private val LOG = logger<PowerUpCollisionSystem>()
@@ -24,6 +25,7 @@ private val LOG = logger<PowerUpCollisionSystem>()
 class PowerUpCollisionSystem(
     val playerEntity: Entity,
     val ballEntity: Entity,
+    val assets: AssetStorage,
 ) : IteratingSystem(
     allOf(PowerUpComponent::class).get()
 ) {
@@ -54,7 +56,7 @@ class PowerUpCollisionSystem(
 //            PowerUpType.BONUS_HEART -> BonusHeartPowerUp()
             PowerUpType.CHANGE_SIZE -> ChangeSizeEffect()
             PowerUpType.STICKY_BALL -> StickyEffect()
-            PowerUpType.EXPLODING_BALL -> ExplodingEffect()
+            PowerUpType.EXPLODING_BALL -> ExplodingEffect(assets)
             PowerUpType.REVERSE_CONTROL -> ReverseControlsEffect()
             else -> ChangeSizeEffect()
         }

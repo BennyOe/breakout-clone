@@ -1,14 +1,15 @@
 package io.bennyoe.screens
 
 import com.badlogic.ashley.core.Entity
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.MathUtils.random
 import io.bennyoe.Main
 import io.bennyoe.UNIT_SCALE
 import io.bennyoe.WORLD_HEIGHT
 import io.bennyoe.WORLD_WIDTH
+import io.bennyoe.assets.AnimationAsset
+import io.bennyoe.assets.TextureAsset
+import io.bennyoe.assets.TextureAtlasAsset
 import io.bennyoe.ecs.components.BallComponent
 import io.bennyoe.ecs.components.BrickComponent
 import io.bennyoe.ecs.components.GraphicComponent
@@ -27,6 +28,7 @@ import ktx.ashley.allOf
 import ktx.ashley.entity
 import ktx.ashley.getSystem
 import ktx.ashley.with
+import ktx.assets.async.AssetStorage
 import ktx.graphics.use
 import ktx.log.logger
 import kotlin.math.min
@@ -34,13 +36,13 @@ import kotlin.math.min
 private val LOG = logger<GameScreen>()
 private const val MAX_DELTA_TIME = 1 / 20f
 
-class GameScreen(game: Main) : Screen(game) {
-    private val playerAtlas by lazy { TextureAtlas("sprites/player.atlas") }
-    private val background = Texture("images/bg2dark.jpg")
-    private val ballsAtlas by lazy { TextureAtlas("sprites/balls.atlas") }
-    private val bricksAtlas by lazy { TextureAtlas("sprites/bricks.atlas") }
-    private val powerUpsAtlas by lazy { TextureAtlas("sprites/powerUps.atlas") }
-    private val explosionAtlas by lazy { TextureAtlas("animation/explosion.atlas") }
+class GameScreen(game: Main, val assets: AssetStorage) : Screen(game) {
+    private val playerAtlas by lazy { assets[TextureAtlasAsset.PLAYER.descriptor] }
+    private val background = assets[TextureAsset.BACKGROUND.descriptor]
+    private val ballsAtlas by lazy { assets[TextureAtlasAsset.BALLS.descriptor] }
+    private val bricksAtlas by lazy { assets[TextureAtlasAsset.BRIKCS.descriptor] }
+    private val powerUpsAtlas by lazy { assets[TextureAtlasAsset.POWERUPS.descriptor] }
+    private val explosionAtlas by lazy { assets[AnimationAsset.EXPLOSION.descriptor] }
 
     override fun show() {
         val player = createPlayer()
@@ -59,7 +61,7 @@ class GameScreen(game: Main) : Screen(game) {
         engine.addSystem(AnimationSystem(explosionAtlas))
         engine.addSystem(PowerUpSystem(powerUpsAtlas))
         engine.addSystem(PowerUpTextSystem())
-        engine.addSystem(PowerUpCollisionSystem(player, ball))
+        engine.addSystem(PowerUpCollisionSystem(player, ball, assets))
         engine.addSystem(DebugSystem(powerUpsAtlas))
     }
 
@@ -73,11 +75,7 @@ class GameScreen(game: Main) : Screen(game) {
     }
 
     override fun dispose() {
-        background.dispose()
-        ballsAtlas.dispose()
-        bricksAtlas.dispose()
-        powerUpsAtlas.dispose()
-        playerAtlas.dispose()
+        assets.dispose()
     }
 
     private fun createPlayer(): Entity {

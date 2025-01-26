@@ -28,7 +28,7 @@
 - [ ] Implement Hearts
 - [ ] Implement Score
 - [ ] Implement Level System (map editor)
-- [ ] Implement keyboard controls
+- [x] Implement keyboard controls
 - [ ] Implement hit-points and damage for bricks
 
 ### Sound
@@ -38,10 +38,12 @@
     - [ ] Implement ball hit wall sound
     - [ ] Implement ball hit brick sound
     - [ ] Implement powerup sound
+    - [ ] Implement powerup falling sound
     - [ ] Implement game over sound
     - [ ] Implement game win sound
     - [ ] Implement shooter paddle sound
     - [ ] Implement sticky paddle sound
+    - [ ] Implement remove sticky paddle sound
     - [ ] Implement explosion sound
 - [ ] Implement background music
 

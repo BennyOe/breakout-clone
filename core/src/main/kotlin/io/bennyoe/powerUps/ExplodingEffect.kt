@@ -3,7 +3,7 @@ package io.bennyoe.powerUps
 import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import io.bennyoe.assets.TextureAtlasAsset
 import io.bennyoe.ecs.components.BallComponent
 import io.bennyoe.ecs.components.GraphicComponent
 import io.bennyoe.ecs.components.PowerUpTextComponent
@@ -14,9 +14,10 @@ import io.bennyoe.ecs.systems.addEffectTimer
 import ktx.ashley.entity
 import ktx.ashley.get
 import ktx.ashley.with
+import ktx.assets.async.AssetStorage
 
-class ExplodingEffect : PowerUpEffect {
-    private val playerAtlas by lazy { TextureAtlas("sprites/player.atlas") }
+class ExplodingEffect(assets: AssetStorage) : PowerUpEffect {
+    private val playerAtlas by lazy {assets[TextureAtlasAsset.PLAYER.descriptor]}
 
     override fun apply(playerEntity: Entity, ballEntity: Entity, engine: Engine) {
         engine.entity {

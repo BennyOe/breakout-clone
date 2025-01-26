@@ -32,6 +32,7 @@ class PowerUpSystem(
                     with<TransformComponent> {
                         position.x = (transform.position.x + transform.size.x / 2) - (16 * UNIT_SCALE)
                         position.y = (transform.position.y + transform.size.y / 2) - (16 * UNIT_SCALE)
+                        position.z = -2f
                         LOG.info { "Power-Up created at position: ${position.x}, ${position.y}" }
                     }
                     with<PowerUpComponent> {

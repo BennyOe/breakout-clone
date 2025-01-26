@@ -14,9 +14,10 @@ import io.bennyoe.ecs.systems.RenderSystem
 import io.bennyoe.ecs.systems.ShooterCollisionSystem
 import io.bennyoe.ecs.systems.SimpleCollisionSystem
 import io.bennyoe.ecs.systems.TimerSystem
-import io.bennyoe.screens.GameScreen
+import io.bennyoe.screens.LoadingScreen
 import ktx.app.KtxGame
 import ktx.app.KtxScreen
+import ktx.assets.async.AssetStorage
 import ktx.async.KtxAsync
 
 const val UNIT_SCALE = 1 / 32f
@@ -26,6 +27,10 @@ const val WORLD_HEIGHT = 27f
 class Main : KtxGame<KtxScreen>() {
     val viewport by lazy { FitViewport(WORLD_WIDTH, WORLD_HEIGHT) }
     val batch: Batch by lazy { SpriteBatch() }
+    val assets: AssetStorage by lazy {
+        KtxAsync.initiate()
+        AssetStorage()
+    }
     val engine: Engine by lazy {
         PooledEngine().apply {
             addSystem(PlayerInputSystem(viewport))
@@ -41,8 +46,8 @@ class Main : KtxGame<KtxScreen>() {
     override fun create() {
         Gdx.app.logLevel = LOG_DEBUG
         KtxAsync.initiate()
-        addScreen(GameScreen(this))
-        setScreen<GameScreen>()
+        addScreen(LoadingScreen(this, assets))
+        setScreen<LoadingScreen>()
     }
 }
 
