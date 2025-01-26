@@ -8,6 +8,7 @@ import io.bennyoe.UNIT_SCALE
 import io.bennyoe.WORLD_HEIGHT
 import io.bennyoe.WORLD_WIDTH
 import io.bennyoe.assets.AnimationAsset
+import io.bennyoe.assets.MusicAsset
 import io.bennyoe.assets.TextureAsset
 import io.bennyoe.assets.TextureAtlasAsset
 import io.bennyoe.ecs.components.BallComponent
@@ -51,15 +52,18 @@ class GameScreen(game: Main, val assets: AssetStorage) : Screen(game) {
         val brickSystem = engine.getSystem<BrickSystem>()
         brickSystem.initializeBricks(bricksAtlas)
 
-        val playerCollisionSystem = PlayerCollisionSystem(player)
+        val playerCollisionSystem = PlayerCollisionSystem(player, audioService)
         engine.addSystem(playerCollisionSystem)
 
         val brickEntities = engine.getEntitiesFor(allOf(BrickComponent::class).get())
-        val brickCollisionSystem = BrickCollisionSystem(viewport, brickEntities)
+        val brickCollisionSystem = BrickCollisionSystem(viewport, brickEntities, audioService)
+
+        audioService.play(MusicAsset.BG_MUSIC, 0.2f)
+
         engine.addSystem(brickCollisionSystem)
         engine.addSystem(ExplosionSystem(brickEntities))
         engine.addSystem(AnimationSystem(explosionAtlas))
-        engine.addSystem(PowerUpSystem(powerUpsAtlas))
+        engine.addSystem(PowerUpSystem(powerUpsAtlas, audioService))
         engine.addSystem(PowerUpTextSystem())
         engine.addSystem(PowerUpCollisionSystem(player, ball, assets))
         engine.addSystem(DebugSystem(powerUpsAtlas))
@@ -71,6 +75,7 @@ class GameScreen(game: Main, val assets: AssetStorage) : Screen(game) {
             it.draw(background, 0f, 0f, WORLD_WIDTH, WORLD_HEIGHT)
         }
         engine.update(min(MAX_DELTA_TIME, delta))
+        audioService.update()
 //        LOG.info { "Rendercalls: ${(game.batch as SpriteBatch).renderCalls}" }
     }
 

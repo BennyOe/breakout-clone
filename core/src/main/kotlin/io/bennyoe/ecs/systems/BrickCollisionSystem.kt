@@ -6,6 +6,8 @@ import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.viewport.Viewport
+import io.bennyoe.assets.SoundAsset
+import io.bennyoe.audio.AudioService
 import io.bennyoe.ecs.components.AnimationComponent
 import io.bennyoe.ecs.components.AnimationType
 import io.bennyoe.ecs.components.BallComponent
@@ -25,7 +27,8 @@ private val LOG = logger<BrickCollisionSystem>()
 
 class BrickCollisionSystem(
     private val viewport: Viewport,
-    private val brickEntities: ImmutableArray<Entity>
+    private val brickEntities: ImmutableArray<Entity>,
+    private val audioService: AudioService
 ) : IteratingSystem(
     allOf(BallComponent::class, TransformComponent::class).get()
 ) {
@@ -51,7 +54,7 @@ class BrickCollisionSystem(
         val brick = brickEntity[BrickComponent.mapper]!!
 
         if (checkCollision(brickTransform, transform, ball, deltaTime)) {
-
+            audioService.play(SoundAsset.BRICK_HIT)
             val ballYMiddle = transform.position.y + (transform.size.y / 2)
             val ballXMiddle = transform.position.x + (transform.size.x / 2)
 

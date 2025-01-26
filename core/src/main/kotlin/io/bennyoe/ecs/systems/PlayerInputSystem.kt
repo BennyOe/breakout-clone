@@ -41,7 +41,7 @@ class PlayerInputSystem(
             if (player.lastXPosition == null) {
                 player.lastXPosition = tmpVec.x
             }
-            val deltaX = transform.position.x - player.lastXPosition!!
+            val deltaX = abs(transform.position.x - player.lastXPosition!!) * 1.4f
             player.lastXPosition = transform.position.x
 
             transform.position.x = (transform.position.x + player.speed * deltaTime).coerceIn(0f, pedalMaxPosition.x)

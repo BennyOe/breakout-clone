@@ -4,6 +4,8 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Rectangle
+import io.bennyoe.assets.SoundAsset
+import io.bennyoe.audio.AudioService
 import io.bennyoe.ecs.components.BallComponent
 import io.bennyoe.ecs.components.PlayerComponent
 import io.bennyoe.ecs.components.TransformComponent
@@ -19,7 +21,8 @@ private const val SLOW_DOWN_FACTOR = 0.15f
 private val LOG = logger<PlayerCollisionSystem>()
 
 class PlayerCollisionSystem(
-    playerEntity: Entity
+    playerEntity: Entity,
+    val audioService: AudioService
 ) : IteratingSystem(
     allOf(BallComponent::class, TransformComponent::class).get()
 ) {
@@ -37,6 +40,7 @@ class PlayerCollisionSystem(
             if (playerComponent.isSticky) {
                 ball.isSticky = true
             } else {
+                audioService.play(SoundAsset.BEAR_HIT)
                 ballBounceOffPlayer(transform, ball)
             }
         }

@@ -6,6 +6,8 @@ import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.viewport.Viewport
+import io.bennyoe.assets.SoundAsset
+import io.bennyoe.audio.AudioService
 import io.bennyoe.ecs.components.BallComponent
 import io.bennyoe.ecs.components.GraphicComponent
 import io.bennyoe.ecs.components.TransformComponent
@@ -14,7 +16,10 @@ import ktx.ashley.get
 
 private const val SAFETY_MARGIN = 0.01f
 
-class SimpleCollisionSystem(val viewport: Viewport) : IteratingSystem(
+class SimpleCollisionSystem(
+    val viewport: Viewport,
+    private val audioService: AudioService
+) : IteratingSystem(
     allOf(BallComponent::class, TransformComponent::class, GraphicComponent::class).get()
 ) {
     override fun processEntity(entity: Entity, deltaTime: Float) {
@@ -76,21 +81,25 @@ class SimpleCollisionSystem(val viewport: Viewport) : IteratingSystem(
         if (transform.position.x <= 0) {
             transform.position.x = 0f + SAFETY_MARGIN
             reverseX(ball)
+            audioService.play(SoundAsset.WALL_HIT)
         }
         // right collision
         if (transform.position.x >= viewport.worldWidth - transform.size.x) {
             transform.position.x = viewport.worldWidth - transform.size.x + SAFETY_MARGIN
             reverseX(ball)
+            audioService.play(SoundAsset.WALL_HIT)
         }
         // top collision
         if (transform.position.y >= viewport.worldHeight - transform.size.y - SAFETY_MARGIN) {
             transform.position.y = viewport.worldHeight - transform.size.y + SAFETY_MARGIN
             reverseY(ball)
+            audioService.play(SoundAsset.WALL_HIT)
         }
         // bottom collision
         if (transform.position.y <= 0) {
             transform.position.y = 0f + SAFETY_MARGIN
             reverseY(ball)
+            audioService.play(SoundAsset.WALL_HIT)
         }
     }
 

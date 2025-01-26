@@ -2,6 +2,8 @@ package io.bennyoe.screens
 
 import io.bennyoe.Main
 import io.bennyoe.assets.AnimationAsset
+import io.bennyoe.assets.MusicAsset
+import io.bennyoe.assets.SoundAsset
 import io.bennyoe.assets.TextureAsset
 import io.bennyoe.assets.TextureAtlasAsset
 import kotlinx.coroutines.joinAll
@@ -21,7 +23,9 @@ class LoadingScreen(game: Main, val assets: AssetStorage = game.assets) : Screen
         val assetRefs = gdxArrayOf(
             AnimationAsset.entries.map { assets.loadAsync(it.descriptor) },
             TextureAsset.entries.map { assets.loadAsync(it.descriptor) },
-            TextureAtlasAsset.entries.map { assets.loadAsync(it.descriptor) }
+            TextureAtlasAsset.entries.map { assets.loadAsync(it.descriptor) },
+            SoundAsset.entries.map { assets.loadAsync(it.descriptor) },
+            MusicAsset.entries.map { assets.loadAsync(it.descriptor) },
         ).flatten()
         KtxAsync.launch {
             assetRefs.joinAll()

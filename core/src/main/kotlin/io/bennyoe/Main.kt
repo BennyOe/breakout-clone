@@ -7,6 +7,8 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.viewport.FitViewport
+import io.bennyoe.audio.AudioService
+import io.bennyoe.audio.DefaultAudioService
 import io.bennyoe.ecs.systems.BrickSystem
 import io.bennyoe.ecs.systems.MoveSystem
 import io.bennyoe.ecs.systems.PlayerInputSystem
@@ -28,14 +30,14 @@ class Main : KtxGame<KtxScreen>() {
     val viewport by lazy { FitViewport(WORLD_WIDTH, WORLD_HEIGHT) }
     val batch: Batch by lazy { SpriteBatch() }
     val assets: AssetStorage by lazy {
-        KtxAsync.initiate()
         AssetStorage()
     }
+    val audioService: AudioService by lazy { DefaultAudioService(assets) }
     val engine: Engine by lazy {
         PooledEngine().apply {
             addSystem(PlayerInputSystem(viewport))
             addSystem(BrickSystem())
-            addSystem(SimpleCollisionSystem(viewport))
+            addSystem(SimpleCollisionSystem(viewport, audioService))
             addSystem(MoveSystem())
             addSystem(RenderSystem(batch, viewport))
             addSystem(TimerSystem())
