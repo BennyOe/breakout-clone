@@ -2,7 +2,6 @@ package io.bennyoe.audio
 
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
-import com.badlogic.gdx.utils.Pool
 import io.bennyoe.assets.MusicAsset
 import io.bennyoe.assets.SoundAsset
 import kotlinx.coroutines.launch
@@ -12,35 +11,12 @@ import ktx.log.logger
 import java.util.EnumMap
 import kotlin.math.max
 
-const val MAX_SOUND_INSTANCES = 16
-private val LOG = logger<AudioService>()
-
-interface AudioService {
-    fun play(soundAsset: SoundAsset, volume: Float = 1f) = Unit
-    fun play(musicAsset: MusicAsset, volume: Float = 1f, loop: Boolean = true) = Unit
-    fun pause()
-    fun resume()
-    fun stop(clearSounds: Boolean = true)
-    fun update()
-}
-
-private class Soundrequest : Pool.Poolable {
-    lateinit var soundAsset: SoundAsset
-    var volume = 1f
-
-    override fun reset() {
-        volume = 1f
-    }
-}
-
-private class SoundRequestPool : Pool<Soundrequest>() {
-    override fun newObject(): Soundrequest = Soundrequest()
-}
+private val LOG = logger<DefaultAudioService>()
 
 class DefaultAudioService(val assets: AssetStorage) : AudioService {
     private val soundCache = EnumMap<SoundAsset, Sound>(SoundAsset::class.java)
     private val soundRequestPool = SoundRequestPool()
-    private val soundRequests = EnumMap<SoundAsset, Soundrequest>(SoundAsset::class.java)
+    private val soundRequests = EnumMap<SoundAsset, SoundRequest>(SoundAsset::class.java)
     private var currentMusic: Music? = null
     private var currentMusicAsset = MusicAsset.BG_MUSIC
 

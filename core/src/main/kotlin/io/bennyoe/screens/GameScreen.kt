@@ -58,7 +58,7 @@ class GameScreen(game: Main, val assets: AssetStorage) : Screen(game) {
         val brickEntities = engine.getEntitiesFor(allOf(BrickComponent::class).get())
         val brickCollisionSystem = BrickCollisionSystem(viewport, brickEntities, audioService)
 
-        audioService.play(MusicAsset.BG_MUSIC, 0.2f)
+        audioService.play(MusicAsset.BG_MUSIC, 0.8f)
 
         engine.addSystem(brickCollisionSystem)
         engine.addSystem(ExplosionSystem(brickEntities))

@@ -34,17 +34,17 @@
 ### Sound
 
 - [ ] Implement sound effects
-    - [ ] Implement ball hit player sound
-    - [ ] Implement ball hit wall sound
-    - [ ] Implement ball hit brick sound
+    - [x] Implement ball hit player sound
+    - [x] Implement ball hit wall sound
+    - [x] Implement ball hit brick sound
     - [ ] Implement powerup sound
-    - [ ] Implement powerup falling sound
-    - [ ] Implement game over sound
-    - [ ] Implement game win sound
-    - [ ] Implement shooter paddle sound
-    - [ ] Implement sticky paddle sound
-    - [ ] Implement remove sticky paddle sound
-    - [ ] Implement explosion sound
+    - [x] Implement powerup falling sound
+    - [c] Implement game over sound
+    - [c] Implement game win sound
+    - [c] Implement shooter paddle sound
+    - [c] Implement sticky paddle sound
+    - [c] Implement remove sticky paddle sound
+    - [c] Implement explosion sound
 - [ ] Implement background music
 
 ### Graphics
