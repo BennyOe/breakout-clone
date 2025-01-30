@@ -4,6 +4,8 @@ import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import io.bennyoe.UNIT_SCALE
+import io.bennyoe.assets.SoundAsset
+import io.bennyoe.audio.AudioService
 import io.bennyoe.ecs.components.BallComponent
 import io.bennyoe.ecs.components.GraphicComponent
 import io.bennyoe.ecs.components.PowerUpTextComponent
@@ -13,14 +15,17 @@ import ktx.ashley.entity
 import ktx.ashley.get
 import ktx.ashley.with
 
-class MultiballEffect : PowerUpEffect {
+class MultiballEffect(private val audioService: AudioService) : PowerUpEffect {
     private val ballsAtlas = TextureAtlas("sprites/balls.atlas")
 
     override fun apply(playerEntity: Entity, ballEntity: Entity, engine: Engine) {
         val ballTransform = ballEntity[TransformComponent.mapper]!!
         val ball = ballEntity[BallComponent.mapper]!!
+
+        audioService.play(SoundAsset.PU_MULTIBALL)
+
         engine.entity {
-            with<PowerUpTextComponent>{
+            with<PowerUpTextComponent> {
                 powerUpType = PowerUpType.MULTIBALL
             }
             with<TransformComponent>()

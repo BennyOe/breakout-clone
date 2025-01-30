@@ -3,12 +3,14 @@ package io.bennyoe.ecs.systems
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.Rectangle
+import io.bennyoe.audio.AudioService
 import io.bennyoe.ecs.components.PowerUpComponent
 import io.bennyoe.ecs.components.PowerUpType
 import io.bennyoe.ecs.components.TransformComponent
 import io.bennyoe.powerUps.BallSpeedUpEffect
 import io.bennyoe.powerUps.ChangeSizeEffect
 import io.bennyoe.powerUps.ExplodingEffect
+import io.bennyoe.powerUps.ExtraLiveEffect
 import io.bennyoe.powerUps.MultiballEffect
 import io.bennyoe.powerUps.PenetrationEffect
 import io.bennyoe.powerUps.PowerUpEffect
@@ -26,6 +28,7 @@ class PowerUpCollisionSystem(
     val playerEntity: Entity,
     val ballEntity: Entity,
     val assets: AssetStorage,
+    val audioService: AudioService
 ) : IteratingSystem(
     allOf(PowerUpComponent::class).get()
 ) {
@@ -49,13 +52,13 @@ class PowerUpCollisionSystem(
 
    private fun getPowerUpEffect(type: PowerUpType): PowerUpEffect {
         return when (type) {
-            PowerUpType.SHOOTER -> ShooterEffect()
+            PowerUpType.SHOOTER -> ShooterEffect(audioService)
             PowerUpType.PENETRATION -> PenetrationEffect()
             PowerUpType.FAST_BALL -> BallSpeedUpEffect()
-            PowerUpType.MULTIBALL -> MultiballEffect()
-//            PowerUpType.BONUS_HEART -> BonusHeartPowerUp()
+            PowerUpType.MULTIBALL -> MultiballEffect(audioService)
+            PowerUpType.BONUS_HEART -> ExtraLiveEffect()
             PowerUpType.CHANGE_SIZE -> ChangeSizeEffect()
-            PowerUpType.STICKY_BALL -> StickyEffect()
+            PowerUpType.STICKY_BALL -> StickyEffect(audioService)
             PowerUpType.EXPLODING_BALL -> ExplodingEffect(assets)
             PowerUpType.REVERSE_CONTROL -> ReverseControlsEffect()
             else -> ChangeSizeEffect()

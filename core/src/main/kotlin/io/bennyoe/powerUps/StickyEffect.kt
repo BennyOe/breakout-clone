@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import io.bennyoe.audio.AudioService
 import io.bennyoe.ecs.components.GraphicComponent
 import io.bennyoe.ecs.components.PlayerComponent
 import io.bennyoe.ecs.components.PowerUpTextComponent
@@ -15,7 +16,7 @@ import ktx.ashley.entity
 import ktx.ashley.get
 import ktx.ashley.with
 
-class StickyEffect : PowerUpEffect {
+class StickyEffect(private val audioService: AudioService) : PowerUpEffect {
     private val playerAtlas by lazy { TextureAtlas("sprites/player.atlas") }
 
     override fun apply(playerEntity: Entity, ballEntity: Entity, engine: Engine) {

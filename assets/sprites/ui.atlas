@@ -1,0 +1,11 @@
+ui.png
+size:512,1024
+repeat:none
+bearout
+bounds:2,68,287,293
+heart
+bounds:291,297,64,64
+heart_empty
+bounds:2,2,64,64
+myFont
+bounds:2,363,490,547

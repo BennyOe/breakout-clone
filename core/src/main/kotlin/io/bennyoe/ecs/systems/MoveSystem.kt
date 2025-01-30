@@ -14,6 +14,8 @@ import ktx.ashley.get
 import ktx.ashley.oneOf
 import ktx.log.logger
 import com.badlogic.gdx.math.MathUtils.random
+import io.bennyoe.assets.SoundAsset
+import io.bennyoe.audio.AudioService
 import io.bennyoe.ecs.components.BulletComponent
 import io.bennyoe.ecs.components.PlayerComponent
 import io.bennyoe.utillity.Mapper.Companion.mapToRange
@@ -23,7 +25,7 @@ import kotlin.math.sin
 private val LOG = logger<BallComponent>()
 private const val UPDATE_RATE = 1 / 80f
 
-class MoveSystem : IteratingSystem(
+class MoveSystem(private val audioService: AudioService) : IteratingSystem(
     allOf(
         GraphicComponent::class,
         TransformComponent::class
@@ -116,6 +118,7 @@ class MoveSystem : IteratingSystem(
 
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             ball.isSticky = false
+            audioService.play(SoundAsset.STICKY_RELEASE)
 
             val angle = mapToRange(ball.offsetXToPlayer, 0f, playerTransform.size.x, Math.toRadians(140.0).toFloat(), Math.toRadians(40.0).toFloat())
             ball.xSpeed = 6 * cos(angle) * 1.8f

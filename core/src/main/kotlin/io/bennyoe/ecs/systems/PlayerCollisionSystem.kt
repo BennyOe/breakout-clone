@@ -39,6 +39,7 @@ class PlayerCollisionSystem(
         if (intersectsPedal(transform)) {
             if (playerComponent.isSticky) {
                 ball.isSticky = true
+                audioService.play(SoundAsset.STICKY2)
             } else {
                 audioService.play(SoundAsset.BEAR_HIT)
                 ballBounceOffPlayer(transform, ball)

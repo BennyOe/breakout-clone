@@ -9,6 +9,7 @@ import io.bennyoe.WORLD_HEIGHT
 import io.bennyoe.WORLD_WIDTH
 import io.bennyoe.assets.AnimationAsset
 import io.bennyoe.assets.MusicAsset
+import io.bennyoe.assets.SoundAsset
 import io.bennyoe.assets.TextureAsset
 import io.bennyoe.assets.TextureAtlasAsset
 import io.bennyoe.ecs.components.BallComponent
@@ -21,6 +22,7 @@ import io.bennyoe.ecs.systems.BrickCollisionSystem
 import io.bennyoe.ecs.systems.BrickSystem
 import io.bennyoe.ecs.systems.DebugSystem
 import io.bennyoe.ecs.systems.ExplosionSystem
+import io.bennyoe.ecs.systems.GameStateSystem
 import io.bennyoe.ecs.systems.PlayerCollisionSystem
 import io.bennyoe.ecs.systems.PowerUpCollisionSystem
 import io.bennyoe.ecs.systems.PowerUpSystem
@@ -58,15 +60,17 @@ class GameScreen(game: Main, val assets: AssetStorage) : Screen(game) {
         val brickEntities = engine.getEntitiesFor(allOf(BrickComponent::class).get())
         val brickCollisionSystem = BrickCollisionSystem(viewport, brickEntities, audioService)
 
-        audioService.play(MusicAsset.BG_MUSIC, 0.8f)
+        audioService.play(MusicAsset.BG_MUSIC, 0.25f)
+        audioService.play(SoundAsset.GAME_WIN)
 
         engine.addSystem(brickCollisionSystem)
-        engine.addSystem(ExplosionSystem(brickEntities))
+        engine.addSystem(ExplosionSystem(brickEntities, audioService))
         engine.addSystem(AnimationSystem(explosionAtlas))
         engine.addSystem(PowerUpSystem(powerUpsAtlas, audioService))
         engine.addSystem(PowerUpTextSystem())
-        engine.addSystem(PowerUpCollisionSystem(player, ball, assets))
+        engine.addSystem(PowerUpCollisionSystem(player, ball, assets, audioService))
         engine.addSystem(DebugSystem(powerUpsAtlas))
+        engine.addSystem(GameStateSystem(audioService))
     }
 
     override fun render(delta: Float) {

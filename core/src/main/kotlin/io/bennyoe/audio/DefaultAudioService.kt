@@ -4,11 +4,9 @@ import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
 import io.bennyoe.assets.MusicAsset
 import io.bennyoe.assets.SoundAsset
-import kotlinx.coroutines.launch
 import ktx.assets.async.AssetStorage
-import ktx.async.KtxAsync
 import ktx.log.logger
-import java.util.EnumMap
+import java.util.*
 import kotlin.math.max
 
 private val LOG = logger<DefaultAudioService>()
@@ -59,20 +57,19 @@ class DefaultAudioService(val assets: AssetStorage) : AudioService {
     override fun play(musicAsset: MusicAsset, volume: Float, loop: Boolean) {
         if (currentMusic != null) {
             currentMusic?.stop()
-            KtxAsync.launch {
-                assets.unload(currentMusicAsset.descriptor)
-            }
         }
-        val musicDeffered = assets.loadAsync(MusicAsset.BG_MUSIC.descriptor)
-        KtxAsync.launch {
-            if (assets.isLoaded(musicAsset.descriptor)) {
-                currentMusicAsset = musicAsset
-                currentMusic = assets[musicAsset.descriptor].apply {
-                    this.volume = volume
-                    this.isLooping = loop
-                    play()
-                }
-            }
+
+        if (musicAsset.descriptor !in assets) {
+            LOG.error { "Music $musicAsset is not loaded" }
+            return
+        }
+
+        currentMusic = assets[musicAsset.descriptor]
+
+        currentMusic?.apply {
+            this.volume = volume
+            this.isLooping = loop
+            play()
         }
     }
 

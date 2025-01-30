@@ -41,11 +41,11 @@
     - [x] Implement powerup falling sound
     - [c] Implement game over sound
     - [c] Implement game win sound
-    - [c] Implement shooter paddle sound
-    - [c] Implement sticky paddle sound
-    - [c] Implement remove sticky paddle sound
-    - [c] Implement explosion sound
-- [ ] Implement background music
+    - [x] Implement shooter paddle sound
+    - [x] Implement sticky paddle sound
+    - [x] Implement remove sticky paddle sound
+    - [x] Implement explosion sound
+- [x] Implement background music
 
 ### Graphics
 
