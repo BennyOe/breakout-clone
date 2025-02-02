@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Pool
 import ktx.ashley.mapperFor
 
 class PowerUpTextComponent() : Pool.Poolable, Component {
-    var powerUpType: PowerUpType = PowerUpType.SHOOTER
+    var powerUpType: PowerUpType = PowerUpType.EXPLODING_BALL
     var animationTime: Float = 0f
     var maxSize: Float = 9f
     var duration: Float = 1.7f
@@ -15,7 +15,7 @@ class PowerUpTextComponent() : Pool.Poolable, Component {
     }
 
     override fun reset() {
-        powerUpType = PowerUpType.SHOOTER
+        powerUpType = PowerUpType.EXPLODING_BALL
         animationTime = 0f
         maxSize = 9f
         duration = 1.7f

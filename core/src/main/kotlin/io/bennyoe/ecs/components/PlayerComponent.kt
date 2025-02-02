@@ -2,6 +2,7 @@ package io.bennyoe.ecs.components
 
 import com.badlogic.ashley.core.Component
 import com.badlogic.gdx.utils.Pool
+import io.bennyoe.powerUps.PowerUpEffect
 import ktx.ashley.mapperFor
 
 class PlayerComponent : Component, Pool.Poolable {
@@ -16,6 +17,9 @@ class PlayerComponent : Component, Pool.Poolable {
     var maxSpeed: Float = 30f
     var acceleration: Float = 0.6f
     var deceleration: Float = 0.5f
+    var activePowerUp: PowerUpEffect? = null
+    var activePowerUpTime: Float = 0f
+    var isPowerUpActive: Boolean = false
 
     override fun reset() {
         lives = 5
@@ -27,6 +31,9 @@ class PlayerComponent : Component, Pool.Poolable {
         lastXMousePosition = null
         speed = 0f
         deceleration = 3f
+        activePowerUp = null
+        activePowerUpTime = 0f
+        isPowerUpActive = false
     }
 
     companion object {

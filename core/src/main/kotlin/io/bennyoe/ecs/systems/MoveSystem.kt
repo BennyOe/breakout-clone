@@ -89,6 +89,12 @@ class MoveSystem(private val audioService: AudioService) : IteratingSystem(
                 if (ball.xSpeed in -0.2f..0f) ball.xSpeed = -1f
                 if (ball.ySpeed in 0f..0.2f) ball.ySpeed = 1f
                 if (ball.ySpeed in -0.2f..0f) ball.ySpeed = -1f
+
+                if (transform.position.y < -1){
+                    // ball is lost
+                    engine.removeEntity(entity)
+                    LOG.debug { "Ball lost" }
+                }
             }
         }
 

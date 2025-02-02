@@ -28,7 +28,7 @@ class PowerUpTextSystem() : EntitySystem(), EntityListener {
     override fun entityAdded(entity: Entity) {
         // check if there is an text displayed and remove it before showing the new one
         val entities = engine.getEntitiesFor(Family.all(PowerUpTextComponent::class.java).get())
-        entities.filter { it != entity }.forEach { engine.removeEntity(it) }
+        entities?.filter { it != entity }?.forEach { engine.removeEntity(it) }
 
         val graphic = entity[GraphicComponent.mapper]!!
         val powerUp = entity[PowerUpTextComponent.mapper]!!

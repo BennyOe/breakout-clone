@@ -34,7 +34,7 @@ class DebugSystem(
                     }
                 }
             }
-            Gdx.input.isKeyPressed(Input.Keys.NUM_2) -> {
+            Gdx.input.isKeyJustPressed(Input.Keys.NUM_2) -> {
                 engine.entity {
                     with<PowerUpComponent>() {
                         powerUpType = PowerUpType.EXPLODING_BALL
@@ -47,7 +47,7 @@ class DebugSystem(
                     }
                 }
             }
-            Gdx.input.isKeyPressed(Input.Keys.NUM_3) -> {
+            Gdx.input.isKeyJustPressed(Input.Keys.NUM_3) -> {
                 engine.entity {
                     with<PowerUpComponent>() {
                         powerUpType = PowerUpType.PENETRATION
@@ -60,7 +60,7 @@ class DebugSystem(
                     }
                 }
             }
-            Gdx.input.isKeyPressed(Input.Keys.NUM_4) -> {
+            Gdx.input.isKeyJustPressed(Input.Keys.NUM_4) -> {
                 engine.entity {
                     with<PowerUpComponent>() {
                         powerUpType = PowerUpType.SHOOTER

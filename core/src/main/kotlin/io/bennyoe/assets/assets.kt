@@ -56,8 +56,17 @@ enum class SoundAsset(
     STICKY1("sticky1.mp3"),
     STICKY2("sticky2.mp3"),
     STICKY_RELEASE("sticky-release.mp3"),
-    PU_MULTIBALL("pu-multiball.mp3"),
-    PU_STICKY("pu-sticky.mp3"),
+    BALL_LOST("ball-lost.mp3"),
+
+   PU_CHANGE_SIZE("powerups/changeSize.mp3"),
+   PU_EXPLOSION("powerups/explosion.mp3"),
+   PU_HEART("powerups/heart.mp3"),
+   PU_MULTIBALL("powerups/multiball.mp3"),
+   PU_PENETRATION("powerups/penetration.mp3"),
+   PU_REVERSE("powerups/reverse.mp3"),
+   PU_SHOOTER("powerups/shooter.mp3"),
+   PU_SPEED_UP("powerups/speedUp.mp3"),
+   PU_STICKY("powerups/sticky.mp3"),
 }
 
 enum class MusicAsset(

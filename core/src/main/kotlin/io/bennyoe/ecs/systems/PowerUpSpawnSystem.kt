@@ -4,8 +4,6 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import io.bennyoe.UNIT_SCALE
-import io.bennyoe.assets.SoundAsset
-import io.bennyoe.audio.AudioService
 import io.bennyoe.ecs.components.BrickComponent
 import io.bennyoe.ecs.components.GraphicComponent
 import io.bennyoe.ecs.components.PowerUpComponent
@@ -17,11 +15,10 @@ import ktx.ashley.get
 import ktx.ashley.with
 import ktx.log.logger
 
-private val LOG = logger<PowerUpSystem>()
+private val LOG = logger<PowerUpSpawnSystem>()
 
-class PowerUpSystem(
+class PowerUpSpawnSystem(
     val powerUpTextureAtlas: TextureAtlas,
-    private val audioService: AudioService
 ) : IteratingSystem(
     allOf(BrickComponent::class, TransformComponent::class).get()
 ) {
@@ -31,7 +28,7 @@ class PowerUpSystem(
         val transform = entity[TransformComponent.mapper]!!
         if (brick.hitpoints <= 0) {
             if (brick.hasPowerUp) {
-                audioService.play(SoundAsset.POWER_UP_FALLING)
+//                audioService.play(SoundAsset.POWER_UP_FALLING)
                 engine.entity {
                     with<TransformComponent> {
                         position.x = (transform.position.x + transform.size.x / 2) - (16 * UNIT_SCALE)

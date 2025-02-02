@@ -3,20 +3,25 @@ package io.bennyoe.powerUps
 import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import io.bennyoe.assets.SoundAsset
+import io.bennyoe.audio.AudioService
 import io.bennyoe.ecs.components.GraphicComponent
 import io.bennyoe.ecs.components.PlayerComponent
 import io.bennyoe.ecs.components.PowerUpTextComponent
 import io.bennyoe.ecs.components.PowerUpType
 import io.bennyoe.ecs.components.TransformComponent
-import io.bennyoe.ecs.systems.addEffectTimer
 import ktx.ashley.entity
 import ktx.ashley.get
 import ktx.ashley.with
 
-class ReverseControlsEffect : PowerUpEffect {
+class ReverseControlsEffect(private val audioService: AudioService) : PowerUpEffect() {
+    override val isAdditionalEffect = true
     private val playerAtlas by lazy { TextureAtlas("sprites/player.atlas") }
+    override val powerUpType = PowerUpType.REVERSE_CONTROL
+    override var remainingTime = 5f
 
-    override fun apply(playerEntity: Entity, ballEntity: Entity, engine: Engine) {
+    override fun apply(playerEntity: Entity, engine: Engine) {
+        audioService.play(SoundAsset.PU_REVERSE)
         engine.entity {
             with<PowerUpTextComponent>{
                 powerUpType = PowerUpType.REVERSE_CONTROL
@@ -32,12 +37,14 @@ class ReverseControlsEffect : PowerUpEffect {
         graphics.sprite.run {
             setRegion(playerAtlas.findRegion("reversed-controlls"))
         }
+    }
 
-        playerEntity.addEffectTimer("REVERSE_CONTROLS", 5f) {
-            player.isReversed = false
-            graphics.sprite.run {
-                setRegion(playerAtlas.findRegion("bear"))
-            }
+    override fun deactivate(playerEntity: Entity, engine: Engine) {
+        val player = playerEntity[PlayerComponent.mapper]!!
+        val graphics = playerEntity[GraphicComponent.mapper]!!
+        player.isReversed = false
+        graphics.sprite.run {
+            setRegion(playerAtlas.findRegion("bear"))
         }
     }
 }

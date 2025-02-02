@@ -14,7 +14,7 @@ import io.bennyoe.audio.AudioService
 import io.bennyoe.audio.DefaultAudioService
 import io.bennyoe.ecs.systems.BrickSystem
 import io.bennyoe.ecs.systems.MoveSystem
-import io.bennyoe.ecs.systems.PlayerInputSystem
+import io.bennyoe.ecs.systems.PowerUpTextSystem
 import io.bennyoe.ecs.systems.RenderSystem
 import io.bennyoe.ecs.systems.ShooterCollisionSystem
 import io.bennyoe.ecs.systems.SimpleCollisionSystem
@@ -41,7 +41,6 @@ class Main : KtxGame<KtxScreen>() {
         Gdx.input.inputProcessor = result
         result
     }
-
     // ======
     val viewport by lazy { FitViewport(WORLD_WIDTH, WORLD_HEIGHT) }
     val batch: Batch by lazy { SpriteBatch() }
@@ -51,13 +50,13 @@ class Main : KtxGame<KtxScreen>() {
     val audioService: AudioService by lazy { DefaultAudioService(assets) }
     val engine: Engine by lazy {
         PooledEngine().apply {
-            addSystem(PlayerInputSystem(viewport))
             addSystem(BrickSystem())
             addSystem(SimpleCollisionSystem(viewport, audioService))
             addSystem(MoveSystem(audioService))
             addSystem(RenderSystem(batch, viewport))
             addSystem(TimerSystem())
             addSystem(ShooterCollisionSystem())
+            addSystem(PowerUpTextSystem())
         }
     }
 
@@ -84,4 +83,3 @@ class Main : KtxGame<KtxScreen>() {
         stage.dispose()
     }
 }
-

@@ -14,10 +14,11 @@ import ktx.ashley.entity
 import ktx.ashley.get
 import ktx.ashley.with
 
-class ShooterSystem(private val audioService: AudioService) : IntervalIteratingSystem(allOf(PlayerComponent::class, TransformComponent::class).get(), 0.5f) {
-    private val laserTexture = Texture("images/laser.png")
+object ShooterSystem : IntervalIteratingSystem(allOf(PlayerComponent::class, TransformComponent::class).get(), 0.5f) {
+    private lateinit var audioService: AudioService
 
     override fun processEntity(entity: Entity) {
+        val laserTexture = Texture("images/laser.png")
         val transform = entity[TransformComponent.mapper]!!
         audioService.play(SoundAsset.FLINT3)
 
@@ -51,5 +52,9 @@ class ShooterSystem(private val audioService: AudioService) : IntervalIteratingS
                 }
             }
         }
+    }
+
+    fun init(audioService: AudioService) {
+        this.audioService = audioService
     }
 }

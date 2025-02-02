@@ -5,24 +5,33 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import io.bennyoe.assets.MusicAsset
+import io.bennyoe.assets.SoundAsset
 import io.bennyoe.audio.AudioService
 import io.bennyoe.ecs.components.GraphicComponent
 import io.bennyoe.ecs.components.PowerUpTextComponent
 import io.bennyoe.ecs.components.PowerUpType
 import io.bennyoe.ecs.components.TransformComponent
-import io.bennyoe.ecs.systems.ShapeRenderingSystem
+import io.bennyoe.ecs.systems.GameStateSystem
 import io.bennyoe.ecs.systems.ShooterSystem
-import io.bennyoe.ecs.systems.addEffectTimer
 import ktx.ashley.entity
 import ktx.ashley.get
+import ktx.ashley.getSystem
 import ktx.ashley.with
 
-class ShooterEffect(private val audioService: AudioService) : PowerUpEffect {
-    private val playerAtlas by lazy { TextureAtlas("sprites/player.atlas") }
+class ShooterEffect(private val audioService: AudioService) : PowerUpEffect() {
+    override val isAdditionalEffect = false
+    override val powerUpType = PowerUpType.SHOOTER
+    override var remainingTime = 5f
 
-    override fun apply(playerEntity: Entity, ballEntity: Entity, engine: Engine) {
+    private val playerAtlas by lazy { TextureAtlas("sprites/player.atlas") }
+    private val shooterSystem by lazy { ShooterSystem }
+
+    override fun apply(playerEntity: Entity, engine: Engine) {
+        audioService.play(SoundAsset.PU_SHOOTER)
+        shooterSystem.init(audioService)
+        val gameStateSystem = engine.getSystem<GameStateSystem>()
         engine.entity {
-            with<PowerUpTextComponent>{
+            with<PowerUpTextComponent> {
                 powerUpType = PowerUpType.SHOOTER
             }
             with<TransformComponent>()
@@ -30,22 +39,24 @@ class ShooterEffect(private val audioService: AudioService) : PowerUpEffect {
         }
         val graphics = playerEntity[GraphicComponent.mapper]!!
 
-        audioService.play(MusicAsset.SHOOTER_MUSIC, 1f, true)
-        graphics.sprite.run {
-            setRegion(playerAtlas.findRegion("bear_shooter"))
-        }
-
-        val shooterSystem = ShooterSystem(audioService)
-        val colorOverlaySystem = ShapeRenderingSystem(Color(1f, 0f, 0f, 0.1f))
-        engine.addSystem(colorOverlaySystem)
-        engine.addSystem(shooterSystem)
-        ballEntity.addEffectTimer("SHOOTER", 5f) {
-            audioService.play(MusicAsset.BG_MUSIC, 0.25f)
-            engine.removeSystem(shooterSystem)
-            engine.removeSystem(colorOverlaySystem)
+        if (!gameStateSystem.isMainPowerUpTypeActive(this.powerUpType)) {
+            audioService.play(MusicAsset.SHOOTER_MUSIC, 1f, true)
             graphics.sprite.run {
-                setRegion(playerAtlas.findRegion("bear"))
+                setRegion(playerAtlas.findRegion("bear_shooter"))
             }
         }
+        activateColorOverlay(Color(1f, 0f, 0f, 0.1f), engine)
+        engine.addSystem(shooterSystem)
+    }
+
+    override fun deactivate(playerEntity: Entity, engine: Engine) {
+        val graphics = playerEntity[GraphicComponent.mapper]!!
+        audioService.play(MusicAsset.BG_MUSIC, 0.25f)
+        engine.removeSystem(shooterSystem)
+        deactivateColorOverlay()
+        graphics.sprite.run {
+            setRegion(playerAtlas.findRegion("bear"))
+        }
+
     }
 }

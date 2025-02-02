@@ -6,26 +6,26 @@
 ### PowerUp System
 
 - [x] Set different powerup graphics
-- [*] Implement powerup mechanics
+- [x] Implement powerup mechanics
     - [x] Change size
     - [x] Exploding ball
     - [x] Sticky paddle
     - [x] Multi-ball
     - [x] Shooter paddle
-    - [ ] `+1` life
+    - [x] `+1` life
     - [x] Reverse paddle
     - [x] fast ball
     - [x] penetration ball
 
 ### UI
 
-- [ ] Implement game over screen
+- [x] Implement game over screen
 - [ ] Implement game win screen
-- [ ] Implement Splash Screen
+- [x] Implement Splash Screen
 
 ### Game Mechanics
 
-- [ ] Implement Hearts
+- [x] Implement Hearts
 - [ ] Implement Score
 - [ ] Implement Level System (map editor)
 - [x] Implement keyboard controls
@@ -33,14 +33,14 @@
 
 ### Sound
 
-- [ ] Implement sound effects
+- [x] Implement sound effects
     - [x] Implement ball hit player sound
     - [x] Implement ball hit wall sound
     - [x] Implement ball hit brick sound
-    - [ ] Implement powerup sound
+    - [x] Implement powerup sound
     - [x] Implement powerup falling sound
-    - [c] Implement game over sound
-    - [c] Implement game win sound
+    - [x] Implement game over sound
+    - [x] Implement game win sound
     - [x] Implement shooter paddle sound
     - [x] Implement sticky paddle sound
     - [x] Implement remove sticky paddle sound

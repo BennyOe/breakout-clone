@@ -2,6 +2,7 @@ package io.bennyoe.powerUps
 
 import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
+import com.badlogic.ashley.core.Family
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import io.bennyoe.UNIT_SCALE
 import io.bennyoe.assets.SoundAsset
@@ -14,11 +15,18 @@ import io.bennyoe.ecs.components.TransformComponent
 import ktx.ashley.entity
 import ktx.ashley.get
 import ktx.ashley.with
+import ktx.log.logger
 
-class MultiballEffect(private val audioService: AudioService) : PowerUpEffect {
+private val LOG = logger<MultiballEffect>()
+
+class MultiballEffect(private val audioService: AudioService) : PowerUpEffect() {
+    override val isAdditionalEffect = true
     private val ballsAtlas = TextureAtlas("sprites/balls.atlas")
+    override val powerUpType = PowerUpType.MULTIBALL
+    override var remainingTime = 5f
 
-    override fun apply(playerEntity: Entity, ballEntity: Entity, engine: Engine) {
+    override fun apply(playerEntity: Entity, engine: Engine) {
+        val ballEntity = engine.getEntitiesFor(Family.all(BallComponent::class.java).get()).first()
         val ballTransform = ballEntity[TransformComponent.mapper]!!
         val ball = ballEntity[BallComponent.mapper]!!
 
@@ -43,10 +51,18 @@ class MultiballEffect(private val audioService: AudioService) : PowerUpEffect {
                 }
             }
             with<BallComponent> {
-                xSpeed = ball.xSpeed * -1
-                ySpeed = ball.ySpeed
-                acceleration = ball.acceleration
+                if (ball.isSticky) {
+                    xSpeed = 4f
+                    ySpeed = 4f
+                    acceleration = 2.2f
+                } else {
+                    xSpeed = ball.xSpeed * -1
+                    ySpeed = ball.ySpeed
+                    acceleration = ball.acceleration
+                }
             }
         }
     }
+
+    override fun deactivate(playerEntity: Entity, engine: Engine) = Unit
 }

@@ -1,7 +1,6 @@
 package io.bennyoe.ecs.systems
 
 import com.badlogic.ashley.core.Entity
-import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.math.Intersector
@@ -11,7 +10,6 @@ import io.bennyoe.assets.SoundAsset
 import io.bennyoe.audio.AudioService
 import io.bennyoe.ecs.components.BallComponent
 import io.bennyoe.ecs.components.GraphicComponent
-import io.bennyoe.ecs.components.PlayerComponent
 import io.bennyoe.ecs.components.TransformComponent
 import ktx.ashley.allOf
 import ktx.ashley.get
@@ -100,15 +98,15 @@ class SimpleCollisionSystem(
             audioService.play(SoundAsset.WALL_HIT)
         }
         // bottom collision
-        if (transform.position.y <= 0) {
-            transform.position.y = 0f + SAFETY_MARGIN
-            reverseY(ball)
-            audioService.play(SoundAsset.WALL_HIT)
-            val player = engine.getEntitiesFor(Family.all(PlayerComponent::class.java).get()).first()
-            val playerComponent = player[PlayerComponent.mapper]!!
-            playerComponent.lives--
-            LOG.debug { "Lives reduced to ${playerComponent.lives}" }
-        }
+//        if (transform.position.y <= 0) {
+//            transform.position.y = 0f + SAFETY_MARGIN
+//            reverseY(ball)
+//            audioService.play(SoundAsset.WALL_HIT)
+//            val player = engine.getEntitiesFor(Family.all(PlayerComponent::class.java).get()).first()
+//            val playerComponent = player[PlayerComponent.mapper]!!
+//            playerComponent.lives--
+//            LOG.debug { "Lives reduced to ${playerComponent.lives}" }
+//        }
     }
 
     private fun reverseX(ball: BallComponent) {
