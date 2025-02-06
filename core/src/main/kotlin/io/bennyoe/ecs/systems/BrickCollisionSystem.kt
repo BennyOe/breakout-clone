@@ -5,7 +5,6 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Rectangle
-import com.badlogic.gdx.utils.viewport.Viewport
 import io.bennyoe.assets.SoundAsset
 import io.bennyoe.audio.AudioService
 import io.bennyoe.ecs.components.AnimationComponent
@@ -26,9 +25,9 @@ private const val SAFETY_MARGIN = 0.0f
 private val LOG = logger<BrickCollisionSystem>()
 
 class BrickCollisionSystem(
-    private val viewport: Viewport,
     private val brickEntities: ImmutableArray<Entity>,
-    private val audioService: AudioService
+    private val audioService: AudioService,
+    private val gameStateSystem: GameStateSystem
 ) : IteratingSystem(
     allOf(BallComponent::class, TransformComponent::class).get()
 ) {
@@ -55,6 +54,7 @@ class BrickCollisionSystem(
 
         if (checkCollision(brickTransform, transform, ball, deltaTime)) {
             audioService.play(SoundAsset.BRICK_HIT)
+
             val ballYMiddle = transform.position.y + (transform.size.y / 2)
             val ballXMiddle = transform.position.x + (transform.size.x / 2)
 
@@ -65,6 +65,7 @@ class BrickCollisionSystem(
             val brickRight = brickTransform.position.x + brickTransform.size.x
             val brickXMiddle = brickTransform.position.x + (brickTransform.size.x / 2)
 
+            gameStateSystem.addScore(1)
             brick.hitpoints--
 
             if (ball.isPenetrating) return

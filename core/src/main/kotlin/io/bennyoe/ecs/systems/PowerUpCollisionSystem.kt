@@ -19,7 +19,6 @@ import io.bennyoe.powerUps.ShooterEffect
 import io.bennyoe.powerUps.StickyEffect
 import ktx.ashley.allOf
 import ktx.ashley.get
-import ktx.ashley.getSystem
 import ktx.assets.async.AssetStorage
 import ktx.log.logger
 
@@ -28,12 +27,12 @@ private val LOG = logger<PowerUpCollisionSystem>()
 class PowerUpCollisionSystem(
     val playerEntity: Entity,
     val assets: AssetStorage,
-    val audioService: AudioService
+    val audioService: AudioService,
+    private val gameStateSystem: GameStateSystem
 ) : IteratingSystem(
     allOf(PowerUpComponent::class).get()
 ) {
     override fun processEntity(entity: Entity, deltaTime: Float) {
-        val gameStateSystem = engine.getSystem<GameStateSystem>()
         val transform = entity[TransformComponent.mapper]!!
         val powerUp = entity[PowerUpComponent.mapper]!!
         val playerTransform = playerEntity[TransformComponent.mapper]!!
@@ -43,6 +42,7 @@ class PowerUpCollisionSystem(
 
         // powerUp collected
         if (powerUpRect.overlaps(playerRect)) {
+            gameStateSystem.addScore(10)
             val effect = getPowerUpEffect(powerUp.powerUpType)
             gameStateSystem.activatePowerUp(effect)
             engine.removeEntity(entity)

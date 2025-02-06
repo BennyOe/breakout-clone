@@ -20,6 +20,7 @@ import io.bennyoe.ecs.systems.PlayerCollisionSystem
 import io.bennyoe.ecs.systems.PlayerInputSystem
 import io.bennyoe.ecs.systems.PowerUpCollisionSystem
 import io.bennyoe.ecs.systems.PowerUpSpawnSystem
+import io.bennyoe.ecs.systems.ShooterCollisionSystem
 import io.bennyoe.ui.GameUI
 import ktx.ashley.allOf
 import ktx.assets.async.AssetStorage
@@ -31,34 +32,36 @@ private val LOG = logger<GameScreen>()
 private const val MAX_DELTA_TIME = 1 / 20f
 
 class GameScreen(game: Main, val assets: AssetStorage, val isKeyboard: Boolean) : Screen(game) {
-    private val ui = GameUI()
     private val background = assets[TextureAsset.BACKGROUND.descriptor]
     private val ballsAtlas by lazy { assets[TextureAtlasAsset.BALLS.descriptor] }
     private val powerUpsAtlas by lazy { assets[TextureAtlasAsset.POWERUPS.descriptor] }
     private val explosionAtlas by lazy { assets[AnimationAsset.EXPLOSION.descriptor] }
+    private val gameStateSystem by lazy { GameStateSystem(audioService, game, ballsAtlas) }
+    private val player by lazy { engine.getEntitiesFor(allOf(PlayerComponent::class).get()).firstOrNull() }
+    private val ui by lazy { GameUI() }
 
     override fun show() {
-        engine.addSystem(GameStateSystem(audioService, game, ballsAtlas))
-        val player = engine.getEntitiesFor(allOf(PlayerComponent::class).get()).firstOrNull()
+        engine.addSystem(gameStateSystem)
         if (player == null) {
             LOG.error { "Player entity not found! Make sure GameStateSystem creates it." }
             return
         }
 
-        val playerCollisionSystem = PlayerCollisionSystem(player, audioService)
+        val playerCollisionSystem = PlayerCollisionSystem(player!!, audioService)
         engine.addSystem(playerCollisionSystem)
 
         val brickEntities = engine.getEntitiesFor(allOf(BrickComponent::class).get())
-        val brickCollisionSystem = BrickCollisionSystem(viewport, brickEntities, audioService)
+        val brickCollisionSystem = BrickCollisionSystem(brickEntities, audioService, gameStateSystem)
 
         audioService.play(MusicAsset.BG_MUSIC, 0.25f)
         audioService.play(SoundAsset.GAME_WIN)
 
         engine.addSystem(brickCollisionSystem)
-        engine.addSystem(ExplosionSystem(brickEntities, audioService))
+        engine.addSystem(ShooterCollisionSystem(gameStateSystem))
+        engine.addSystem(ExplosionSystem(brickEntities, audioService, gameStateSystem))
         engine.addSystem(AnimationSystem(explosionAtlas))
         engine.addSystem(PowerUpSpawnSystem(powerUpsAtlas))
-        engine.addSystem(PowerUpCollisionSystem(player, assets, audioService))
+        engine.addSystem(PowerUpCollisionSystem(player!!, assets, audioService, gameStateSystem))
         engine.addSystem(DebugSystem(powerUpsAtlas))
         engine.addSystem(PlayerInputSystem(viewport, isKeyboard))
         setupUserInterface()
@@ -83,6 +86,7 @@ class GameScreen(game: Main, val assets: AssetStorage, val isKeyboard: Boolean) 
         val playerComponent = player.getComponent(PlayerComponent::class.java)
         val lives = playerComponent?.lives ?: 0
         ui.refreshHearts(lives)
+        ui.refreshScore(gameStateSystem.score)
 //        LOG.info { "Rendercalls: ${(game.batch as SpriteBatch).renderCalls}" }
         stage.run {
             viewport.apply()
@@ -94,7 +98,6 @@ class GameScreen(game: Main, val assets: AssetStorage, val isKeyboard: Boolean) 
     override fun dispose() {
         assets.dispose()
     }
-
 
     private fun setupUserInterface() {
         stage.addActor(ui)

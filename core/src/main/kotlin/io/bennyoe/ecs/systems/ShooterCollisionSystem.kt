@@ -11,7 +11,9 @@ import io.bennyoe.ecs.components.TransformComponent
 import ktx.ashley.allOf
 import ktx.ashley.get
 
-class ShooterCollisionSystem : IteratingSystem(
+class ShooterCollisionSystem(
+    private val gameStateSystem: GameStateSystem
+) : IteratingSystem(
     allOf(BrickComponent::class, TransformComponent::class).get()
 ) {
     private lateinit var bullets: List<Entity>
@@ -35,6 +37,7 @@ class ShooterCollisionSystem : IteratingSystem(
         bullets.forEach { bullet ->
             val bulletTransform = bullet[TransformComponent.mapper]!!
             if (bulletIntersectsBrick(bulletTransform, transform)) {
+                gameStateSystem.addScore(1)
                 brick.hitpoints = 0
                 engine.removeEntity(bullet)
             }

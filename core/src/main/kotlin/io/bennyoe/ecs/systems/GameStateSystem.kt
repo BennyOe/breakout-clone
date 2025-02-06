@@ -32,6 +32,8 @@ class GameStateSystem(private val audioService: AudioService, private val game: 
     private val bricksAtlas by lazy { game.assets[TextureAtlasAsset.BRIKCS.descriptor] }
     private val activePowerUps = CopyOnWriteArrayList<PowerUpEffect>()
     private var activeMainPowerUp: PowerUpEffect? = null
+    private var _score = 0
+    val score: Int get() = _score
 
     override fun addedToEngine(engine: Engine?) {
         super.addedToEngine(engine)
@@ -54,6 +56,10 @@ class GameStateSystem(private val audioService: AudioService, private val game: 
             }
             activePowerUp.remainingTime -= deltaTime
         }
+    }
+
+    fun addScore(addedValue: Int){
+        _score+= addedValue
     }
 
     fun isMainPowerUpTypeActive(powerUpType: PowerUpType): Boolean {

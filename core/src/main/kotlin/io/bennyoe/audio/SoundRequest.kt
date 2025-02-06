@@ -5,9 +5,9 @@ import io.bennyoe.assets.SoundAsset
 
 class SoundRequest : Pool.Poolable {
     lateinit var soundAsset: SoundAsset
-    var volume = 1f
+    var volume = 0.5f
 
     override fun reset() {
-        volume = 1f
+        volume = 0.5f
     }
 }

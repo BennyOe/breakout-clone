@@ -16,7 +16,8 @@ private val LOG = logger<ExplosionSystem>()
 
 class ExplosionSystem(
     private val brickEntities: ImmutableArray<Entity>,
-    private val audioService: AudioService
+    private val audioService: AudioService,
+    private val gameStateSystem: GameStateSystem
 ) : IteratingSystem(
     allOf(ExplodingComponent::class).get()
 ) {
@@ -32,6 +33,7 @@ class ExplosionSystem(
             val brickTransform = brickEntity[TransformComponent.mapper]!!
             val distance = transform.position.dst(brickTransform.position)
             if (distance <= explodingComponent.explosionRadius) {
+                gameStateSystem.addScore(1)
                 audioService.play(SoundAsset.EXPLOSION1)
                 LOG.info { "Brick exploded at ${brickTransform.position}" }
                 brickEntity[BrickComponent.mapper]?.hitpoints = 0

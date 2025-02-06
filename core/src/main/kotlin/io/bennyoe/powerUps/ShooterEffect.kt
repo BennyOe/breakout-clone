@@ -40,7 +40,7 @@ class ShooterEffect(private val audioService: AudioService) : PowerUpEffect() {
         val graphics = playerEntity[GraphicComponent.mapper]!!
 
         if (!gameStateSystem.isMainPowerUpTypeActive(this.powerUpType)) {
-            audioService.play(MusicAsset.SHOOTER_MUSIC, 1f, true)
+            audioService.play(MusicAsset.SHOOTER_MUSIC, 0.7f)
             graphics.sprite.run {
                 setRegion(playerAtlas.findRegion("bear_shooter"))
             }

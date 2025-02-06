@@ -16,7 +16,6 @@ import io.bennyoe.ecs.systems.BrickSystem
 import io.bennyoe.ecs.systems.MoveSystem
 import io.bennyoe.ecs.systems.PowerUpTextSystem
 import io.bennyoe.ecs.systems.RenderSystem
-import io.bennyoe.ecs.systems.ShooterCollisionSystem
 import io.bennyoe.ecs.systems.SimpleCollisionSystem
 import io.bennyoe.ecs.systems.TimerSystem
 import io.bennyoe.screens.LoadingScreen
@@ -32,6 +31,8 @@ import ktx.collections.gdxArrayOf
 const val UNIT_SCALE = 1 / 32f
 const val WORLD_WIDTH = 48f
 const val WORLD_HEIGHT = 27f
+const val GAME_WIDTH = WORLD_WIDTH / UNIT_SCALE
+const val GAME_HEIGHT = WORLD_HEIGHT / UNIT_SCALE
 
 class Main : KtxGame<KtxScreen>() {
     // for Scene2D
@@ -55,7 +56,6 @@ class Main : KtxGame<KtxScreen>() {
             addSystem(MoveSystem(audioService))
             addSystem(RenderSystem(batch, viewport))
             addSystem(TimerSystem())
-            addSystem(ShooterCollisionSystem())
             addSystem(PowerUpTextSystem())
         }
     }

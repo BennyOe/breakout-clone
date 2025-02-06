@@ -9,7 +9,7 @@ private val LOG = logger<AudioService>()
 
 interface AudioService {
     fun play(soundAsset: SoundAsset, volume: Float = 1f) = Unit
-    fun play(musicAsset: MusicAsset, volume: Float = 1f, loop: Boolean = true) = Unit
+    fun play(musicAsset: MusicAsset, volume: Float = 0.5f, loop: Boolean = true) = Unit
     fun pause()
     fun resume()
     fun stop(clearSounds: Boolean = true)

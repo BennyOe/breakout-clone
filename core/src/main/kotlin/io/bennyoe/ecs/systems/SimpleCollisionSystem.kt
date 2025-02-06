@@ -83,19 +83,19 @@ class SimpleCollisionSystem(
         if (transform.position.x <= 0) {
             transform.position.x = 0f + SAFETY_MARGIN
             reverseX(ball)
-            audioService.play(SoundAsset.WALL_HIT)
+            if (!ball.isSticky) audioService.play(SoundAsset.WALL_HIT)
         }
         // right collision
         if (transform.position.x >= viewport.worldWidth - transform.size.x) {
             transform.position.x = viewport.worldWidth - transform.size.x + SAFETY_MARGIN
             reverseX(ball)
-            audioService.play(SoundAsset.WALL_HIT)
+            if (!ball.isSticky) audioService.play(SoundAsset.WALL_HIT)
         }
         // top collision
         if (transform.position.y >= viewport.worldHeight - transform.size.y - SAFETY_MARGIN) {
             transform.position.y = viewport.worldHeight - transform.size.y + SAFETY_MARGIN
             reverseY(ball)
-            audioService.play(SoundAsset.WALL_HIT)
+            if (!ball.isSticky) audioService.play(SoundAsset.WALL_HIT)
         }
         // bottom collision
 //        if (transform.position.y <= 0) {
