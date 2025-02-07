@@ -22,6 +22,7 @@ class ExplodingEffect(assets: AssetStorage, private val audioService: AudioServi
     override var remainingTime = 5f
 
     private val playerAtlas by lazy { assets[TextureAtlasAsset.PLAYER.descriptor] }
+    private val ballAtlas by lazy { assets[TextureAtlasAsset.BALLS.descriptor] }
 
     override fun apply(playerEntity: Entity, engine: Engine) {
         audioService.play(SoundAsset.PU_EXPLOSION)
@@ -41,6 +42,10 @@ class ExplodingEffect(assets: AssetStorage, private val audioService: AudioServi
         activateColorOverlay(Color(0f, 0f, 1f, 0.1f), engine)
         ballEntities.forEach { ball ->
             val ballComponent = ball[BallComponent.mapper]!!
+            val graphicComponent = ball[GraphicComponent.mapper]!!
+            graphicComponent.sprite.run {
+                setRegion(ballAtlas.findRegion("Ball_Red_Glossy_trans-32x32"))
+            }
             ballComponent.isExploding = true
         }
     }
@@ -55,6 +60,10 @@ class ExplodingEffect(assets: AssetStorage, private val audioService: AudioServi
 
         ballEntities.forEach { ball ->
             val ballComponent = ball[BallComponent.mapper]!!
+            val graphicComponent = ball[GraphicComponent.mapper]!!
+            graphicComponent.sprite.run {
+                setRegion(ballAtlas.findRegion("Ball_Yellow_Glossy_trans-32x32"))
+            }
             ballComponent.isExploding = false
         }
     }

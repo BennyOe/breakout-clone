@@ -13,3 +13,5 @@ explosion
 bounds:646,2,256,64
 reversed-controlls
 bounds:1420,2,256,64
+sheep
+bounds:1678,2,128,64

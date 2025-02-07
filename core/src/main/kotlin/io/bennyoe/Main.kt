@@ -51,7 +51,7 @@ class Main : KtxGame<KtxScreen>() {
     val audioService: AudioService by lazy { DefaultAudioService(assets) }
     val engine: Engine by lazy {
         PooledEngine().apply {
-            addSystem(BrickSystem())
+            addSystem(BrickSystem(assets))
             addSystem(SimpleCollisionSystem(viewport, audioService))
             addSystem(MoveSystem(audioService))
             addSystem(RenderSystem(batch, viewport))

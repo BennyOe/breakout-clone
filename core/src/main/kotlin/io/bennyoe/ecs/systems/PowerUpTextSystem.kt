@@ -35,7 +35,6 @@ class PowerUpTextSystem() : EntitySystem(), EntityListener {
         val transform = entity[TransformComponent.mapper]!!
         val text = powerUpTextAtlas.findRegion(powerUp.powerUpType.type)
         graphic.setSpriteRegion(text)
-        transform.size.set(1f, 1f)
 
         transform.setInitialPosition(
             WORLD_WIDTH / 2 - 5,

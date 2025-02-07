@@ -42,7 +42,7 @@ class PowerUpCollisionSystem(
 
         // powerUp collected
         if (powerUpRect.overlaps(playerRect)) {
-            gameStateSystem.addScore(10)
+            gameStateSystem.addScore(10 * gameStateSystem.scoreMultiplier)
             val effect = getPowerUpEffect(powerUp.powerUpType)
             gameStateSystem.activatePowerUp(effect)
             engine.removeEntity(entity)
@@ -55,7 +55,7 @@ class PowerUpCollisionSystem(
     private fun getPowerUpEffect(type: PowerUpType): PowerUpEffect {
         return when (type) {
             PowerUpType.SHOOTER -> ShooterEffect(audioService)
-            PowerUpType.PENETRATION -> PenetrationEffect(audioService)
+            PowerUpType.PENETRATION -> PenetrationEffect(audioService, assets)
             PowerUpType.FAST_BALL -> BallSpeedUpEffect(audioService)
             PowerUpType.MULTIBALL -> MultiballEffect(audioService)
             PowerUpType.BONUS_HEART -> ExtraLiveEffect(audioService)

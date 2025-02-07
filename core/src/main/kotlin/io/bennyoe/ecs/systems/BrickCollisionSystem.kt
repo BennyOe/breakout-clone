@@ -65,8 +65,8 @@ class BrickCollisionSystem(
             val brickRight = brickTransform.position.x + brickTransform.size.x
             val brickXMiddle = brickTransform.position.x + (brickTransform.size.x / 2)
 
-            gameStateSystem.addScore(1)
-            brick.hitpoints--
+            gameStateSystem.addScore(1 * gameStateSystem.scoreMultiplier)
+            brick.hitPoints--
 
             if (ball.isPenetrating) return
 

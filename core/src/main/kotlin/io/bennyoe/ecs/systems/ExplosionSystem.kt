@@ -33,10 +33,10 @@ class ExplosionSystem(
             val brickTransform = brickEntity[TransformComponent.mapper]!!
             val distance = transform.position.dst(brickTransform.position)
             if (distance <= explodingComponent.explosionRadius) {
-                gameStateSystem.addScore(1)
+                gameStateSystem.addScore(1 * gameStateSystem.scoreMultiplier)
                 audioService.play(SoundAsset.EXPLOSION1)
                 LOG.info { "Brick exploded at ${brickTransform.position}" }
-                brickEntity[BrickComponent.mapper]?.hitpoints = 0
+                brickEntity[BrickComponent.mapper]?.hitPoints = 0
             }
         }
         explodingComponent.isExploding = false

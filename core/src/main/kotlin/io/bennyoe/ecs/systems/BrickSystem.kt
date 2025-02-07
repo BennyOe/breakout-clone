@@ -5,6 +5,7 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import io.bennyoe.WORLD_HEIGHT
 import io.bennyoe.WORLD_WIDTH
+import io.bennyoe.assets.TextureAtlasAsset
 import io.bennyoe.ecs.components.BrickComponent
 import io.bennyoe.ecs.components.ExplodingComponent
 import io.bennyoe.ecs.components.GraphicComponent
@@ -13,11 +14,18 @@ import io.bennyoe.ecs.components.TransformComponent
 import ktx.ashley.allOf
 import ktx.ashley.entity
 import ktx.ashley.get
+import ktx.ashley.getSystem
 import ktx.ashley.with
+import ktx.assets.async.AssetStorage
 
-class BrickSystem() : IteratingSystem(
+class BrickSystem(
+    private val assets: AssetStorage,
+    ) : IteratingSystem(
     allOf(BrickComponent::class, TransformComponent::class, GraphicComponent::class).get()
 ) {
+    private val brickAtlas by lazy { assets[TextureAtlasAsset.BRIKCS.descriptor] }
+    private val gameStateSystem by lazy { engine.getSystem<GameStateSystem>() }
+
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val transform = entity[TransformComponent.mapper]
         requireNotNull(transform) { "Entity has no TransformComponent" }
@@ -28,8 +36,15 @@ class BrickSystem() : IteratingSystem(
         val brick = entity[BrickComponent.mapper]
         requireNotNull(brick) { "Entity has no BrickComponent" }
 
-        if (brick.hitpoints <= 0) {
+        if (brick.hitPoints <= 0) {
+            gameStateSystem.addScore(5 * gameStateSystem.scoreMultiplier)
             engine.removeEntity(entity)
+        }
+
+        if (brick.hitPoints > 0) {
+            graphic.sprite.run {
+                setRegion(brickAtlas.findRegion(brick.type.atlasKey, brick.type.hitPoints + 1 - brick.hitPoints))
+            }
         }
     }
 
@@ -42,13 +57,15 @@ class BrickSystem() : IteratingSystem(
                             setInitialPosition(columnCount.toFloat() * 2, rowCount.toFloat(), 0f)
                             size.set(2f, 1f)
                         }
-                        with<BrickComponent>() {
+                        val brickComponent = with<BrickComponent>() {
                             hasPowerUp = if (Math.random() >= 0.8) true else false
                             powerUpType = PowerUpType.entries.toTypedArray().random()
+                            type = BrickType.entries.random()
+                            hitPoints = type.hitPoints
                         }
                         with<GraphicComponent> {
                             sprite.run {
-                                setRegion(textureAtlas.findRegion("blue_brick"))
+                                setRegion(textureAtlas.findRegion(brickComponent.type.atlasKey))
                                 setOriginCenter()
                             }
                         }

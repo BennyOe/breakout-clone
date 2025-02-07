@@ -19,6 +19,7 @@ import io.bennyoe.audio.AudioService
 import io.bennyoe.ecs.components.BulletComponent
 import io.bennyoe.ecs.components.PlayerComponent
 import io.bennyoe.utillity.Mapper.Companion.mapToRange
+import ktx.ashley.getSystem
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -36,6 +37,7 @@ class MoveSystem(private val audioService: AudioService) : IteratingSystem(
     ).get()
 
 ) {
+    private val gameStateSystem by lazy { engine.getSystem<GameStateSystem>() }
     private var accumulator = 0f
 
     override fun update(deltaTime: Float) {
@@ -90,8 +92,9 @@ class MoveSystem(private val audioService: AudioService) : IteratingSystem(
                 if (ball.ySpeed in 0f..0.2f) ball.ySpeed = 1f
                 if (ball.ySpeed in -0.2f..0f) ball.ySpeed = -1f
 
-                if (transform.position.y < -1){
+                if (transform.position.y < -1) {
                     // ball is lost
+                    if (gameStateSystem.score >= 20) gameStateSystem.addScore(-20) else gameStateSystem.addScore(-gameStateSystem.score)
                     engine.removeEntity(entity)
                     LOG.debug { "Ball lost" }
                 }

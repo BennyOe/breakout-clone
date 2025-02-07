@@ -16,20 +16,23 @@
     - [x] Reverse paddle
     - [x] fast ball
     - [x] penetration ball
+    - [ ] Mäh multiplier
 
 ### UI
 
-- [x] Implement game over screen
+- [ ] Implement game over screen
 - [ ] Implement game win screen
 - [x] Implement Splash Screen
 
 ### Game Mechanics
 
 - [x] Implement Hearts
-- [ ] Implement Score
+- [x] Implement Score
+- [ ] Implement Highscore
 - [ ] Implement Level System (map editor)
 - [x] Implement keyboard controls
 - [ ] Implement hit-points and damage for bricks
+- [ ] Implement different brick types
 
 ### Sound
 
@@ -45,6 +48,8 @@
     - [x] Implement sticky paddle sound
     - [x] Implement remove sticky paddle sound
     - [x] Implement explosion sound
+    - [ ] Implement reverse music
+    - [ ] Implement Mäh multiplier sound
 - [x] Implement background music
 
 ### Graphics

@@ -26,7 +26,7 @@ class PowerUpSpawnSystem(
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val brick = entity[BrickComponent.mapper]!!
         val transform = entity[TransformComponent.mapper]!!
-        if (brick.hitpoints <= 0) {
+        if (brick.hitPoints <= 0) {
             if (brick.hasPowerUp) {
 //                audioService.play(SoundAsset.POWER_UP_FALLING)
                 engine.entity {

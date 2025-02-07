@@ -34,6 +34,7 @@ class GameStateSystem(private val audioService: AudioService, private val game: 
     private var activeMainPowerUp: PowerUpEffect? = null
     private var _score = 0
     val score: Int get() = _score
+    val scoreMultiplier = 1
 
     override fun addedToEngine(engine: Engine?) {
         super.addedToEngine(engine)

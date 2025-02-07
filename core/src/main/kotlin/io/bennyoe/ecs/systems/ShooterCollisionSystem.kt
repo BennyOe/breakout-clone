@@ -37,8 +37,8 @@ class ShooterCollisionSystem(
         bullets.forEach { bullet ->
             val bulletTransform = bullet[TransformComponent.mapper]!!
             if (bulletIntersectsBrick(bulletTransform, transform)) {
-                gameStateSystem.addScore(1)
-                brick.hitpoints = 0
+                gameStateSystem.addScore(1 * gameStateSystem.scoreMultiplier)
+                brick.hitPoints -= 1
                 engine.removeEntity(bullet)
             }
         }
