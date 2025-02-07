@@ -3,6 +3,7 @@ package io.bennyoe.powerUps
 import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import io.bennyoe.assets.MusicAsset
 import io.bennyoe.assets.SoundAsset
 import io.bennyoe.audio.AudioService
 import io.bennyoe.ecs.components.GraphicComponent
@@ -22,6 +23,7 @@ class ReverseControlsEffect(private val audioService: AudioService) : PowerUpEff
 
     override fun apply(playerEntity: Entity, engine: Engine) {
         audioService.play(SoundAsset.PU_REVERSE)
+        audioService.play(MusicAsset.REVERSE_MUSIC, 1f)
         engine.entity {
             with<PowerUpTextComponent>{
                 powerUpType = PowerUpType.REVERSE_CONTROL
@@ -42,6 +44,7 @@ class ReverseControlsEffect(private val audioService: AudioService) : PowerUpEff
     override fun deactivate(playerEntity: Entity, engine: Engine) {
         val player = playerEntity[PlayerComponent.mapper]!!
         val graphics = playerEntity[GraphicComponent.mapper]!!
+        audioService.play(MusicAsset.BG_MUSIC, 0.25f)
         player.isReversed = false
         graphics.sprite.run {
             setRegion(playerAtlas.findRegion("bear"))

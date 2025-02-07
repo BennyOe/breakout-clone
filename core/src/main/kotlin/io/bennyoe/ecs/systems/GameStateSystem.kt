@@ -10,6 +10,7 @@ import io.bennyoe.assets.SoundAsset
 import io.bennyoe.assets.TextureAtlasAsset
 import io.bennyoe.audio.AudioService
 import io.bennyoe.ecs.components.BallComponent
+import io.bennyoe.ecs.components.BrickComponent
 import io.bennyoe.ecs.components.GraphicComponent
 import io.bennyoe.ecs.components.PlayerComponent
 import io.bennyoe.ecs.components.PowerUpComponent
@@ -18,6 +19,7 @@ import io.bennyoe.ecs.components.TransformComponent
 import io.bennyoe.powerUps.PowerUpEffect
 import io.bennyoe.screens.GameOverScreen
 import io.bennyoe.screens.GameScreen
+import io.bennyoe.screens.GameWinScreen
 import ktx.ashley.entity
 import ktx.ashley.get
 import ktx.ashley.getSystem
@@ -34,7 +36,7 @@ class GameStateSystem(private val audioService: AudioService, private val game: 
     private var activeMainPowerUp: PowerUpEffect? = null
     private var _score = 0
     val score: Int get() = _score
-    val scoreMultiplier = 1
+    var scoreMultiplier = 1
 
     override fun addedToEngine(engine: Engine?) {
         super.addedToEngine(engine)
@@ -48,6 +50,7 @@ class GameStateSystem(private val audioService: AudioService, private val game: 
         val playerTransformComponent = player[TransformComponent.mapper]!!
         if (playerComponent.lives <= 0) gameOver()
         checkForBallsInGame(playerComponent, playerTransformComponent)
+        if (allBricksDestroyed()) gameWin()
 
         activePowerUps.forEach { activePowerUp ->
             if (activePowerUp.remainingTime <= 0) {
@@ -59,8 +62,12 @@ class GameStateSystem(private val audioService: AudioService, private val game: 
         }
     }
 
-    fun addScore(addedValue: Int){
-        _score+= addedValue
+    private fun allBricksDestroyed(): Boolean {
+        return engine.getEntitiesFor(Family.all(BrickComponent::class.java).get()).size() == 0
+    }
+
+    fun addScore(addedValue: Int) {
+        _score += addedValue
     }
 
     fun isMainPowerUpTypeActive(powerUpType: PowerUpType): Boolean {
@@ -70,8 +77,8 @@ class GameStateSystem(private val audioService: AudioService, private val game: 
 
     fun activatePowerUp(powerUp: PowerUpEffect) {
         val playerEntity = engine.getEntitiesFor(Family.all(PlayerComponent::class.java).get()).first()
-        // TODO don't call apply twice (first time is only needed because of the shooter effect
-        if (powerUp.powerUpType == PowerUpType.SHOOTER) powerUp.apply(playerEntity, engine)
+        // TODO don't call apply twice (first time is only needed because of the shooter and sheep effect
+        if (powerUp.powerUpType == PowerUpType.SHOOTER || powerUp.powerUpType == PowerUpType.SHEEP) powerUp.apply(playerEntity, engine)
         if (!powerUp.isAdditionalEffect && activeMainPowerUp?.powerUpType != powerUp.powerUpType) {
             activeMainPowerUp?.deactivate(playerEntity, engine)
             activeMainPowerUp = powerUp
@@ -141,6 +148,16 @@ class GameStateSystem(private val audioService: AudioService, private val game: 
         game.removeScreen<GameScreen>()
         game.addScreen(GameOverScreen(game))
         game.setScreen<GameOverScreen>()
+    }
+
+    private fun gameWin() {
+        LOG.debug { "GAME WIN" }
+        resetPowerUps()
+        engine.removeAllEntities()
+        audioService.stop(true)
+        game.removeScreen<GameScreen>()
+        game.addScreen(GameWinScreen(game))
+        game.setScreen<GameWinScreen>()
     }
 
     private fun createNewBall(positionX: Float) {

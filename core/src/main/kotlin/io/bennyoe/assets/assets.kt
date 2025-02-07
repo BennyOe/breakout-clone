@@ -67,6 +67,7 @@ enum class SoundAsset(
    PU_SHOOTER("powerups/shooter.mp3"),
    PU_SPEED_UP("powerups/speedUp.mp3"),
    PU_STICKY("powerups/sticky.mp3"),
+    PU_SHEEP("powerups/sheep.mp3"),
 }
 
 enum class MusicAsset(
@@ -75,7 +76,9 @@ enum class MusicAsset(
     val descriptor: AssetDescriptor<Music> = AssetDescriptor("$directory/$name", Music::class.java)
 ) {
     BG_MUSIC("bgMusic.mp3"),
-    SHOOTER_MUSIC("doom_short.mp3")
+    SHOOTER_MUSIC("doom_short.mp3"),
+    SHEEP_MUSIC("sheepMix.mp3"),
+    REVERSE_MUSIC("reverse.mp3"),
 }
 
 enum class BitmapFontAsset(

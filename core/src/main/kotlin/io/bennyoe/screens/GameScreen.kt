@@ -6,7 +6,6 @@ import io.bennyoe.WORLD_HEIGHT
 import io.bennyoe.WORLD_WIDTH
 import io.bennyoe.assets.AnimationAsset
 import io.bennyoe.assets.MusicAsset
-import io.bennyoe.assets.SoundAsset
 import io.bennyoe.assets.TextureAsset
 import io.bennyoe.assets.TextureAtlasAsset
 import io.bennyoe.ecs.components.BrickComponent
@@ -54,7 +53,6 @@ class GameScreen(game: Main, val assets: AssetStorage, val isKeyboard: Boolean) 
         val brickCollisionSystem = BrickCollisionSystem(brickEntities, audioService, gameStateSystem)
 
         audioService.play(MusicAsset.BG_MUSIC, 0.25f)
-        audioService.play(SoundAsset.GAME_WIN)
 
         engine.addSystem(brickCollisionSystem)
         engine.addSystem(ShooterCollisionSystem(gameStateSystem))

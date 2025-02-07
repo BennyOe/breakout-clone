@@ -20,5 +20,6 @@ enum class PowerUpType(val type: String) {
     FAST_BALL("speed-up"),
     REVERSE_CONTROL("reverse"),
     MULTIBALL("multiball"),
-    BONUS_HEART("heart")
+    BONUS_HEART("heart"),
+    SHEEP("sheep")
 }

@@ -15,12 +15,12 @@ import ktx.scene2d.actors
 import ktx.scene2d.label
 import ktx.scene2d.table
 
-class GameOverScreen(game: Main, val assets: AssetStorage = game.assets) : Screen(game) {
-    private val bg = Texture("images/gameover.jpg")
+class GameWinScreen(game: Main, val assets: AssetStorage = game.assets) : Screen(game) {
+    private val bg = Texture("images/win.jpg")
     private lateinit var pressToBegin: Label
 
     init {
-    audioService.play(SoundAsset.GAME_LOSE)
+        audioService.play(SoundAsset.GAME_WIN)
     }
 
     override fun show() {
@@ -31,12 +31,6 @@ class GameOverScreen(game: Main, val assets: AssetStorage = game.assets) : Scree
     private fun setupUserInterface() {
         stage.actors {
             table {
-                defaults().fillX().expandX()
-                label("Game Over", "default") {
-                    setWrap(true)
-                    setAlignment(Align.center)
-                }
-                row()
                 defaults().fillX().expandX()
                 pressToBegin = label("Press space to play with Keyboard", "default") {
                     setWrap(true)
@@ -66,7 +60,7 @@ class GameOverScreen(game: Main, val assets: AssetStorage = game.assets) : Scree
             val isMouseControl = Gdx.input.justTouched()
 
             if (isKeyboardControl || isMouseControl) {
-                game.removeScreen<GameOverScreen>()
+                game.removeScreen<GameWinScreen>()
                 dispose()
                 game.addScreen(GameScreen(game, assets, isKeyboardControl))
                 game.setScreen<GameScreen>()

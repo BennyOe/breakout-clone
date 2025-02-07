@@ -51,6 +51,7 @@ class PowerUpSpawnSystem(
                                 PowerUpType.STICKY_BALL -> setRegion(powerUpTextureAtlas.findRegion("honeypot_trans"))
                                 PowerUpType.EXPLODING_BALL -> setRegion(powerUpTextureAtlas.findRegion("bomb_trans"))
                                 PowerUpType.REVERSE_CONTROL -> setRegion(powerUpTextureAtlas.findRegion("confused_trans"))
+                                PowerUpType.SHEEP -> setRegion(powerUpTextureAtlas.findRegion("sheep"))
                             }
                             setOriginCenter()
                         }

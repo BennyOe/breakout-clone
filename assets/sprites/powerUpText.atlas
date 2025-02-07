@@ -3,7 +3,7 @@ size:2048,2048
 repeat:none
 change-size
 bounds:2,857,1024,466
-multiplier
+sheep
 bounds:2,1325,1024,492
 shooter
 bounds:2,414,1024,441

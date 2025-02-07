@@ -76,4 +76,16 @@ class BrickSystem(
         }
     }
 
+    // Maybe use later
+    private fun getBrickIndex(type: BrickType, brick: BrickComponent): Int {
+        return when (type) {
+            BrickType.BLUE -> type.hitPoints + 1 - brick.hitPoints
+            BrickType.YELLOW -> type.hitPoints + 1 - brick.hitPoints
+            BrickType.GREEN -> type.hitPoints + 1 - brick.hitPoints
+            BrickType.ORANGE -> type.hitPoints + 1 - brick.hitPoints
+            BrickType.RED -> type.hitPoints + 1 - brick.hitPoints
+            BrickType.PURPLE -> type.hitPoints + 1 - brick.hitPoints
+        }
+    }
+
 }

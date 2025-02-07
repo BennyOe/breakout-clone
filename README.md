@@ -16,7 +16,7 @@
     - [x] Reverse paddle
     - [x] fast ball
     - [x] penetration ball
-    - [ ] Mäh multiplier
+    - [x] Mäh multiplier
 
 ### UI
 
@@ -31,8 +31,8 @@
 - [ ] Implement Highscore
 - [ ] Implement Level System (map editor)
 - [x] Implement keyboard controls
-- [ ] Implement hit-points and damage for bricks
-- [ ] Implement different brick types
+- [x] Implement hit-points and damage for bricks
+- [x] Implement different brick types
 
 ### Sound
 
@@ -48,8 +48,8 @@
     - [x] Implement sticky paddle sound
     - [x] Implement remove sticky paddle sound
     - [x] Implement explosion sound
-    - [ ] Implement reverse music
-    - [ ] Implement Mäh multiplier sound
+    - [x] Implement reverse music
+    - [x] Implement Mäh multiplier sound
 - [x] Implement background music
 
 ### Graphics

@@ -15,6 +15,7 @@ import io.bennyoe.powerUps.MultiballEffect
 import io.bennyoe.powerUps.PenetrationEffect
 import io.bennyoe.powerUps.PowerUpEffect
 import io.bennyoe.powerUps.ReverseControlsEffect
+import io.bennyoe.powerUps.SheepEffect
 import io.bennyoe.powerUps.ShooterEffect
 import io.bennyoe.powerUps.StickyEffect
 import ktx.ashley.allOf
@@ -63,6 +64,7 @@ class PowerUpCollisionSystem(
             PowerUpType.STICKY_BALL -> StickyEffect(audioService)
             PowerUpType.EXPLODING_BALL -> ExplodingEffect(assets, audioService)
             PowerUpType.REVERSE_CONTROL -> ReverseControlsEffect(audioService)
+            PowerUpType.SHEEP -> SheepEffect(audioService, engine)
         }
     }
 }
