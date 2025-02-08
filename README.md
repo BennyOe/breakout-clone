@@ -57,6 +57,10 @@
 - [x] Implement explosion animation
 - [x] Implement powerup text animation
 
+### Code
+
+- [ ] Implement asset manager
+
 ## Used resources
 
 - Vecteezy.com

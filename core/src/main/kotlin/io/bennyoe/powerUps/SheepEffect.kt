@@ -23,7 +23,9 @@ import ktx.ashley.entity
 import ktx.ashley.get
 import ktx.ashley.getSystem
 import ktx.ashley.with
+import ktx.log.logger
 
+private val LOG = logger<SheepEffect>()
 class SheepEffect(private val audioService: AudioService, private val engine: Engine) : PowerUpEffect() {
     override val isAdditionalEffect = false
     override val powerUpType = PowerUpType.SHEEP
@@ -49,13 +51,13 @@ class SheepEffect(private val audioService: AudioService, private val engine: En
 
         val graphics = playerEntity[GraphicComponent.mapper]!!
 
-        if (!gameStateSystem.isMainPowerUpTypeActive(this.powerUpType)) {
+        if (!audioService.isMusicTypePlaying(MusicAsset.SHEEP_MUSIC)) {
             audioService.play(MusicAsset.SHEEP_MUSIC, 1f)
+            startColorChange(engine)
             graphics.sprite.run {
                 setRegion(playerAtlas.findRegion("sheep"))
             }
         }
-        startColorChange(engine)
     }
 
     private fun startColorChange(engine: Engine) {
@@ -82,6 +84,7 @@ class SheepEffect(private val audioService: AudioService, private val engine: En
 
     override fun deactivate(playerEntity: Entity, engine: Engine) {
         colorJob?.cancel()
+        deactivateColorOverlay()
 
         val graphics = playerEntity[GraphicComponent.mapper]!!
         val playerTransform = playerEntity[TransformComponent.mapper]!!

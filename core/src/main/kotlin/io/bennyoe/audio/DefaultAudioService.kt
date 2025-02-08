@@ -71,6 +71,7 @@ class DefaultAudioService(val assets: AssetStorage) : AudioService {
             this.isLooping = loop
             play()
         }
+        currentMusicAsset = musicAsset
     }
 
     override fun pause() {
@@ -94,5 +95,9 @@ class DefaultAudioService(val assets: AssetStorage) : AudioService {
             }
             soundRequests.clear()
         }
+    }
+
+    override fun isMusicTypePlaying(musicAsset: MusicAsset): Boolean {
+        return currentMusicAsset == musicAsset
     }
 }

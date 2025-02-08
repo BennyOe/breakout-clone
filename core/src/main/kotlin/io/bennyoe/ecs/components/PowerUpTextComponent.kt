@@ -7,7 +7,7 @@ import ktx.ashley.mapperFor
 class PowerUpTextComponent() : Pool.Poolable, Component {
     var powerUpType: PowerUpType = PowerUpType.EXPLODING_BALL
     var animationTime: Float = 0f
-    var maxSize: Float = 12f
+    var maxSize: Float = 22f
     var duration: Float = 1.7f
 
     companion object {
@@ -17,7 +17,7 @@ class PowerUpTextComponent() : Pool.Poolable, Component {
     override fun reset() {
         powerUpType = PowerUpType.EXPLODING_BALL
         animationTime = 0f
-        maxSize = 9f
+        maxSize = 22f
         duration = 1.7f
     }
 }

@@ -77,8 +77,6 @@ class GameStateSystem(private val audioService: AudioService, private val game: 
 
     fun activatePowerUp(powerUp: PowerUpEffect) {
         val playerEntity = engine.getEntitiesFor(Family.all(PlayerComponent::class.java).get()).first()
-        // TODO don't call apply twice (first time is only needed because of the shooter and sheep effect
-        if (powerUp.powerUpType == PowerUpType.SHOOTER || powerUp.powerUpType == PowerUpType.SHEEP) powerUp.apply(playerEntity, engine)
         if (!powerUp.isAdditionalEffect && activeMainPowerUp?.powerUpType != powerUp.powerUpType) {
             activeMainPowerUp?.deactivate(playerEntity, engine)
             activeMainPowerUp = powerUp
@@ -146,7 +144,7 @@ class GameStateSystem(private val audioService: AudioService, private val game: 
         engine.removeAllEntities()
         audioService.stop(true)
         game.removeScreen<GameScreen>()
-        game.addScreen(GameOverScreen(game))
+        game.addScreen(GameOverScreen(game, score))
         game.setScreen<GameOverScreen>()
     }
 

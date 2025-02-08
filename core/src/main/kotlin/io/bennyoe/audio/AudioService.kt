@@ -14,4 +14,5 @@ interface AudioService {
     fun resume()
     fun stop(clearSounds: Boolean = true)
     fun update()
+    fun isMusicTypePlaying(musicAsset: MusicAsset): Boolean
 }

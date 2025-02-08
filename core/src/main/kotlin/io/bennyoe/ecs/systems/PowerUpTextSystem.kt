@@ -19,6 +19,7 @@ private val LOG = logger<PowerUpTextSystem>()
 
 class PowerUpTextSystem() : EntitySystem(), EntityListener {
     private val powerUpTextAtlas by lazy { TextureAtlas("sprites/powerUpText.atlas") }
+    private var aspectRatio = 0f
 
     override fun addedToEngine(engine: Engine) {
         super.addedToEngine(engine)
@@ -34,6 +35,7 @@ class PowerUpTextSystem() : EntitySystem(), EntityListener {
         val powerUp = entity[PowerUpTextComponent.mapper]!!
         val transform = entity[TransformComponent.mapper]!!
         val text = powerUpTextAtlas.findRegion(powerUp.powerUpType.type)
+        aspectRatio = text.regionWidth.toFloat() / text.regionHeight.toFloat()
         graphic.setSpriteRegion(text)
 
         transform.setInitialPosition(
@@ -55,13 +57,13 @@ class PowerUpTextSystem() : EntitySystem(), EntityListener {
                 val progress = (powerUp.animationTime / powerUp.duration).coerceIn(0f, 1f)
                 val interpolatedSize = Interpolation.fastSlow.apply(1f, powerUp.maxSize, progress)
 
-                transform.size.set(interpolatedSize, interpolatedSize)
+                val interpolatedHeight = interpolatedSize / aspectRatio
+                transform.size.set(interpolatedSize, interpolatedHeight)
                 val offsetX = (interpolatedSize - transform.size.x) / 2
-                val offsetY = (interpolatedSize - transform.size.y) / 2
 
                 transform.interpolatedPosition.set(
-                    (WORLD_WIDTH / 2) - offsetX - 4,
-                    (WORLD_HEIGHT / 2) - offsetY,
+                    (WORLD_WIDTH / 2) - offsetX - 9,
+                    (WORLD_HEIGHT / 2) + 4,
                     transform.position.z
                 )
 

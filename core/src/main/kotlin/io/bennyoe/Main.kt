@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Application.LOG_DEBUG
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -48,6 +49,7 @@ class Main : KtxGame<KtxScreen>() {
     val assets: AssetStorage by lazy {
         AssetStorage()
     }
+    val preferences: Preferences by lazy { Gdx.app.getPreferences("bearout") }
     val audioService: AudioService by lazy { DefaultAudioService(assets) }
     val engine: Engine by lazy {
         PooledEngine().apply {
@@ -73,6 +75,8 @@ class Main : KtxGame<KtxScreen>() {
             createSkin(assets)
             addScreen(LoadingScreen(this@Main, assets))
             setScreen<LoadingScreen>()
+//            addScreen(GameOverScreen(this@Main, assets))
+//            setScreen<GameOverScreen>()
         }
     }
 
