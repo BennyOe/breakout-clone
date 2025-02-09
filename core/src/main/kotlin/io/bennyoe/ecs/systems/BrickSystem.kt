@@ -41,7 +41,7 @@ class BrickSystem(
             engine.removeEntity(entity)
         }
 
-        if (brick.hitPoints > 0) {
+        if (brick.hitPoints > 0 && brick.type.destructible) {
             graphic.sprite.run {
                 setRegion(brickAtlas.findRegion(brick.type.atlasKey, brick.type.hitPoints + 1 - brick.hitPoints))
             }
@@ -60,7 +60,7 @@ class BrickSystem(
                         val brickComponent = with<BrickComponent>() {
                             hasPowerUp = if (Math.random() >= 0.8) true else false
                             powerUpType = PowerUpType.entries.toTypedArray().random()
-                            type = BrickType.entries.random()
+                            type = BrickType.entries.filter { it.destructible }.random()
                             hitPoints = type.hitPoints
                         }
                         with<GraphicComponent> {

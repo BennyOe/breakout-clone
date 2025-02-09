@@ -30,7 +30,7 @@ class LevelDesignerScreen(game: Main, private val assets: AssetStorage) : Screen
     private val columns = GAME_WIDTH.toInt() / 2
     private val rows = GAME_HEIGHT.toInt()
 
-    private val levelGrid = Array(columns) { Array(rows) { BrickType.NONE } }
+    private val levelGrid = Array(columns) { Array(rows) { BrickType.BLUE } }
     private var selectedBrick: BrickType? = null
 
     override fun show() {
@@ -61,7 +61,7 @@ class LevelDesignerScreen(game: Main, private val assets: AssetStorage) : Screen
             val gridY = (worldY / cellHeight).toInt()
 
             if (gridX in 0 until columns && gridY in 0 until rows) {
-                levelGrid[gridX][gridY] = selectedBrick ?: BrickType.NONE
+                levelGrid[gridX][gridY] = selectedBrick ?: BrickType.BLUE
             }
             LOG.debug { selectedBrick.toString() }
         }
