@@ -68,6 +68,11 @@ class LoadingScreen(game: Main, val assets: AssetStorage = game.assets) : Screen
                     setWrap(true)
                     setAlignment(Align.center)
                 }
+                row()
+                pressToBegin = label("Press H to show the high-score", "default") {
+                    setWrap(true)
+                    setAlignment(Align.center)
+                }
                 setFillParent(true)
                 pack()
             }
@@ -86,6 +91,11 @@ class LoadingScreen(game: Main, val assets: AssetStorage = game.assets) : Screen
         if (assets.progress.isFinished) {
             val isKeyboardControl = Gdx.input.isKeyJustPressed(Keys.SPACE)
             val isMouseControl = Gdx.input.justTouched()
+            if (Gdx.input.isKeyJustPressed(Keys.H)) {
+                game.removeScreen<LoadingScreen>()
+                game.addScreen(GameOverScreen(game, 0))
+                game.setScreen<GameOverScreen>()
+            }
 
             if (isKeyboardControl || isMouseControl) {
                 game.removeScreen<LoadingScreen>()
@@ -103,6 +113,6 @@ class LoadingScreen(game: Main, val assets: AssetStorage = game.assets) : Screen
 
     private fun assetsLoaded() {
         pressToBegin += forever(sequence(Actions.fadeIn(0.5f) + fadeOut(0.5f)))
-        audioService.play(MusicAsset.BG_MUSIC, 1f)
+            audioService.play(MusicAsset.BG_MUSIC, 1f)
     }
 }

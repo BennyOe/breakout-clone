@@ -32,11 +32,11 @@ fun createSkin(assetStorage: AssetStorage) {
 
 fun createColorDrawable(r: Float, g: Float, b: Float, a: Float): TextureRegionDrawable {
     val pixmap = Pixmap(1, 1, Pixmap.Format.RGBA8888)
-    pixmap.setColor(color(r, g, b, a)) // Farbe setzen
+    pixmap.setColor(color(r, g, b, a))
     pixmap.fill()
 
     val texture = Texture(pixmap)
-    pixmap.dispose() // Speicher freigeben
+    pixmap.dispose()
 
     return TextureRegionDrawable(TextureRegion(texture))
 }

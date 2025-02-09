@@ -94,6 +94,34 @@ class DebugSystem(
                 }
             }
 
+            Gdx.input.isKeyJustPressed(Input.Keys.NUM_6) -> {
+                engine.entity {
+                    with<PowerUpComponent>() {
+                        powerUpType = PowerUpType.REVERSE_CONTROL
+                    }
+                    with<TransformComponent>() {
+                        setInitialPosition(8f, 8f, 0f)
+                    }
+                    with<GraphicComponent> {
+                        sprite.run { setRegion(powerUpTextureAtlas.findRegion("confused_trans")) }
+                    }
+                }
+            }
+
+            Gdx.input.isKeyJustPressed(Input.Keys.NUM_7) -> {
+                engine.entity {
+                    with<PowerUpComponent>() {
+                        powerUpType = PowerUpType.STICKY_BALL
+                    }
+                    with<TransformComponent>() {
+                        setInitialPosition(8f, 8f, 0f)
+                    }
+                    with<GraphicComponent> {
+                        sprite.run { setRegion(powerUpTextureAtlas.findRegion("honeypot_trans")) }
+                    }
+                }
+            }
+
             Gdx.input.isKeyJustPressed(Input.Keys.NUM_0) -> {
                 engine.removeAllEntities(Family.all(BrickComponent::class.java).get())
             }

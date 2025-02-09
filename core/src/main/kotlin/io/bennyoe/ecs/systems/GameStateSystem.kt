@@ -29,12 +29,17 @@ import java.util.concurrent.CopyOnWriteArrayList
 
 private val LOG = logger<GameStateSystem>()
 
-class GameStateSystem(private val audioService: AudioService, private val game: Main, val ballsAtlas: TextureAtlas) : EntitySystem() {
+class GameStateSystem(
+    private val audioService: AudioService,
+    private val game: Main,
+    private val ballsAtlas: TextureAtlas,
+    private var _score: Int = 0
+) :
+    EntitySystem() {
     private val playerAtlas by lazy { game.assets[TextureAtlasAsset.PLAYER.descriptor] }
     private val bricksAtlas by lazy { game.assets[TextureAtlasAsset.BRIKCS.descriptor] }
     private val activePowerUps = CopyOnWriteArrayList<PowerUpEffect>()
     private var activeMainPowerUp: PowerUpEffect? = null
-    private var _score = 0
     val score: Int get() = _score
     var scoreMultiplier = 1
 
@@ -154,7 +159,7 @@ class GameStateSystem(private val audioService: AudioService, private val game: 
         engine.removeAllEntities()
         audioService.stop(true)
         game.removeScreen<GameScreen>()
-        game.addScreen(GameWinScreen(game))
+        game.addScreen(GameWinScreen(game, score))
         game.setScreen<GameWinScreen>()
     }
 

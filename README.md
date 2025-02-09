@@ -28,7 +28,7 @@
 
 - [x] Implement Hearts
 - [x] Implement Score
-- [ ] Implement Highscore
+- [x] Implement Highscore
 - [ ] Implement Level System (map editor)
 - [x] Implement keyboard controls
 - [x] Implement hit-points and damage for bricks

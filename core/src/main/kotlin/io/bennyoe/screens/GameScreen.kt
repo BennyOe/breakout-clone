@@ -30,12 +30,12 @@ import kotlin.math.min
 private val LOG = logger<GameScreen>()
 private const val MAX_DELTA_TIME = 1 / 20f
 
-class GameScreen(game: Main, val assets: AssetStorage, val isKeyboard: Boolean) : Screen(game) {
+class GameScreen(game: Main, val assets: AssetStorage, val isKeyboard: Boolean, private val score: Int = 0) : Screen(game) {
     private val background = assets[TextureAsset.BACKGROUND.descriptor]
     private val ballsAtlas by lazy { assets[TextureAtlasAsset.BALLS.descriptor] }
     private val powerUpsAtlas by lazy { assets[TextureAtlasAsset.POWERUPS.descriptor] }
     private val explosionAtlas by lazy { assets[AnimationAsset.EXPLOSION.descriptor] }
-    private val gameStateSystem by lazy { GameStateSystem(audioService, game, ballsAtlas) }
+    private val gameStateSystem by lazy { GameStateSystem(audioService, game, ballsAtlas, score) }
     private val player by lazy { engine.getEntitiesFor(allOf(PlayerComponent::class).get()).firstOrNull() }
     private val ui by lazy { GameUI() }
 

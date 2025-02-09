@@ -81,14 +81,21 @@ class MoveSystem(private val audioService: AudioService) : IteratingSystem(
             if (ball.isSticky) {
                 ballFollowsPlayer(transform, playerTransform, ball)
             } else {
-                transform.position.x += if (ball.xSpeed > 0) (ball.xSpeed * deltaTime * ball.acceleration + ball.boost) else (ball.xSpeed * deltaTime * ball.acceleration - ball.boost)
-                transform.position.y += if (ball.ySpeed > 0) (ball.ySpeed * deltaTime * ball.acceleration + ball.boost) else (ball.ySpeed * deltaTime * ball.acceleration - ball.boost)
+                transform.position.x += if (ball.xSpeed > 0) (ball.xSpeed * deltaTime * ball.acceleration) + ball.boost else (ball.xSpeed * deltaTime * ball.acceleration - ball.boost)
+                transform.position.y += if (ball.ySpeed > 0) (ball.ySpeed * deltaTime * ball.acceleration) + ball.boost else (ball.ySpeed * deltaTime * ball.acceleration - ball.boost)
 
                 // safety that the ball is not stuck
 //                LOG.debug { "xSpeed: ${ball.xSpeed} ySpeed: ${ball.ySpeed}" }
                 // TODO maybe messing up the direction change of the ball
-                if (ball.xSpeed in 0f..0.2f) ball.xSpeed = 1f
-                if (ball.xSpeed in -0.2f..0f) ball.xSpeed = -1f
+                    // TODO implement new logic because this is not working
+                if (ball.xSpeed in 0f..5.2f) {
+                    ball.xSpeed = 8f
+                    LOG.debug { "x-speed too slow" }
+                }
+                if (ball.xSpeed in -5.2f..0f) {
+                    ball.xSpeed = -8f
+                    LOG.debug { "x-speed too slow" }
+                }
                 if (ball.ySpeed in 0f..0.2f) ball.ySpeed = 1f
                 if (ball.ySpeed in -0.2f..0f) ball.ySpeed = -1f
 

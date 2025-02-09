@@ -15,7 +15,11 @@ import ktx.scene2d.actors
 import ktx.scene2d.label
 import ktx.scene2d.table
 
-class GameWinScreen(game: Main, val assets: AssetStorage = game.assets) : Screen(game) {
+class GameWinScreen(
+    game: Main,
+    private val score: Int,
+    val assets: AssetStorage = game.assets,
+) : Screen(game) {
     private val bg = Texture("images/win.jpg")
     private lateinit var pressToBegin: Label
 
@@ -62,7 +66,7 @@ class GameWinScreen(game: Main, val assets: AssetStorage = game.assets) : Screen
             if (isKeyboardControl || isMouseControl) {
                 game.removeScreen<GameWinScreen>()
                 dispose()
-                game.addScreen(GameScreen(game, assets, isKeyboardControl))
+                game.addScreen(GameScreen(game, assets, isKeyboardControl, score))
                 game.setScreen<GameScreen>()
             }
         stage.run {
