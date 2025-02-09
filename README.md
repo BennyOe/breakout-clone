@@ -30,6 +30,14 @@
 - [x] Implement Score
 - [x] Implement Highscore
 - [ ] Implement Level System (map editor)
+    - [ ] Implement Screen
+    - [ ] Implement Gridraster
+    - [ ] Implement Bricks
+    - [ ] Implement Powerups
+    - [ ] Implement Klick and set system
+    - [ ] Implement Save and Load
+        - [ ] Implement JSON import/export
+    - [ ] Implement Level selection
 - [x] Implement keyboard controls
 - [x] Implement hit-points and damage for bricks
 - [x] Implement different brick types
@@ -59,7 +67,7 @@
 
 ### Code
 
-- [ ] Implement asset manager
+- [x] Implement asset manager
 
 ## Used resources
 

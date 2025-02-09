@@ -19,7 +19,6 @@ import io.bennyoe.audio.AudioService
 import io.bennyoe.ecs.components.BulletComponent
 import io.bennyoe.ecs.components.PlayerComponent
 import io.bennyoe.utillity.Mapper.Companion.mapToRange
-import ktx.ashley.getSystem
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -37,7 +36,6 @@ class MoveSystem(private val audioService: AudioService) : IteratingSystem(
     ).get()
 
 ) {
-    private val gameStateSystem by lazy { engine.getSystem<GameStateSystem>() }
     private var accumulator = 0f
 
     override fun update(deltaTime: Float) {
@@ -74,36 +72,19 @@ class MoveSystem(private val audioService: AudioService) : IteratingSystem(
         val bullet = entity[BulletComponent.mapper]
         val playerEntity = engine.getEntitiesFor(allOf(PlayerComponent::class).get())[0]
         val playerTransform = playerEntity[TransformComponent.mapper]!!
-
-
 //        LOG.info { "Ball Speed: ${ball?.xSpeed}" }
         if (ball != null) {
             if (ball.isSticky) {
                 ballFollowsPlayer(transform, playerTransform, ball)
             } else {
+                preventHorizontalBallMovement(ball)
+
                 transform.position.x += if (ball.xSpeed > 0) (ball.xSpeed * deltaTime * ball.acceleration) + ball.boost else (ball.xSpeed * deltaTime * ball.acceleration - ball.boost)
                 transform.position.y += if (ball.ySpeed > 0) (ball.ySpeed * deltaTime * ball.acceleration) + ball.boost else (ball.ySpeed * deltaTime * ball.acceleration - ball.boost)
 
-                // safety that the ball is not stuck
-//                LOG.debug { "xSpeed: ${ball.xSpeed} ySpeed: ${ball.ySpeed}" }
-                // TODO maybe messing up the direction change of the ball
-                    // TODO implement new logic because this is not working
-                if (ball.xSpeed in 0f..5.2f) {
-                    ball.xSpeed = 8f
-                    LOG.debug { "x-speed too slow" }
-                }
-                if (ball.xSpeed in -5.2f..0f) {
-                    ball.xSpeed = -8f
-                    LOG.debug { "x-speed too slow" }
-                }
-                if (ball.ySpeed in 0f..0.2f) ball.ySpeed = 1f
-                if (ball.ySpeed in -0.2f..0f) ball.ySpeed = -1f
-
                 if (transform.position.y < -1) {
                     // ball is lost
-                    if (gameStateSystem.score >= 20) gameStateSystem.addScore(-20) else gameStateSystem.addScore(-gameStateSystem.score)
                     engine.removeEntity(entity)
-                    LOG.debug { "Ball lost" }
                 }
             }
         }
@@ -141,5 +122,22 @@ class MoveSystem(private val audioService: AudioService) : IteratingSystem(
             ball.ySpeed = 6 * sin(angle) * 1.8f
             ball.offsetXToPlayer = 0f
         }
+    }
+
+    private fun preventHorizontalBallMovement(ball: BallComponent) {
+        // safety that the ball is not stuck
+//                LOG.debug { "xSpeed: ${ball.xSpeed} ySpeed: ${ball.ySpeed}" }
+        // TODO maybe messing up the direction change of the ball
+        // TODO implement new logic because this is not working
+        if (ball.xSpeed in 0f..5.2f) {
+            ball.xSpeed = 8f
+            LOG.debug { "x-speed too slow" }
+        }
+        if (ball.xSpeed in -5.2f..0f) {
+            ball.xSpeed = -8f
+            LOG.debug { "x-speed too slow" }
+        }
+        if (ball.ySpeed in 0f..0.2f) ball.ySpeed = 1f
+        if (ball.ySpeed in -0.2f..0f) ball.ySpeed = -1f
     }
 }

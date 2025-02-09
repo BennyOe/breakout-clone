@@ -42,16 +42,16 @@ class PowerUpSpawnSystem(
                     with<GraphicComponent> {
                         sprite.run {
                             when(brick.powerUpType) {
-                                PowerUpType.SHOOTER -> setRegion(powerUpTextureAtlas.findRegion("flint_pxl_sml"))
-                                PowerUpType.PENETRATION -> setRegion(powerUpTextureAtlas.findRegion("muscle_trans"))
-                                PowerUpType.FAST_BALL -> setRegion(powerUpTextureAtlas.findRegion("coffee_mug"))
-                                PowerUpType.MULTIBALL -> setRegion(powerUpTextureAtlas.findRegion("multiball_rounded"))
-                                PowerUpType.BONUS_HEART -> setRegion(powerUpTextureAtlas.findRegion("heart"))
-                                PowerUpType.CHANGE_SIZE -> setRegion(powerUpTextureAtlas.findRegion("pizza_trans"))
-                                PowerUpType.STICKY_BALL -> setRegion(powerUpTextureAtlas.findRegion("honeypot_trans"))
-                                PowerUpType.EXPLODING_BALL -> setRegion(powerUpTextureAtlas.findRegion("bomb_trans"))
-                                PowerUpType.REVERSE_CONTROL -> setRegion(powerUpTextureAtlas.findRegion("confused_trans"))
-                                PowerUpType.SHEEP -> setRegion(powerUpTextureAtlas.findRegion("sheep"))
+                                PowerUpType.SHOOTER -> setRegion(powerUpTextureAtlas.findRegion(PowerUpType.SHOOTER.atlasKey))
+                                PowerUpType.PENETRATION -> setRegion(powerUpTextureAtlas.findRegion(PowerUpType.PENETRATION.atlasKey))
+                                PowerUpType.FAST_BALL -> setRegion(powerUpTextureAtlas.findRegion(PowerUpType.FAST_BALL.atlasKey))
+                                PowerUpType.MULTIBALL -> setRegion(powerUpTextureAtlas.findRegion(PowerUpType.MULTIBALL.atlasKey))
+                                PowerUpType.BONUS_HEART -> setRegion(powerUpTextureAtlas.findRegion(PowerUpType.BONUS_HEART.atlasKey))
+                                PowerUpType.CHANGE_SIZE -> setRegion(powerUpTextureAtlas.findRegion(PowerUpType.CHANGE_SIZE.atlasKey))
+                                PowerUpType.STICKY_BALL -> setRegion(powerUpTextureAtlas.findRegion(PowerUpType.STICKY_BALL.atlasKey))
+                                PowerUpType.EXPLODING_BALL -> setRegion(powerUpTextureAtlas.findRegion(PowerUpType.EXPLODING_BALL.atlasKey))
+                                PowerUpType.REVERSE_CONTROL -> setRegion(powerUpTextureAtlas.findRegion(PowerUpType.REVERSE_CONTROL.atlasKey))
+                                PowerUpType.SHEEP -> setRegion(powerUpTextureAtlas.findRegion(PowerUpType.SHEEP.atlasKey))
                             }
                             setOriginCenter()
                         }

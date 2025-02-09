@@ -136,6 +136,7 @@ class GameStateSystem(
 
     private fun resetRound(playerTransformComponent: TransformComponent) {
         LOG.debug { "New Round started" }
+        if (score >= 20) addScore(-20) else addScore(-score)
         audioService.play(SoundAsset.BALL_LOST)
         resetPowerUps()
         engine.removeAllEntities(Family.all(PowerUpComponent::class.java).get())

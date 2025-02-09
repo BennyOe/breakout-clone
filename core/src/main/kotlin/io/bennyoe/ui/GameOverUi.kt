@@ -39,6 +39,7 @@ class GameOverUi(
             messageText = "Enter name"
         }
 
+        // TODO show only if the score is higher or equal than the last in the highscore list
         nameInput.setTextFieldListener { _, key ->
             if (key == '\n' || key == '\r') { // Wenn Enter gedrückt wird
                 val playerName = nameInput.text.trim()

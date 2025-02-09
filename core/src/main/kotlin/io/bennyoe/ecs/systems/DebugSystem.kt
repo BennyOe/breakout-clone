@@ -61,7 +61,7 @@ class DebugSystem(
                         setInitialPosition(8f, 8f, 0f)
                     }
                     with<GraphicComponent> {
-                        sprite.run { setRegion(powerUpTextureAtlas.findRegion("muscle_trans")) }
+                        sprite.run { setRegion(powerUpTextureAtlas.findRegion(PowerUpType.PENETRATION.atlasKey)) }
                     }
                 }
             }
@@ -75,7 +75,7 @@ class DebugSystem(
                         setInitialPosition(8f, 8f, 0f)
                     }
                     with<GraphicComponent> {
-                        sprite.run { setRegion(powerUpTextureAtlas.findRegion("flint_pxl_sml")) }
+                        sprite.run { setRegion(powerUpTextureAtlas.findRegion(PowerUpType.SHOOTER.atlasKey)) }
                     }
                 }
             }
@@ -89,7 +89,7 @@ class DebugSystem(
                         setInitialPosition(8f, 8f, 0f)
                     }
                     with<GraphicComponent> {
-                        sprite.run { setRegion(powerUpTextureAtlas.findRegion("sheep")) }
+                        sprite.run { setRegion(powerUpTextureAtlas.findRegion(PowerUpType.SHEEP.atlasKey)) }
                     }
                 }
             }
@@ -103,7 +103,7 @@ class DebugSystem(
                         setInitialPosition(8f, 8f, 0f)
                     }
                     with<GraphicComponent> {
-                        sprite.run { setRegion(powerUpTextureAtlas.findRegion("confused_trans")) }
+                        sprite.run { setRegion(powerUpTextureAtlas.findRegion(PowerUpType.REVERSE_CONTROL.atlasKey)) }
                     }
                 }
             }
@@ -117,7 +117,7 @@ class DebugSystem(
                         setInitialPosition(8f, 8f, 0f)
                     }
                     with<GraphicComponent> {
-                        sprite.run { setRegion(powerUpTextureAtlas.findRegion("honeypot_trans")) }
+                        sprite.run { setRegion(powerUpTextureAtlas.findRegion(PowerUpType.STICKY_BALL.atlasKey)) }
                     }
                 }
             }

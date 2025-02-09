@@ -11,6 +11,7 @@ enum class BrickType(
     ORANGE("orange_brick", 6),
     RED("red_brick", 8),
     PURPLE("purple_brick", 10),
-//    STONE("stone_brick", 1, false),
+    STONE("stone_brick", 1, false),
+    NONE("empty_brick", 0)
 //    WOOD("wood_brick", 1, false)
 }

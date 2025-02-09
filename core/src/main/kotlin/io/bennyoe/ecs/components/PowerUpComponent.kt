@@ -11,15 +11,15 @@ class PowerUpComponent() : Component {
     }
 }
 
-enum class PowerUpType(val type: String) {
-    CHANGE_SIZE("change-size"),
-    EXPLODING_BALL("explosion"),
-    STICKY_BALL("sticky"),
-    PENETRATION("penetration"),
-    SHOOTER("shooter"),
-    FAST_BALL("speed-up"),
-    REVERSE_CONTROL("reverse"),
-    MULTIBALL("multiball"),
-    BONUS_HEART("heart"),
-    SHEEP("sheep")
+enum class PowerUpType(val type: String, val atlasKey: String) {
+    CHANGE_SIZE("change-size", "pizza_trans"),
+    EXPLODING_BALL("explosion", "bomb_trans"),
+    STICKY_BALL("sticky", "honeypot_trans"),
+    PENETRATION("penetration", "muscle_trans"),
+    SHOOTER("shooter", "flint_pxl_sml"),
+    FAST_BALL("speed-up", "coffee_mug"),
+    REVERSE_CONTROL("reverse", "confused_trans"),
+    MULTIBALL("multiball", "multiball_rounded"),
+    BONUS_HEART("heart", "heart"),
+    SHEEP("sheep", "sheep")
 }

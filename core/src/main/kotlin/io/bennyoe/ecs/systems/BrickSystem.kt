@@ -85,6 +85,8 @@ class BrickSystem(
             BrickType.ORANGE -> type.hitPoints + 1 - brick.hitPoints
             BrickType.RED -> type.hitPoints + 1 - brick.hitPoints
             BrickType.PURPLE -> type.hitPoints + 1 - brick.hitPoints
+            BrickType.STONE -> type.hitPoints + 1 - brick.hitPoints
+            BrickType.NONE -> type.hitPoints + 1 - brick.hitPoints
         }
     }
 

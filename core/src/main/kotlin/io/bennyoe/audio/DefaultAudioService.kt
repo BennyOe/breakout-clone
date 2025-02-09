@@ -21,7 +21,7 @@ class DefaultAudioService(val assets: AssetStorage) : AudioService {
     override fun play(soundAsset: SoundAsset, volume: Float) {
         when {
             soundAsset in soundRequests -> {
-                LOG.debug { "Sound is played twice" }
+//                LOG.debug { "Sound is played twice" }
                 soundRequests[soundAsset]?.let { request ->
                     request.volume = max(request.volume, volume)
                 }
@@ -40,12 +40,12 @@ class DefaultAudioService(val assets: AssetStorage) : AudioService {
                     return
                 } else if (soundAsset !in soundCache) {
                     // cache sound for faster access in the future
-                    LOG.debug { "Adding sound $soundAsset to sound cache" }
+//                    LOG.debug { "Adding sound $soundAsset to sound cache" }
                     soundCache[soundAsset] = assets[soundAsset.descriptor]
                 }
 
                 // get request instance from pool and add it to the queue
-                LOG.debug { "New sound request for sound $soundAsset. Free request objects: ${soundRequestPool.free}" }
+//                LOG.debug { "New sound request for sound $soundAsset. Free request objects: ${soundRequestPool.free}" }
                 soundRequests[soundAsset] = soundRequestPool.obtain().apply {
                     this.soundAsset = soundAsset
                     this.volume = volume
