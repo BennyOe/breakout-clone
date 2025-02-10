@@ -30,12 +30,19 @@
 - [x] Implement Score
 - [x] Implement Highscore
 - [ ] Implement Level System (map editor)
-    - [ ] Implement Screen
-    - [ ] Implement Gridraster
-    - [ ] Implement Bricks
-    - [ ] Implement Powerups
-    - [ ] Implement Klick and set system
-    - [ ] Implement Save and Load
+    - [c] Implement Screen
+    - [x] Implement Gridraster
+    - [x] Implement Bricks
+    - [x] Implement Powerups
+    - [x] Implement Klick and set system
+    - [c] Implement Save and Load
+    - [ ] Implement Level selection
+    - [ ] Implement deselect bricks ans powerups
+    - [ ] Implement Save button
+    - [ ] Implement Load button
+    - [ ] Implement Set level name
+    - [ ] Implement Set level author
+    - [ ] Implement Set level difficulty
         - [ ] Implement JSON import/export
     - [ ] Implement Level selection
 - [x] Implement keyboard controls

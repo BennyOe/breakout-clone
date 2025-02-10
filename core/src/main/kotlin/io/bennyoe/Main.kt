@@ -19,7 +19,7 @@ import io.bennyoe.ecs.systems.PowerUpTextSystem
 import io.bennyoe.ecs.systems.RenderSystem
 import io.bennyoe.ecs.systems.SimpleCollisionSystem
 import io.bennyoe.ecs.systems.TimerSystem
-import io.bennyoe.screens.LoadingScreen
+import io.bennyoe.screens.LevelDesignerScreen
 import io.bennyoe.ui.createSkin
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
@@ -74,12 +74,12 @@ class Main : KtxGame<KtxScreen>() {
         KtxAsync.launch {
             assetRefs.joinAll()
             createSkin(assets)
-            addScreen(LoadingScreen(this@Main, assets))
-            setScreen<LoadingScreen>()
+//            addScreen(LoadingScreen(this@Main, assets))
+//            setScreen<LoadingScreen>()
 //            addScreen(GameOverScreen(this@Main, assets))
 //            setScreen<GameOverScreen>()
-//            addScreen(LevelDesignerScreen(this@Main, assets))
-//            setScreen<LevelDesignerScreen>()
+            addScreen(LevelDesignerScreen(this@Main, assets))
+            setScreen<LevelDesignerScreen>()
         }
     }
 
