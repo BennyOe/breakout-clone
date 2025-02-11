@@ -89,6 +89,11 @@ class LoadingScreen(game: Main, val assets: AssetStorage = game.assets) : Screen
         }
 
         if (assets.progress.isFinished) {
+            if (Gdx.input.isKeyJustPressed(Keys.L)){
+                game.removeScreen<LoadingScreen>()
+                game.addScreen(LevelDesignerScreen(game, assets))
+                game.setScreen<LevelDesignerScreen>()
+            }
             val isKeyboardControl = Gdx.input.isKeyJustPressed(Keys.SPACE)
             val isMouseControl = Gdx.input.justTouched()
             if (Gdx.input.isKeyJustPressed(Keys.H)) {

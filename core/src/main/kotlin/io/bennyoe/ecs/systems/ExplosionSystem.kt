@@ -36,7 +36,8 @@ class ExplosionSystem(
                 gameStateSystem.addScore(1 * gameStateSystem.scoreMultiplier)
                 audioService.play(SoundAsset.EXPLOSION1)
                 LOG.info { "Brick exploded at ${brickTransform.position}" }
-                brickEntity[BrickComponent.mapper]?.hitPoints = 0
+                val brickComponent = brickEntity[BrickComponent.mapper]
+                if (brickComponent?.type?.destructible != false) brickComponent?.hitPoints = 0
             }
         }
         explodingComponent.isExploding = false

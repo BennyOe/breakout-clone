@@ -24,8 +24,8 @@ class PlayerComponent : Component, Pool.Poolable {
         lastXMousePosition = null
         speed = 0f
         maxSpeed = 30f
-        acceleration = 1f
-        deceleration = 3f
+        acceleration = 0.6f
+        deceleration = 0.5f
     }
 
     companion object {

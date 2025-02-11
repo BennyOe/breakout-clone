@@ -1,6 +1,7 @@
 package io.bennyoe.ecs.systems
 
 import com.badlogic.ashley.core.Engine
+import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.ashley.core.Family
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
@@ -37,7 +38,6 @@ class GameStateSystem(
 ) :
     EntitySystem() {
     private val playerAtlas by lazy { game.assets[TextureAtlasAsset.PLAYER.descriptor] }
-    private val bricksAtlas by lazy { game.assets[TextureAtlasAsset.BRIKCS.descriptor] }
     private val activePowerUps = CopyOnWriteArrayList<PowerUpEffect>()
     private var activeMainPowerUp: PowerUpEffect? = null
     val score: Int get() = _score
@@ -68,7 +68,9 @@ class GameStateSystem(
     }
 
     private fun allBricksDestroyed(): Boolean {
-        return engine.getEntitiesFor(Family.all(BrickComponent::class.java).get()).size() == 0
+        return engine.getEntitiesFor(Family.all(BrickComponent::class.java).get()).filter { entity: Entity ->
+            entity[BrickComponent.mapper]!!.type.destructible
+        }.toList().isEmpty()
     }
 
     fun addScore(addedValue: Int) {
@@ -98,7 +100,7 @@ class GameStateSystem(
 
     private fun initializeGame() {
         val brickSystem = engine.getSystem<BrickSystem>()
-        brickSystem.initializeBricks(bricksAtlas)
+        brickSystem.initializeBricks()
         engine.entity {
             with<TransformComponent> {
                 setInitialPosition(1f, 1f, 0f)

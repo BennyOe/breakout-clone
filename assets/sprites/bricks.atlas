@@ -4,9 +4,6 @@ repeat:none
 blue_brick
 index:1
 bounds:2,20,32,16
-empty_brick
-index:1
-bounds:206,110,32,16
 green_brick
 index:1
 bounds:2,110,32,16
@@ -21,7 +18,7 @@ index:2
 bounds:36,20,32,16
 green_brick
 index:4
-bounds:70,20,32,16
+bounds:206,110,32,16
 orange_brick
 index:6
 bounds:36,110,32,16
@@ -39,7 +36,7 @@ index:4
 bounds:172,92,32,16
 orange_brick
 index:1
-bounds:172,74,32,16
+bounds:138,56,32,16
 purple_brick
 index:9
 bounds:2,74,32,16
@@ -66,10 +63,10 @@ index:2
 bounds:138,74,32,16
 purple_brick
 index:7
-bounds:70,2,32,16
+bounds:70,20,32,16
 purple_brick
 index:4
-bounds:206,92,32,16
+bounds:172,74,32,16
 red_brick
 index:4
 bounds:36,92,32,16
@@ -90,10 +87,10 @@ index:5
 bounds:104,56,32,16
 red_brick
 index:2
-bounds:104,38,32,16
+bounds:70,2,32,16
 red_brick
 index:7
-bounds:138,56,32,16
+bounds:104,38,32,16
 stone_brick
 index:1
 bounds:104,74,32,16

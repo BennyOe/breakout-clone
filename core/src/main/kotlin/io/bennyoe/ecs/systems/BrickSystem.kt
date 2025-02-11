@@ -1,8 +1,11 @@
 package io.bennyoe.ecs.systems
 
+import BearoutMap
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
-import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.files.FileHandle
+import com.badlogic.gdx.utils.Json
 import io.bennyoe.WORLD_HEIGHT
 import io.bennyoe.WORLD_WIDTH
 import io.bennyoe.assets.TextureAtlasAsset
@@ -20,7 +23,7 @@ import ktx.assets.async.AssetStorage
 
 class BrickSystem(
     private val assets: AssetStorage,
-    ) : IteratingSystem(
+) : IteratingSystem(
     allOf(BrickComponent::class, TransformComponent::class, GraphicComponent::class).get()
 ) {
     private val brickAtlas by lazy { assets[TextureAtlasAsset.BRIKCS.descriptor] }
@@ -48,7 +51,51 @@ class BrickSystem(
         }
     }
 
-    fun initializeBricks(textureAtlas: TextureAtlas) {
+    fun initializeBricks() {
+        loadLevelFromDisk()
+    }
+
+    private fun loadLevelFromDisk() {
+        val json = Json()
+        val file: FileHandle = Gdx.files.local("levels/testMap.json")
+        val map: BearoutMap = try {
+            json.fromJson(BearoutMap::class.java, file.readString())
+        } catch (e: Exception) {
+            Gdx.app.error("BrickSystem", "Fehler beim Laden der Level-Datei: ${e.localizedMessage}")
+            return
+        }
+        loadBricksFromMap(map)
+    }
+
+    private fun loadBricksFromMap(map: BearoutMap) {
+        map.grid.forEachIndexed { rowIndex, row ->
+            row.forEachIndexed { columnIndex, cell ->
+                if (cell != null) {
+                    engine.entity {
+                        with<TransformComponent> {
+                            setInitialPosition(columnIndex.toFloat() * 2, rowIndex.toFloat(), 0f)
+                            size.set(2f, 1f)
+                        }
+                        val brickComponent = with<BrickComponent> {
+                            hasPowerUp = cell.powerUp != null
+                            powerUpType = cell.powerUp
+                            type = cell.type!!
+                            hitPoints = type.hitPoints
+                        }
+                        with<GraphicComponent> {
+                            sprite.run {
+                                setRegion(brickAtlas.findRegion(brickComponent.type.atlasKey))
+                                setOriginCenter()
+                            }
+                        }
+                        with<ExplodingComponent>()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun generateRandomLevel() {
         for (rowCount in 13..<WORLD_HEIGHT.toInt()) {
             for (columnCount in 0 until WORLD_WIDTH.toInt() / 2) {
                 if (Math.random() >= 0.5) {
@@ -65,7 +112,7 @@ class BrickSystem(
                         }
                         with<GraphicComponent> {
                             sprite.run {
-                                setRegion(textureAtlas.findRegion(brickComponent.type.atlasKey))
+                                setRegion(brickAtlas.findRegion(brickComponent.type.atlasKey))
                                 setOriginCenter()
                             }
                         }
@@ -86,8 +133,6 @@ class BrickSystem(
             BrickType.RED -> type.hitPoints + 1 - brick.hitPoints
             BrickType.PURPLE -> type.hitPoints + 1 - brick.hitPoints
             BrickType.STONE -> type.hitPoints + 1 - brick.hitPoints
-            BrickType.NONE -> type.hitPoints + 1 - brick.hitPoints
         }
     }
-
 }

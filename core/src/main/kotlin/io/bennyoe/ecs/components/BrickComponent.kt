@@ -6,7 +6,7 @@ import ktx.ashley.mapperFor
 
 class BrickComponent : Component {
     var hasPowerUp = true
-    var powerUpType = PowerUpType.MULTIBALL
+    var powerUpType: PowerUpType? = null
     var type = BrickType.BLUE
     var hitPoints: Int = type.hitPoints
 

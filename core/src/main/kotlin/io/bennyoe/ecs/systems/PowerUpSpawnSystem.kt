@@ -37,7 +37,7 @@ class PowerUpSpawnSystem(
                         LOG.info { "Power-Up created at position: ${position.x}, ${position.y}" }
                     }
                     with<PowerUpComponent> {
-                        powerUpType = brick.powerUpType
+                        powerUpType = brick.powerUpType!!
                     }
                     with<GraphicComponent> {
                         sprite.run {
@@ -52,6 +52,7 @@ class PowerUpSpawnSystem(
                                 PowerUpType.EXPLODING_BALL -> setRegion(powerUpTextureAtlas.findRegion(PowerUpType.EXPLODING_BALL.atlasKey))
                                 PowerUpType.REVERSE_CONTROL -> setRegion(powerUpTextureAtlas.findRegion(PowerUpType.REVERSE_CONTROL.atlasKey))
                                 PowerUpType.SHEEP -> setRegion(powerUpTextureAtlas.findRegion(PowerUpType.SHEEP.atlasKey))
+                                null -> return
                             }
                             setOriginCenter()
                         }

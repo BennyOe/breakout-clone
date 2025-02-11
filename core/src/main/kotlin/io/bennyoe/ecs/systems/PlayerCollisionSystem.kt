@@ -69,7 +69,7 @@ class PlayerCollisionSystem(
 
         transform.position.y = playerTop + SAFETY_MARGIN
         val xDiff = transform.position.x - playerTransform.position.x
-        val angle = mapToRange(xDiff, 0f, playerTransform.size.x, Math.toRadians(140.0).toFloat(), Math.toRadians(40.0).toFloat())
+        val angle = mapToRange(xDiff, 0f, playerTransform.size.x, Math.toRadians(140.0).toFloat(), Math.toRadians(20.0).toFloat())
 
         ball.acceleration = when {
             playerComponent.acceleration <= ball.acceleration -> (ball.acceleration - SLOW_DOWN_FACTOR).coerceAtLeast(1.2f)

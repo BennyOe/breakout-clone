@@ -65,16 +65,21 @@ class BrickCollisionSystem(
             val brickRight = brickTransform.position.x + brickTransform.size.x
             val brickXMiddle = brickTransform.position.x + (brickTransform.size.x / 2)
 
-            gameStateSystem.addScore(1 * gameStateSystem.scoreMultiplier)
-            brick.hitPoints--
+            if (brick.type.destructible) {
+                gameStateSystem.addScore(1 * gameStateSystem.scoreMultiplier)
+                brick.hitPoints--
+                if (ball.isPenetrating) return
+            }
 
-            if (ball.isPenetrating) return
 
             val overlapX = abs(ballXMiddle - brickXMiddle) - (brickTransform.size.x / 2 + transform.size.x / 2)
             val overlapY = abs(ballYMiddle - brickYMiddle) - (brickTransform.size.y / 2 + transform.size.y / 2)
 
             if (abs(overlapX) < abs(overlapY)) {
                 // horizontal hit
+                if(ball.ySpeed in -.5 .. .5) { // safety that ball get not stuck on horizontal movement
+                    ball.ySpeed *= 3
+                }
                 if (ballXMiddle > brickXMiddle) {
                     // hit from the right
                     transform.position.x = brickRight + SAFETY_MARGIN
@@ -84,6 +89,9 @@ class BrickCollisionSystem(
                 reverseX(ball)
             } else {
                 // vertical hit
+                if(ball.xSpeed in -.5 .. .5) { // safety that ball get not stuck on vertical movement
+                    ball.xSpeed *= 3
+                }
                 if (ballYMiddle > brickYMiddle) {
                     // hit from the top
                     transform.position.y = brickTop + SAFETY_MARGIN

@@ -129,14 +129,14 @@ class MoveSystem(private val audioService: AudioService) : IteratingSystem(
 //                LOG.debug { "xSpeed: ${ball.xSpeed} ySpeed: ${ball.ySpeed}" }
         // TODO maybe messing up the direction change of the ball
         // TODO implement new logic because this is not working
-        if (ball.xSpeed in 0f..5.2f) {
-            ball.xSpeed = 8f
-            LOG.debug { "x-speed too slow" }
-        }
-        if (ball.xSpeed in -5.2f..0f) {
-            ball.xSpeed = -8f
-            LOG.debug { "x-speed too slow" }
-        }
+//        if (ball.xSpeed in 0f..5.2f) {
+//            ball.xSpeed = 8f
+//            LOG.debug { "x-speed too slow" }
+//        }
+//        if (ball.xSpeed in -5.2f..0f) {
+//            ball.xSpeed = -8f
+//            LOG.debug { "x-speed too slow" }
+//        }
         if (ball.ySpeed in 0f..0.2f) ball.ySpeed = 1f
         if (ball.ySpeed in -0.2f..0f) ball.ySpeed = -1f
     }

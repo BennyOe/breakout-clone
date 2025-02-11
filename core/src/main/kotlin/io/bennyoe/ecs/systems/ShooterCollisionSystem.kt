@@ -36,7 +36,7 @@ class ShooterCollisionSystem(
         val brick = entity[BrickComponent.mapper]!!
         bullets.forEach { bullet ->
             val bulletTransform = bullet[TransformComponent.mapper]!!
-            if (bulletIntersectsBrick(bulletTransform, transform)) {
+            if (bulletIntersectsBrick(bulletTransform, transform) && brick.type.destructible) {
                 gameStateSystem.addScore(1 * gameStateSystem.scoreMultiplier)
                 brick.hitPoints -= 1
                 engine.removeEntity(bullet)
