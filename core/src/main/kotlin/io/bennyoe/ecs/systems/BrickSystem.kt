@@ -52,7 +52,9 @@ class BrickSystem(
     }
 
     fun initializeBricks() {
+        // TODO make this available ingame
         loadLevelFromDisk()
+//        generateRandomLevel()
     }
 
     private fun loadLevelFromDisk() {

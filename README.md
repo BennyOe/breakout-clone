@@ -38,12 +38,12 @@
     - [x] Implement Klick and set system
     - [c] Implement Save and Load
     - [ ] Implement Level selection
-    - [x] Implement deselect bricks ans powerups
-    - [ ] Implement Save button
+    - [x] Implement deselect bricks and powerups
+    - [x] Implement Save button
     - [ ] Implement Load button
-    - [ ] Implement Set level name
-    - [ ] Implement Set level author
-    - [ ] Implement Set level difficulty
+    - [x] Implement Set level name
+    - [x] Implement Set level author
+    - [x] Implement Set level difficulty
     - [x] Implement JSON import/export
     - [ ] Implement Level selection
 - [x] Implement keyboard controls

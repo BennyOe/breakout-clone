@@ -21,6 +21,7 @@ import io.bennyoe.assets.TextureAsset
 import io.bennyoe.assets.TextureAtlasAsset
 import io.bennyoe.ecs.components.PowerUpType
 import io.bennyoe.ecs.systems.BrickType
+import io.bennyoe.ui.LevelDesignerUi
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import ktx.assets.async.AssetStorage
@@ -42,6 +43,7 @@ class LevelDesignerScreen(game: Main, private val assets: AssetStorage) : Screen
     private val rows = WORLD_HEIGHT.toInt()
     private var lastXGridCoordinate: Int? = null
     private var lastYGridCoordinate: Int? = null
+    private val ui by lazy { LevelDesignerUi(this) }
 
      val bearoutMap = BearoutMap(
         name = "testMap",
@@ -61,6 +63,7 @@ class LevelDesignerScreen(game: Main, private val assets: AssetStorage) : Screen
         ).flatten()
         KtxAsync.launch {
             assetRefs.joinAll()
+            stage.addActor(ui)
         }
         super.show()
     }
@@ -74,6 +77,11 @@ class LevelDesignerScreen(game: Main, private val assets: AssetStorage) : Screen
             drawBearoutMap()
         }
         drawSelectedOutline()
+        stage.run {
+            viewport.apply()
+            act()
+            draw()
+        }
     }
 
     private fun drawBearoutMap() {
@@ -144,7 +152,7 @@ class LevelDesignerScreen(game: Main, private val assets: AssetStorage) : Screen
         }
     }
 
-    private fun saveMap() {
+     fun saveMap() {
         val json = Json()
         val jsonString = json.toJson(bearoutMap)
         val file: FileHandle = Gdx.files.local("levels/${bearoutMap.name}.json")
@@ -153,9 +161,9 @@ class LevelDesignerScreen(game: Main, private val assets: AssetStorage) : Screen
     }
 
     private fun handleInput() {
-        if (Gdx.input.isKeyJustPressed(Keys.S)) {
-            saveMap()
-        }
+//        if (Gdx.input.isKeyJustPressed(Keys.S)) {
+//            saveMap()
+//        }
         if (Gdx.input.isKeyJustPressed(Keys.G)) {
             game.removeScreen<LevelDesignerScreen>()
             game.addScreen(LoadingScreen(game))

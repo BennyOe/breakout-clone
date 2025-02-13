@@ -2,10 +2,12 @@ ui.png
 size:512,1024
 repeat:none
 bearout
-bounds:2,68,287,293
+bounds:2,178,287,293
 heart
-bounds:291,297,64,64
+bounds:181,112,64,64
 heart_empty
-bounds:2,2,64,64
+bounds:291,407,64,64
 myFont
-bounds:2,363,490,547
+bounds:2,473,490,547
+normalFont
+bounds:2,2,177,174

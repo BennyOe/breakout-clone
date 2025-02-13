@@ -91,6 +91,7 @@ enum class BitmapFontAsset(
         }),
 ) {
     BEAROUT("bearout.fnt"),
-    TEST("myFont.fnt")
+    TEST("myFont.fnt"),
+    NORMAL("normalFont.fnt")
 
 }

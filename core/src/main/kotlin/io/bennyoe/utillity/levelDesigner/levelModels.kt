@@ -2,9 +2,9 @@ import io.bennyoe.ecs.components.PowerUpType
 import io.bennyoe.ecs.systems.BrickType
 
 data class BearoutMap(
-    val name: String = "",
-    val author: String = "",
-    val difficulty: Int = 1,
+    var name: String = "",
+    var author: String = "",
+    var difficulty: Int = 1,
     val rows: Int = 0,
     val columns: Int = 0,
     val grid: Array<Array<MapEntry?>> = Array(rows) { Array(columns) { null } }
