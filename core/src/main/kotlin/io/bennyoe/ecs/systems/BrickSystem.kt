@@ -20,6 +20,9 @@ import ktx.ashley.get
 import ktx.ashley.getSystem
 import ktx.ashley.with
 import ktx.assets.async.AssetStorage
+import ktx.log.logger
+
+private val LOG = logger<BrickSystem>()
 
 class BrickSystem(
     private val assets: AssetStorage,
@@ -28,6 +31,7 @@ class BrickSystem(
 ) {
     private val brickAtlas by lazy { assets[TextureAtlasAsset.BRIKCS.descriptor] }
     private val gameStateSystem by lazy { engine.getSystem<GameStateSystem>() }
+    var selectedLevel: BearoutMap? = null
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val transform = entity[TransformComponent.mapper]
@@ -53,13 +57,17 @@ class BrickSystem(
 
     fun initializeBricks() {
         // TODO make this available ingame
-        loadLevelFromDisk()
+        if (selectedLevel == null) {
+            loadLevelFromDisk()
+        } else {
+            loadBricksFromMap(selectedLevel!!)
+        }
 //        generateRandomLevel()
     }
 
     private fun loadLevelFromDisk() {
         val json = Json()
-        val file: FileHandle = Gdx.files.local("levels/testMap.json")
+        val file: FileHandle = Gdx.files.local("levels/Hoppala.json")
         val map: BearoutMap = try {
             json.fromJson(BearoutMap::class.java, file.readString())
         } catch (e: Exception) {

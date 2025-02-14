@@ -88,27 +88,11 @@ class LoadingScreen(game: Main, val assets: AssetStorage = game.assets) : Screen
             it.draw(bg, 0f, 0f, WORLD_WIDTH, WORLD_HEIGHT)
         }
 
-        if (assets.progress.isFinished) {
-            if (Gdx.input.isKeyJustPressed(Keys.L)){
+            if (Gdx.input.isKeyJustPressed(Keys.ANY_KEY)){
                 game.removeScreen<LoadingScreen>()
-                game.addScreen(LevelDesignerScreen(game, assets))
-                game.setScreen<LevelDesignerScreen>()
+                game.addScreen(MenuScreen(game, assets))
+                game.setScreen<MenuScreen>()
             }
-            val isKeyboardControl = Gdx.input.isKeyJustPressed(Keys.SPACE)
-            val isMouseControl = Gdx.input.justTouched()
-            if (Gdx.input.isKeyJustPressed(Keys.H)) {
-                game.removeScreen<LoadingScreen>()
-                game.addScreen(GameOverScreen(game, 0))
-                game.setScreen<GameOverScreen>()
-            }
-
-            if (isKeyboardControl || isMouseControl) {
-                game.removeScreen<LoadingScreen>()
-                dispose()
-                game.addScreen(GameScreen(game, assets, isKeyboardControl))
-                game.setScreen<GameScreen>()
-            }
-        }
         stage.run {
             viewport.apply()
             act()

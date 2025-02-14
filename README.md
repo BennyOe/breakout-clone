@@ -36,7 +36,6 @@
     - [x] Implement Bricks
     - [x] Implement Powerups
     - [x] Implement Klick and set system
-    - [c] Implement Save and Load
     - [ ] Implement Level selection
     - [x] Implement deselect bricks and powerups
     - [x] Implement Save button
@@ -45,7 +44,6 @@
     - [x] Implement Set level author
     - [x] Implement Set level difficulty
     - [x] Implement JSON import/export
-    - [ ] Implement Level selection
 - [x] Implement keyboard controls
 - [x] Implement hit-points and damage for bricks
 - [x] Implement different brick types
@@ -76,7 +74,7 @@
 ### Code
 
 - [x] Implement asset manager
-- [ ] Fix bounce of player degrees
+- [x] Fix bounce of player degrees
 
 ## Used resources
 

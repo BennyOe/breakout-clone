@@ -23,7 +23,7 @@ class LevelDesignerUi(leveldesigner: LevelDesignerScreen) : WidgetGroup() {
         setPosition(0f, 0f)
 
         val nameInput = TextField("", customSkin).apply {
-            messageText = "Enter level name"
+            messageText = "Level Name"
             alignment = Align.center
 
             setTextFieldListener { _, key ->
@@ -36,7 +36,7 @@ class LevelDesignerUi(leveldesigner: LevelDesignerScreen) : WidgetGroup() {
 
 
         val authorInput = TextField("", customSkin).apply {
-            messageText = "Enter author"
+            messageText = "Level Autor"
             alignment = Align.center
             setTextFieldListener { _, key ->
                 leveldesigner.bearoutMap.author = this.text
@@ -49,7 +49,6 @@ class LevelDesignerUi(leveldesigner: LevelDesignerScreen) : WidgetGroup() {
             addListener(object : ChangeListener() {
                 override fun changed(event: ChangeEvent?, actor: Actor?) {
                     leveldesigner.bearoutMap.difficulty = value.toInt()
-                    println("Schwierigkeit gesetzt auf: ${leveldesigner.bearoutMap.difficulty}")
                 }
             })
         }

@@ -30,6 +30,10 @@ data class BearoutMap(
         result = 31 * result + grid.contentDeepHashCode()
         return result
     }
+
+    override fun toString(): String {
+        return "$name von $author Schwierigkeit: $difficulty"
+    }
 }
 data class MapEntry(
     var type: BrickType? = null,

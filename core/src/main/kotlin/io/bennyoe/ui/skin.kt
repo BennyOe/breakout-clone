@@ -3,6 +3,8 @@ package io.bennyoe.ui
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import io.bennyoe.assets.BitmapFontAsset
@@ -11,6 +13,7 @@ import ktx.assets.async.AssetStorage
 import ktx.graphics.color
 import ktx.scene2d.Scene2DSkin
 import ktx.style.label
+import ktx.style.selectBox
 import ktx.style.skin
 import ktx.style.slider
 import ktx.style.textButton
@@ -56,6 +59,18 @@ fun createSkin(assetStorage: AssetStorage) {
             knob = createColorDrawable(1f, 1f, 1f, 1f).apply {
                 setMinSize(20f, 20f)
             }
+        }
+
+        val listStyle1 = ListStyle()
+        listStyle1.font = normalFont
+        listStyle1.selection = createColorDrawable(0.2f, 0.2f, 0.2f, 1f)
+        listStyle1.background = createColorDrawable(0.1f, 0.1f, 0.1f, 1f)
+
+        selectBox("default") {
+            background = createColorDrawable(0f,0f,0f,1f)
+            font = normalFont
+            listStyle = listStyle1
+            scrollStyle = ScrollPane.ScrollPaneStyle()
         }
     }
 }
