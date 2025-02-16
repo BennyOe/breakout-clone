@@ -3,7 +3,6 @@ package io.bennyoe.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input.Keys
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.scenes.scene2d.ui.Label
 import io.bennyoe.Main
 import io.bennyoe.WORLD_HEIGHT
 import io.bennyoe.WORLD_WIDTH
@@ -16,7 +15,6 @@ class GameOverScreen(
     private val score: Int
 ) : Screen(game) {
     private val bg = Texture("images/gameover.jpg")
-    private lateinit var pressToBegin: Label
     private val ui by lazy { GameOverUi(score, game) }
 
     init {
@@ -37,6 +35,11 @@ class GameOverScreen(
     }
 
     override fun render(delta: Float) {
+        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+            game.removeScreen<GameOverScreen>()
+            game.addScreen(MenuScreen(game))
+            game.setScreen<MenuScreen>()
+        }
         batch.use(viewport.camera.combined) {
             it.draw(bg, 0f, 0f, WORLD_WIDTH, WORLD_HEIGHT)
         }

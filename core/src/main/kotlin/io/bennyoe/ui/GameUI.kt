@@ -2,9 +2,12 @@ package io.bennyoe.ui
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import io.bennyoe.GAME_HEIGHT
 import io.bennyoe.GAME_WIDTH
+import io.bennyoe.screens.GameScreen
+import ktx.actors.onClick
 import ktx.actors.plusAssign
 import ktx.log.logger
 import ktx.scene2d.image
@@ -13,7 +16,10 @@ import ktx.scene2d.scene2d
 
 private val LOG = logger<GameUI>()
 
-class GameUI() : WidgetGroup() {  // Group → WidgetGroup für besseres Layout
+class GameUI(
+    private val gameScreen: GameScreen,
+    isTestMode: Boolean = false
+) : WidgetGroup() {  // Group → WidgetGroup für besseres Layout
     private val hearts = mutableListOf<Image>()
     private val emptyHearts = mutableListOf<Image>()
     private var displayScore = scene2d.label("Punkte: 0") {
@@ -47,6 +53,12 @@ class GameUI() : WidgetGroup() {  // Group → WidgetGroup für besseres Layout
 
             emptyHearts.add(emptyHeart)
             this += emptyHeart
+        }
+
+        if (isTestMode) {
+            this += TextButton("LevelDesigner", customSkin).apply {
+                onClick { gameScreen.backToLevelDesigner() }
+            }
         }
 
         // Debugging

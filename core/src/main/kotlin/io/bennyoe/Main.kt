@@ -13,12 +13,7 @@ import io.bennyoe.assets.BitmapFontAsset
 import io.bennyoe.assets.TextureAtlasAsset
 import io.bennyoe.audio.AudioService
 import io.bennyoe.audio.DefaultAudioService
-import io.bennyoe.ecs.systems.BrickSystem
-import io.bennyoe.ecs.systems.MoveSystem
-import io.bennyoe.ecs.systems.PowerUpTextSystem
 import io.bennyoe.ecs.systems.RenderSystem
-import io.bennyoe.ecs.systems.SimpleCollisionSystem
-import io.bennyoe.ecs.systems.TimerSystem
 import io.bennyoe.screens.LoadingScreen
 import io.bennyoe.ui.createSkin
 import kotlinx.coroutines.joinAll
@@ -54,12 +49,7 @@ class Main : KtxGame<KtxScreen>() {
     val audioService: AudioService by lazy { DefaultAudioService(assets) }
     val engine: Engine by lazy {
         PooledEngine().apply {
-            addSystem(BrickSystem(assets))
-            addSystem(SimpleCollisionSystem(viewport, audioService))
-            addSystem(MoveSystem(audioService))
             addSystem(RenderSystem(batch, viewport))
-            addSystem(TimerSystem())
-            addSystem(PowerUpTextSystem())
         }
     }
 
@@ -76,10 +66,6 @@ class Main : KtxGame<KtxScreen>() {
             createSkin(assets)
             addScreen(LoadingScreen(this@Main, assets))
             setScreen<LoadingScreen>()
-//            addScreen(GameOverScreen(this@Main, assets))
-//            setScreen<GameOverScreen>()
-//            addScreen(LevelDesignerScreen(this@Main, assets))
-//            setScreen<LevelDesignerScreen>()
         }
     }
 

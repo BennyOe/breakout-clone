@@ -1,5 +1,6 @@
 package io.bennyoe.ui
 
+import TtfFactory
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -12,6 +13,7 @@ import io.bennyoe.assets.TextureAtlasAsset
 import ktx.assets.async.AssetStorage
 import ktx.graphics.color
 import ktx.scene2d.Scene2DSkin
+import ktx.style.checkBox
 import ktx.style.label
 import ktx.style.selectBox
 import ktx.style.skin
@@ -25,6 +27,7 @@ fun createSkin(assetStorage: AssetStorage) {
     val atlas = assetStorage[TextureAtlasAsset.UI.descriptor]
     val bearoutFont = assetStorage[BitmapFontAsset.BEAROUT.descriptor]
     val normalFont = assetStorage[BitmapFontAsset.NORMAL.descriptor]
+
     Scene2DSkin.defaultSkin = skin(atlas) {
         label("default") {
             font = bearoutFont
@@ -48,6 +51,12 @@ fun createSkin(assetStorage: AssetStorage) {
             font = normalFont
         }
 
+        textButton ("default") {
+            up = createColorDrawable(0.2f, 0.2f, 0.2f, 1f)
+            down = createColorDrawable(0.1f, 0.1f, 0.1f, 1f)
+            font = TtfFactory.monogramTtf()
+        }
+
         textField("default") {
             font = normalFont
             fontColor = color(1f, 1f, 1f, 1f)
@@ -61,16 +70,22 @@ fun createSkin(assetStorage: AssetStorage) {
             }
         }
 
-        val listStyle1 = ListStyle()
-        listStyle1.font = normalFont
-        listStyle1.selection = createColorDrawable(0.2f, 0.2f, 0.2f, 1f)
-        listStyle1.background = createColorDrawable(0.1f, 0.1f, 0.1f, 1f)
+        val dropDownListStyle = ListStyle()
+        dropDownListStyle.font = TtfFactory.monogramTtf()
+        dropDownListStyle.selection = createColorDrawable(0.2f, 0.2f, 0.2f, 1f)
+        dropDownListStyle.background = createColorDrawable(0.1f, 0.1f, 0.1f, 1f)
 
         selectBox("default") {
-            background = createColorDrawable(0f,0f,0f,1f)
-            font = normalFont
-            listStyle = listStyle1
+            font = TtfFactory.monogramTtf()
+            background = createColorDrawable(0.4f, 0.1f, 0.1f, 1f)
+            listStyle = dropDownListStyle
             scrollStyle = ScrollPane.ScrollPaneStyle()
+        }
+
+        checkBox("default") {
+            checkboxOn = createColorDrawable(1f,1f,1f,1f)
+            checkboxOff = createColorDrawable(0.2f,0.2f,0.2f,1f)
+            font = TtfFactory.monogramTtf()
         }
     }
 }

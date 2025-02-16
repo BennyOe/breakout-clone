@@ -1,7 +1,5 @@
 package io.bennyoe.screens
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
@@ -17,7 +15,6 @@ import ktx.scene2d.table
 
 class GameWinScreen(
     game: Main,
-    private val score: Int,
     val assets: AssetStorage = game.assets,
 ) : Screen(game) {
     private val bg = Texture("images/win.jpg")
@@ -60,15 +57,11 @@ class GameWinScreen(
             it.draw(bg, 0f, 0f, WORLD_WIDTH, WORLD_HEIGHT)
         }
 
-            val isKeyboardControl = Gdx.input.isKeyJustPressed(Input.Keys.SPACE)
-            val isMouseControl = Gdx.input.justTouched()
+        game.removeScreen<GameWinScreen>()
+        dispose()
+        game.addScreen(MenuScreen(game, assets))
+        game.setScreen<MenuScreen>()
 
-            if (isKeyboardControl || isMouseControl) {
-                game.removeScreen<GameWinScreen>()
-                dispose()
-                game.addScreen(GameScreen(game, assets, isKeyboardControl, score))
-                game.setScreen<GameScreen>()
-            }
         stage.run {
             viewport.apply()
             act()

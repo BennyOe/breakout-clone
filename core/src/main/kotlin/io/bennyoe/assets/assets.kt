@@ -22,7 +22,7 @@ enum class TextureAsset(
     val descriptor: AssetDescriptor<Texture> = AssetDescriptor("$directory/$name", Texture::class.java)
 ) {
     BACKGROUND("bg2dark.jpg"),
-
+    MENU_BG("menu/menu_bg.9.png")
 }
 
 enum class TextureAtlasAsset(

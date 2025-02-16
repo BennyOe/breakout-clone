@@ -2,7 +2,6 @@ package io.bennyoe.ecs.systems
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
-import com.badlogic.ashley.utils.ImmutableArray
 import io.bennyoe.assets.SoundAsset
 import io.bennyoe.audio.AudioService
 import io.bennyoe.ecs.components.BrickComponent
@@ -15,7 +14,6 @@ import ktx.log.logger
 private val LOG = logger<ExplosionSystem>()
 
 class ExplosionSystem(
-    private val brickEntities: ImmutableArray<Entity>,
     private val audioService: AudioService,
     private val gameStateSystem: GameStateSystem
 ) : IteratingSystem(
@@ -23,7 +21,7 @@ class ExplosionSystem(
 ) {
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
-
+        val brickEntities = engine.getEntitiesFor(allOf(BrickComponent::class).get())
         val explodingComponent = entity[ExplodingComponent.mapper]!!
         val transform = entity[TransformComponent.mapper]!!
 

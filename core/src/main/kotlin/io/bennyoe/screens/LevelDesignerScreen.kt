@@ -32,7 +32,11 @@ import ktx.log.logger
 
 private val LOG = logger<LevelDesignerScreen>()
 
-class LevelDesignerScreen(game: Main, private val assets: AssetStorage) : Screen(game) {
+class LevelDesignerScreen(
+    game: Main,
+    private val assets: AssetStorage,
+    var bearoutMap: BearoutMap? = null
+) : Screen(game) {
     private val startRowIndex = 9
     private val brickAtlas by lazy { assets[TextureAtlasAsset.BRIKCS.descriptor] }
     private val powerUpAtlas by lazy { assets[TextureAtlasAsset.POWERUPS.descriptor] }
@@ -45,18 +49,18 @@ class LevelDesignerScreen(game: Main, private val assets: AssetStorage) : Screen
     private var lastYGridCoordinate: Int? = null
     private val ui by lazy { LevelDesignerUi(this) }
 
-     val bearoutMap = BearoutMap(
-        name = "testMap",
-        author = "Benni",
-        difficulty = 4,
-        rows = rows,
-        columns = columns,
-        grid = Array(rows) { Array(columns) { null } }
-    )
     private var selectedBrick: SelectedBrick? = null
     private var selectedPowerUp: SelectedPowerUp? = null
 
     override fun show() {
+        if (bearoutMap == null) bearoutMap = BearoutMap(
+            name = "",
+            author = "",
+            difficulty = 0,
+            rows = rows,
+            columns = columns,
+            grid = Array(rows) { Array(columns) { null } }
+        )
         val assetRefs = gdxArrayOf(
             TextureAsset.entries.map { assets.loadAsync(it.descriptor) },
             TextureAtlasAsset.entries.map { assets.loadAsync(it.descriptor) },
@@ -85,7 +89,7 @@ class LevelDesignerScreen(game: Main, private val assets: AssetStorage) : Screen
     }
 
     private fun drawBearoutMap() {
-        bearoutMap.grid.forEachIndexed { rowNumber, row ->
+        bearoutMap!!.grid.forEachIndexed { rowNumber, row ->
             row.forEachIndexed { columnNumber, mapEntry ->
                 batch.use(viewport.camera.combined) {
                     if (mapEntry?.type != null && rowNumber >= 9) {
@@ -152,23 +156,21 @@ class LevelDesignerScreen(game: Main, private val assets: AssetStorage) : Screen
         }
     }
 
-     fun saveMap() {
+    fun saveMap() {
         val json = Json()
         val jsonString = json.toJson(bearoutMap)
-        val file: FileHandle = Gdx.files.local("levels/${bearoutMap.name}.json")
+        val file: FileHandle = Gdx.files.local("levels/${bearoutMap!!.name}.json")
         file.writeString(jsonString, false)
-        LOG.info { "Level ${bearoutMap.name} saved in ${file.path()}" }
+        LOG.info { "Level ${bearoutMap!!.name} saved in ${file.path()}" }
     }
 
     private fun handleInput() {
-//        if (Gdx.input.isKeyJustPressed(Keys.S)) {
-//            saveMap()
-//        }
-        if (Gdx.input.isKeyJustPressed(Keys.G)) {
+        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             game.removeScreen<LevelDesignerScreen>()
-            game.addScreen(LoadingScreen(game))
-            game.setScreen<LoadingScreen>()
+            game.addScreen(MenuScreen(game))
+            game.setScreen<MenuScreen>()
         }
+
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             val worldX = Gdx.input.x.toFloat()
             val worldY = (GAME_HEIGHT - Gdx.input.y.toFloat())
@@ -176,7 +178,7 @@ class LevelDesignerScreen(game: Main, private val assets: AssetStorage) : Screen
             val gridX = (worldX / cellWidth).toInt()
             val gridY = (worldY / cellHeight).toInt()
 
-            // check that same cell gets not updated 30/sec
+            // check that same cell gets not updated
             if (lastXGridCoordinate == gridX && lastYGridCoordinate == gridY) return
 
             if (gridX in 0 until columns && gridY in 0 until rows) {
@@ -197,7 +199,7 @@ class LevelDesignerScreen(game: Main, private val assets: AssetStorage) : Screen
     }
 
     private fun handleGridPlacement(gridY: Int, gridX: Int) {
-        val activeCell = bearoutMap.grid[gridY][gridX]
+        val activeCell = bearoutMap!!.grid[gridY][gridX]
         if (selectedBrick == null && selectedPowerUp == null) {
             when {
                 activeCell == null -> return
@@ -205,31 +207,29 @@ class LevelDesignerScreen(game: Main, private val assets: AssetStorage) : Screen
             }
         }
         if (selectedBrick != null && selectedPowerUp == null) {
-            if (activeCell == null) setGridField(gridY,gridX, MapEntry(selectedBrick!!.brickType, null))
+            if (activeCell == null) setGridField(gridY, gridX, MapEntry(selectedBrick!!.brickType, null))
             if (activeCell?.type == selectedBrick?.brickType) {
-                if (activeCell?.powerUp == null) setGridField(gridY,gridX,null)
-                else bearoutMap.grid[gridY][gridX]?.powerUp = null
-            }
-            else bearoutMap.grid[gridY][gridX]?.type = selectedBrick?.brickType
+                if (activeCell?.powerUp == null) setGridField(gridY, gridX, null)
+                else bearoutMap!!.grid[gridY][gridX]?.powerUp = null
+            } else bearoutMap!!.grid[gridY][gridX]?.type = selectedBrick?.brickType
         }
         if (selectedBrick != null && selectedPowerUp != null) {
             if (activeCell == null) setGridField(gridY, gridX, MapEntry(selectedBrick?.brickType, selectedPowerUp?.powerUpType))
             if (activeCell?.type == selectedBrick?.brickType) {
-                if (activeCell?.powerUp == selectedPowerUp?.powerUpType) setGridField(gridY,gridX,null)
-                else bearoutMap.grid[gridY][gridX]?.powerUp = selectedPowerUp?.powerUpType
-            }
-            else setGridField(gridY,gridX,MapEntry(selectedBrick?.brickType, selectedPowerUp?.powerUpType))
+                if (activeCell?.powerUp == selectedPowerUp?.powerUpType) setGridField(gridY, gridX, null)
+                else bearoutMap!!.grid[gridY][gridX]?.powerUp = selectedPowerUp?.powerUpType
+            } else setGridField(gridY, gridX, MapEntry(selectedBrick?.brickType, selectedPowerUp?.powerUpType))
         }
         if (selectedBrick == null && selectedPowerUp != null) {
             if (activeCell == null) return
-            if (activeCell.powerUp == selectedPowerUp?.powerUpType) bearoutMap.grid[gridY][gridX]?.powerUp = null
-            else bearoutMap.grid[gridY][gridX]?.powerUp = selectedPowerUp?.powerUpType
+            if (activeCell.powerUp == selectedPowerUp?.powerUpType) bearoutMap!!.grid[gridY][gridX]?.powerUp = null
+            else bearoutMap!!.grid[gridY][gridX]?.powerUp = selectedPowerUp?.powerUpType
         }
-        LOG.debug { "Selected Field is: ${bearoutMap.grid[gridY][gridX]}" }
+        LOG.debug { "Selected Field is: ${bearoutMap!!.grid[gridY][gridX]}" }
     }
 
     private fun setGridField(gridY: Int, gridX: Int, field: MapEntry?) {
-        bearoutMap.grid[gridY][gridX] = field
+        bearoutMap!!.grid[gridY][gridX] = field
     }
 
     private fun handlePowerUpSelection(gridX: Int) {
@@ -269,6 +269,14 @@ class LevelDesignerScreen(game: Main, private val assets: AssetStorage) : Screen
             else -> null
         }
         LOG.debug { "selectedBrick: ${selectedBrick.toString()}" }
+    }
+
+    fun testMap() {
+        stage.clear()
+        ui.remove()
+        game.removeScreen<LevelDesignerScreen>()
+        game.addScreen<GameScreen>(GameScreen(game, assets, true, bearoutMap, true))
+        game.setScreen<GameScreen>()
     }
 }
 

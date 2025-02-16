@@ -2,7 +2,6 @@ package io.bennyoe.ecs.systems
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
-import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Rectangle
 import io.bennyoe.assets.SoundAsset
@@ -25,13 +24,14 @@ private const val SAFETY_MARGIN = 0.0f
 private val LOG = logger<BrickCollisionSystem>()
 
 class BrickCollisionSystem(
-    private val brickEntities: ImmutableArray<Entity>,
     private val audioService: AudioService,
     private val gameStateSystem: GameStateSystem
 ) : IteratingSystem(
     allOf(BallComponent::class, TransformComponent::class).get()
 ) {
+
     override fun processEntity(entity: Entity, deltaTime: Float) {
+        val brickEntities = engine.getEntitiesFor(allOf(BrickComponent::class).get())
         val transform = entity[TransformComponent.mapper]
         require(transform != null) { "entity has no transform entity" }
 

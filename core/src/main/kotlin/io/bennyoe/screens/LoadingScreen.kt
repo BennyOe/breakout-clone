@@ -59,19 +59,9 @@ class LoadingScreen(game: Main, val assets: AssetStorage = game.assets) : Screen
         stage.actors {
             table {
                 defaults().fillX().expandX()
-                pressToBegin = label("Press space to play with Keyboard", "default") {
+                pressToBegin = label("Druecke eine Taste um fortzufahren", "default") {
                     setWrap(true)
-                    setAlignment(Align.center)
-                }
-                row()
-                pressToBegin = label("Click to play with mouse", "default") {
-                    setWrap(true)
-                    setAlignment(Align.center)
-                }
-                row()
-                pressToBegin = label("Press H to show the high-score", "default") {
-                    setWrap(true)
-                    setAlignment(Align.center)
+                    setAlignment(Align.bottom)
                 }
                 setFillParent(true)
                 pack()
@@ -87,7 +77,6 @@ class LoadingScreen(game: Main, val assets: AssetStorage = game.assets) : Screen
         batch.use(viewport.camera.combined) {
             it.draw(bg, 0f, 0f, WORLD_WIDTH, WORLD_HEIGHT)
         }
-
             if (Gdx.input.isKeyJustPressed(Keys.ANY_KEY)){
                 game.removeScreen<LoadingScreen>()
                 game.addScreen(MenuScreen(game, assets))

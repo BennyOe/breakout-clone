@@ -12,6 +12,7 @@ import io.bennyoe.screens.GameOverScreen
 import io.bennyoe.screens.LoadingScreen
 import io.bennyoe.utillity.HighScoreManager
 import io.bennyoe.utillity.PlayerHighscore
+import ktx.actors.onKey
 import ktx.actors.plusAssign
 import ktx.scene2d.Scene2DSkin
 import ktx.scene2d.label
@@ -37,21 +38,20 @@ class GameOverUi(
 
         val nameInput = TextField("", Scene2DSkin.defaultSkin).apply {
             messageText = "Enter name"
-        }
-
-        // TODO show only if the score is higher or equal than the last in the highscore list
-        nameInput.setTextFieldListener { _, key ->
-            if (key == '\n' || key == '\r') { // Wenn Enter gedrückt wird
-                val playerName = nameInput.text.trim()
-                if (playerName.isNotEmpty()) {
-                    highScoreManager.saveHighScore(PlayerHighscore(playerName, score))
+            onKey { key ->
+                if (key == '\n' || key == '\r') { // Wenn Enter gedrückt wird
+                    val playerName = text.trim()
+                    if (playerName.isNotEmpty()) {
+                        highScoreManager.saveHighScore(PlayerHighscore(playerName, score))
+                    }
+                    game.removeScreen<GameOverScreen>()
+                    game.addScreen(LoadingScreen(game))
+                    game.setScreen<LoadingScreen>()
                 }
-                game.removeScreen<GameOverScreen>()
-                game.addScreen(LoadingScreen(game))
-                game.setScreen<LoadingScreen>()
             }
         }
 
+        // TODO show only if the score is higher or equal than the last in the highscore list
         val table = Table().apply {
             setFillParent(true)
             align(Align.top)

@@ -26,12 +26,12 @@ private val LOG = logger<BrickSystem>()
 
 class BrickSystem(
     private val assets: AssetStorage,
+    private val selectedLevel: BearoutMap?
 ) : IteratingSystem(
     allOf(BrickComponent::class, TransformComponent::class, GraphicComponent::class).get()
 ) {
     private val brickAtlas by lazy { assets[TextureAtlasAsset.BRIKCS.descriptor] }
     private val gameStateSystem by lazy { engine.getSystem<GameStateSystem>() }
-    var selectedLevel: BearoutMap? = null
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val transform = entity[TransformComponent.mapper]
@@ -56,11 +56,10 @@ class BrickSystem(
     }
 
     fun initializeBricks() {
-        // TODO make this available ingame
         if (selectedLevel == null) {
             loadLevelFromDisk()
         } else {
-            loadBricksFromMap(selectedLevel!!)
+            loadBricksFromMap(selectedLevel)
         }
 //        generateRandomLevel()
     }

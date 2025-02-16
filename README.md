@@ -36,7 +36,7 @@
     - [x] Implement Bricks
     - [x] Implement Powerups
     - [x] Implement Klick and set system
-    - [ ] Implement Level selection
+    - [x] Implement Level selection
     - [x] Implement deselect bricks and powerups
     - [x] Implement Save button
     - [ ] Implement Load button
@@ -44,9 +44,11 @@
     - [x] Implement Set level author
     - [x] Implement Set level difficulty
     - [x] Implement JSON import/export
+    - [x] Implement instant level testing in editor
 - [x] Implement keyboard controls
 - [x] Implement hit-points and damage for bricks
 - [x] Implement different brick types
+- [x] Implement Escape to go to menu
 
 ### Sound
 
