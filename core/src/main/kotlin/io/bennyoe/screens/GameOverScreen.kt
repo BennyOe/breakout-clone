@@ -43,21 +43,6 @@ class GameOverScreen(
         batch.use(viewport.camera.combined) {
             it.draw(bg, 0f, 0f, WORLD_WIDTH, WORLD_HEIGHT)
         }
-
-        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-            game.removeScreen<GameOverScreen>()
-            game.addScreen(LoadingScreen(game))
-            game.setScreen<LoadingScreen>()
-        }
-//            val isKeyboardControl = Gdx.input.isKeyJustPressed(Input.Keys.SPACE)
-//            val isMouseControl = Gdx.input.justTouched()
-//
-//            if (isKeyboardControl || isMouseControl) {
-//                game.removeScreen<GameOverScreen>()
-//                dispose()
-//                game.addScreen(GameScreen(game, assets, isKeyboardControl))
-//                game.setScreen<GameScreen>()
-//            }
         stage.run {
             viewport.apply()
             act()

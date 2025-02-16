@@ -53,6 +53,7 @@ class LevelDesignerScreen(
     private var selectedPowerUp: SelectedPowerUp? = null
 
     override fun show() {
+        audioService.pause()
         if (bearoutMap == null) bearoutMap = BearoutMap(
             name = "",
             author = "",
@@ -272,11 +273,14 @@ class LevelDesignerScreen(
     }
 
     fun testMap() {
-        stage.clear()
-        ui.remove()
-        game.removeScreen<LevelDesignerScreen>()
-        game.addScreen<GameScreen>(GameScreen(game, assets, true, bearoutMap, true))
-        game.setScreen<GameScreen>()
+        val isEmptyMap = bearoutMap?.grid?.flatMap { it.toList() }?.all { it == null }!!
+        if (!isEmptyMap) {
+            stage.clear()
+            ui.remove()
+            game.removeScreen<LevelDesignerScreen>()
+            game.addScreen<GameScreen>(GameScreen(game, assets, true, bearoutMap, true))
+            game.setScreen<GameScreen>()
+        }
     }
 }
 

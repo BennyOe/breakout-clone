@@ -20,6 +20,7 @@ class MenuScreen(game: Main, val assets: AssetStorage = game.assets) : Screen(ga
     var selectedLevel: BearoutMap? = null
 
     override fun show() {
+        audioService.resume()
         setupUserInterface()
         super.show()
     }
@@ -46,7 +47,7 @@ class MenuScreen(game: Main, val assets: AssetStorage = game.assets) : Screen(ga
 
     fun startGame(playWithKeyboard: Boolean) {
         game.removeScreen<MenuScreen>()
-        game.addScreen(GameScreen(game, assets, playWithKeyboard,  selectedLevel))
+        game.addScreen(GameScreen(game, assets, playWithKeyboard, selectedLevel))
         game.setScreen<GameScreen>()
     }
 

@@ -34,6 +34,7 @@ class GameStateSystem(
     private val audioService: AudioService,
     private val game: Main,
     private val ballsAtlas: TextureAtlas,
+    private val engine: Engine,
     private var _score: Int = 0
 ) :
     EntitySystem() {
@@ -162,7 +163,7 @@ class GameStateSystem(
         engine.removeAllEntities()
         audioService.stop(true)
         game.removeScreen<GameScreen>()
-        game.addScreen(GameWinScreen(game, score))
+        game.addScreen(GameWinScreen(game))
         game.setScreen<GameWinScreen>()
     }
 

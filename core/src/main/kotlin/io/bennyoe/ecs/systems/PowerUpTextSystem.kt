@@ -17,7 +17,7 @@ import ktx.log.logger
 
 private val LOG = logger<PowerUpTextSystem>()
 
-class PowerUpTextSystem() : EntitySystem(), EntityListener {
+class PowerUpTextSystem(private val engine: Engine) : EntitySystem(), EntityListener {
     private val powerUpTextAtlas by lazy { TextureAtlas("sprites/powerUpText.atlas") }
     private var aspectRatio = 0f
 
@@ -28,7 +28,6 @@ class PowerUpTextSystem() : EntitySystem(), EntityListener {
 
     override fun entityAdded(entity: Entity) {
         // check if there is a text displayed and remove it before showing the new one
-        if (engine == null) return
         val entities = engine.getEntitiesFor(Family.all(PowerUpTextComponent::class.java).get())
         entities?.filter { it != entity }?.forEach { engine.removeEntity(it) }
 

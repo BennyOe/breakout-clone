@@ -75,5 +75,4 @@ class AnimationSystem(
         val frame = aniCmp.animation.getKeyFrame(aniCmp.stateTime)
         graphic.setSpriteRegion(frame)
     }
-
 }

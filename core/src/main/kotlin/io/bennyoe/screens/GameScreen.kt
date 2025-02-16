@@ -67,7 +67,7 @@ class GameScreen(
 
     private fun registerSystems() {
         systemManager.addSystem(BrickSystem(assets, selectedLevel))
-        val gameStateSystem = systemManager.addSystem(GameStateSystem(audioService, game, ballsAtlas)) as GameStateSystem
+        val gameStateSystem = systemManager.addSystem(GameStateSystem(audioService, game, ballsAtlas, engine)) as GameStateSystem
         systemManager.addSystem(SimpleCollisionSystem(viewport, audioService))
         systemManager.addSystem(MoveSystem(audioService))
         systemManager.addSystem(BrickCollisionSystem(audioService, gameStateSystem))
@@ -80,7 +80,7 @@ class GameScreen(
         systemManager.addSystem(PowerUpCollisionSystem(player!!, assets, audioService, gameStateSystem))
         systemManager.addSystem(DebugSystem(powerUpsAtlas))
         systemManager.addSystem(PlayerInputSystem(viewport, isKeyboard))
-        systemManager.addSystem(PowerUpTextSystem())
+        systemManager.addSystem(PowerUpTextSystem(engine))
     }
 
     override fun hide() {
