@@ -1,6 +1,7 @@
 package io.bennyoe.screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input.Buttons
 import com.badlogic.gdx.Input.Keys
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
@@ -77,11 +78,11 @@ class LoadingScreen(game: Main, val assets: AssetStorage = game.assets) : Screen
         batch.use(viewport.camera.combined) {
             it.draw(bg, 0f, 0f, WORLD_WIDTH, WORLD_HEIGHT)
         }
-            if (Gdx.input.isKeyJustPressed(Keys.ANY_KEY)){
-                game.removeScreen<LoadingScreen>()
-                game.addScreen(MenuScreen(game, assets))
-                game.setScreen<MenuScreen>()
-            }
+        if (Gdx.input.isKeyJustPressed(Keys.ANY_KEY) || Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
+            game.removeScreen<LoadingScreen>()
+            game.addScreen(MenuScreen(game, assets = assets))
+            game.setScreen<MenuScreen>()
+        }
         stage.run {
             viewport.apply()
             act()
@@ -91,6 +92,6 @@ class LoadingScreen(game: Main, val assets: AssetStorage = game.assets) : Screen
 
     private fun assetsLoaded() {
         pressToBegin += forever(sequence(Actions.fadeIn(0.5f) + fadeOut(0.5f)))
-            audioService.play(MusicAsset.BG_MUSIC, 1f)
+        audioService.play(MusicAsset.BG_MUSIC, 1f)
     }
 }

@@ -66,7 +66,7 @@ class BrickSystem(
 
     private fun loadLevelFromDisk() {
         val json = Json()
-        val file: FileHandle = Gdx.files.local("levels/Hoppala.json")
+        val file: FileHandle = Gdx.files.local("levels/Bearout.json")
         val map: BearoutMap = try {
             json.fromJson(BearoutMap::class.java, file.readString())
         } catch (e: Exception) {

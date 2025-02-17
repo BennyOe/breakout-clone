@@ -1,5 +1,6 @@
 package io.bennyoe.ecs.systems
 
+import BearoutMap
 import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntitySystem
@@ -21,10 +22,12 @@ import io.bennyoe.powerUps.PowerUpEffect
 import io.bennyoe.screens.GameOverScreen
 import io.bennyoe.screens.GameScreen
 import io.bennyoe.screens.GameWinScreen
+import io.bennyoe.screens.LevelDesignerScreen
 import ktx.ashley.entity
 import ktx.ashley.get
 import ktx.ashley.getSystem
 import ktx.ashley.with
+import ktx.assets.async.AssetStorage
 import ktx.log.logger
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -35,6 +38,9 @@ class GameStateSystem(
     private val game: Main,
     private val ballsAtlas: TextureAtlas,
     private val engine: Engine,
+    private val isTestMode: Boolean,
+    private val assets: AssetStorage,
+    private val selectedLevel: BearoutMap?,
     private var _score: Int = 0
 ) :
     EntitySystem() {
@@ -153,8 +159,13 @@ class GameStateSystem(
         engine.removeAllEntities()
         audioService.stop(true)
         game.removeScreen<GameScreen>()
-        game.addScreen(GameOverScreen(game, score))
-        game.setScreen<GameOverScreen>()
+        if (isTestMode) {
+            game.addScreen(LevelDesignerScreen(game, assets, selectedLevel))
+            game.setScreen<LevelDesignerScreen>()
+        } else {
+            game.addScreen(GameOverScreen(game, score))
+            game.setScreen<GameOverScreen>()
+        }
     }
 
     private fun gameWin() {
@@ -163,8 +174,13 @@ class GameStateSystem(
         engine.removeAllEntities()
         audioService.stop(true)
         game.removeScreen<GameScreen>()
-        game.addScreen(GameWinScreen(game))
-        game.setScreen<GameWinScreen>()
+        if (isTestMode) {
+            game.addScreen(LevelDesignerScreen(game, assets, selectedLevel))
+            game.setScreen<LevelDesignerScreen>()
+        } else {
+            game.addScreen(GameWinScreen(game, score = score))
+            game.setScreen<GameWinScreen>()
+        }
     }
 
     private fun createNewBall(positionX: Float) {

@@ -12,7 +12,7 @@ import io.bennyoe.WORLD_WIDTH
 import ktx.graphics.use
 
 object ColorOverlaySystem : EntitySystem() {
-    private val shapeRenderer = ShapeRenderer()
+    private val shapeRenderer by lazy{ShapeRenderer()}
 
     var color: Color = Color.CLEAR
         set(value) {

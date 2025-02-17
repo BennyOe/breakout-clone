@@ -6,8 +6,11 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.net.HttpRequestBuilder.json
+import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
@@ -17,8 +20,8 @@ import io.bennyoe.GAME_HEIGHT
 import io.bennyoe.GAME_WIDTH
 import io.bennyoe.assets.TextureAsset
 import io.bennyoe.screens.MenuScreen
+import io.bennyoe.utillity.GameSettings
 import ktx.actors.onChange
-import ktx.actors.onClick
 import ktx.actors.plusAssign
 import ktx.assets.async.AssetStorage
 import ktx.collections.toGdxArray
@@ -35,67 +38,87 @@ class MenuUi(
     private val menuBg = NinePatch(TextureRegion(menuBgTexture), 5, 5, 5, 5)
 
     init {
-        setSize(GAME_WIDTH, GAME_HEIGHT)
-        setPosition(0f, 0f)
+        val marginX = 100f
+        val marginY = 100f
+        val tableWidth = GAME_WIDTH - 2 * marginX
+        val tableHeight = GAME_HEIGHT - 2 * marginY
 
+        val skin = Skin(Gdx.files.internal("bearout.json"))
         val table = Table().apply {
-            setOrigin(Align.top)
-            setSize(820f, 620f)
-            setPosition(GAME_WIDTH / 2 - 410f, GAME_HEIGHT / 2 - 310f)
             setBackground(NinePatchDrawable(menuBg))
+            setSize(tableWidth, tableHeight) // Setzt eine feste Größe für das Menü
+            setPosition(marginX, marginY)
         }
 
-        val headline = Label("Level Liste", customSkin).apply {
-            setAlignment(Align.top)
-        }
+        table.add().expandY()
 
-        val dropdown = SelectBox<BearoutMap>(customSkin).apply {
+        var label = Label("Bearout", skin)
+        table.add(label)
+
+        table.add()
+
+        table.row()
+        table.add()
+
+        label = Label("Level Liste", skin, "secondary")
+        table.add(label).spaceBottom(10f)
+
+        table.add()
+
+        table.row()
+        table.add()
+
+        val selectBox = SelectBox<BearoutMap>(skin).apply {
             items = getLevelInformation().toGdxArray()
+            setAlignment(Align.center)
             onChange {
                 menuScreen.selectedLevel = selected
             }
         }
+        table.add(selectBox).fillX()
 
-        val playTable = Table(customSkin).apply {}
-        val playWithKeyboardButton = TextButton("Mit Keyboard spielen", customSkin).apply {
-            setSize(500f, 50f)
-            onClick { menuScreen.startGame(true) }
+        table.add()
+
+        table.row()
+        val playWithMouse = CheckBox(" Maus", skin).apply {
+            onChange { GameSettings.playWithKeyboard = false }
         }
-
-        val playWithMouseButton = TextButton("Mit Maus spielen", customSkin).apply {
-            setSize(500f, 50f)
-            onClick { menuScreen.startGame(false) }
+        val playWithKeyboard = CheckBox(" Tastatur", skin).apply {
+            onChange { GameSettings.playWithKeyboard = true }
         }
-
-        val highscoreButton = TextButton("Highscore", customSkin).apply {
-            setSize(500f, 50f)
-            onClick { menuScreen.setHighscoreScreen() }
+        ButtonGroup<CheckBox>().apply {
+            add(playWithMouse, playWithKeyboard)
+            setMinCheckCount(1)
+            setMaxCheckCount(1)
         }
+        table.add(playWithMouse).spaceTop(50.0f).spaceBottom(10.0f)
 
-        val levelDesignerButton = TextButton("Level Designer", customSkin).apply {
-            setSize(500f, 50f)
-            onClick { menuScreen.setLevelDesignerScreen() }
+        table.add()
+
+        table.add(playWithKeyboard).spaceTop(50.0f).spaceBottom(10.0f)
+
+        table.row()
+        var textButton = TextButton("Highscores", skin, "secondary").apply {
+            onChange { menuScreen.setHighscoreScreen() }
         }
+        table.add(textButton).spaceTop(50f)
 
-        playTable.add(playWithMouseButton)
-            .padRight(30f)
-        playTable.add(playWithKeyboardButton)
-            .row()
-        playTable.add(highscoreButton)
-            .padTop(20f)
-        playTable.add(levelDesignerButton)
-            .padTop(20f)
-            .padRight(30f)
+        table.add()
 
-        table.add(headline)
-            .row()
-        table.add(dropdown)
-            .padTop(20f)
-            .row()
-        table.add(playTable)
-            .padTop(20f)
+        textButton = TextButton("Level Designer", skin, "secondary").apply {
+            onChange { menuScreen.setLevelDesignerScreen() }
+        }
+        table.add(textButton).spaceTop(50f)
 
-//        table.debug = true
+        table.row()
+        table.add().expandY()
+
+        textButton = TextButton("PLAY", skin).apply {
+            onChange { menuScreen.startGame() }
+        }
+        table.add(textButton).spaceTop(10.0f).fillX()
+
+        table.add()
         this += table
     }
 

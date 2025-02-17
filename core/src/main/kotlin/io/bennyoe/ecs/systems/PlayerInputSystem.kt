@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.viewport.Viewport
 import io.bennyoe.ecs.components.PlayerComponent
 import io.bennyoe.ecs.components.TransformComponent
+import io.bennyoe.utillity.GameSettings
 import io.bennyoe.utillity.Mapper.Companion.mapToRange
 import ktx.ashley.allOf
 import ktx.ashley.get
@@ -18,7 +19,6 @@ private val LOG = logger<PlayerInputSystem>()
 
 class PlayerInputSystem(
     private val viewport: Viewport,
-    private val isKeyboardControls: Boolean = true
 ) : IteratingSystem(
     allOf(PlayerComponent::class).get()
 ) {
@@ -34,7 +34,7 @@ class PlayerInputSystem(
 
         calculatePlayerBoundaries(transform)
 
-        if (isKeyboardControls) {
+        if (GameSettings.playWithKeyboard) {
             // define keyboard controls
             keyboardControl(player)
 

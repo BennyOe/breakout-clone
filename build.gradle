@@ -18,6 +18,9 @@ allprojects {
   apply plugin: 'eclipse'
   apply plugin: 'idea'
 
+  repositories {
+    maven { url 'https://jitpack.io' }
+  }
   // This allows you to "Build and run using IntelliJ IDEA", an option in IDEA's Settings.
   idea {
     module {
@@ -57,7 +60,7 @@ configure(subprojects) {
   }
   compileKotlin.compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
   compileTestKotlin.compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
-  
+
 }
 
 subprojects {

@@ -7,7 +7,9 @@ import io.bennyoe.Main
 import io.bennyoe.WORLD_HEIGHT
 import io.bennyoe.WORLD_WIDTH
 import io.bennyoe.assets.SoundAsset
+import io.bennyoe.ui.EnterHighscoreUi
 import io.bennyoe.ui.GameOverUi
+import io.bennyoe.utillity.HighScoreManager
 import ktx.graphics.use
 
 class GameOverScreen(
@@ -15,7 +17,9 @@ class GameOverScreen(
     private val score: Int
 ) : Screen(game) {
     private val bg = Texture("images/gameover.jpg")
-    private val ui by lazy { GameOverUi(score, game) }
+    private val gameOverui by lazy { GameOverUi(game) }
+    private val enterHighScoreUi by lazy { EnterHighscoreUi(this, score, game) }
+    private val highScoreManager by lazy { HighScoreManager(game) }
 
     init {
         audioService.play(SoundAsset.GAME_LOSE)
@@ -27,7 +31,11 @@ class GameOverScreen(
     }
 
     private fun setupUserInterface() {
-        stage.addActor(ui)
+        if (highScoreManager.getLowestHighScore() >= score) {
+            stage.addActor(gameOverui)
+        } else {
+            stage.addActor(enterHighScoreUi)
+        }
     }
 
     override fun hide() {
@@ -48,5 +56,10 @@ class GameOverScreen(
             act()
             draw()
         }
+    }
+
+    fun showHighScores() {
+        stage.clear()
+        stage.addActor(gameOverui)
     }
 }

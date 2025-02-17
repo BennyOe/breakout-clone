@@ -14,7 +14,11 @@ import ktx.log.logger
 
 private val LOG = logger<MenuScreen>()
 
-class MenuScreen(game: Main, val assets: AssetStorage = game.assets) : Screen(game) {
+class MenuScreen(
+    game: Main,
+    val score: Int = 0,
+    val assets: AssetStorage = game.assets
+) : Screen(game) {
     private val bg = Texture("images/splash-screen.jpg")
     private val ui by lazy { MenuUi(this, assets) }
     var selectedLevel: BearoutMap? = null
@@ -45,9 +49,9 @@ class MenuScreen(game: Main, val assets: AssetStorage = game.assets) : Screen(ga
         }
     }
 
-    fun startGame(playWithKeyboard: Boolean) {
+    fun startGame() {
         game.removeScreen<MenuScreen>()
-        game.addScreen(GameScreen(game, assets, playWithKeyboard, selectedLevel))
+        game.addScreen(GameScreen(game, assets, selectedLevel, score = score))
         game.setScreen<GameScreen>()
     }
 

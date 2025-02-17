@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import io.bennyoe.GAME_HEIGHT
 import io.bennyoe.GAME_WIDTH
 import io.bennyoe.screens.GameScreen
-import ktx.actors.onClick
+import ktx.actors.onChange
 import ktx.actors.plusAssign
 import ktx.log.logger
 import ktx.scene2d.image
@@ -57,7 +57,7 @@ class GameUI(
 
         if (isTestMode) {
             this += TextButton("LevelDesigner", customSkin).apply {
-                onClick { gameScreen.backToLevelDesigner() }
+                onChange { gameScreen.backToLevelDesigner() }
             }
         }
 

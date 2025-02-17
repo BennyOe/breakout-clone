@@ -43,9 +43,9 @@ private const val MAX_DELTA_TIME = 1 / 20f
 class GameScreen(
     game: Main,
     val assets: AssetStorage,
-    private val isKeyboard: Boolean,
     private val selectedLevel: BearoutMap?,
     private val isTestMode: Boolean = false,
+    private val score: Int = 0
 ) : Screen(game) {
     private val systemManager by lazy { SystemManager(engine) }
     private val background = assets[TextureAsset.BACKGROUND.descriptor]
@@ -67,9 +67,12 @@ class GameScreen(
 
     private fun registerSystems() {
         systemManager.addSystem(BrickSystem(assets, selectedLevel))
-        val gameStateSystem = systemManager.addSystem(GameStateSystem(audioService, game, ballsAtlas, engine)) as GameStateSystem
         systemManager.addSystem(SimpleCollisionSystem(viewport, audioService))
         systemManager.addSystem(MoveSystem(audioService))
+        val gameStateSystem = systemManager.addSystem(GameStateSystem(audioService, game, ballsAtlas, engine, isTestMode, assets, selectedLevel,
+            _score = score)
+        ) as
+            GameStateSystem
         systemManager.addSystem(BrickCollisionSystem(audioService, gameStateSystem))
         systemManager.addSystem(TimerSystem())
         systemManager.addSystem(ShooterCollisionSystem(gameStateSystem))
@@ -79,7 +82,7 @@ class GameScreen(
         systemManager.addSystem(PowerUpSpawnSystem(powerUpsAtlas))
         systemManager.addSystem(PowerUpCollisionSystem(player!!, assets, audioService, gameStateSystem))
         systemManager.addSystem(DebugSystem(powerUpsAtlas))
-        systemManager.addSystem(PlayerInputSystem(viewport, isKeyboard))
+        systemManager.addSystem(PlayerInputSystem(viewport))
         systemManager.addSystem(PowerUpTextSystem(engine))
     }
 
@@ -118,7 +121,7 @@ class GameScreen(
         val lives = playerComponent?.lives ?: 0
         ui.refreshHearts(lives)
         ui.refreshScore(gameStateSystem.score)
-        LOG.info { "Rendercalls: ${(game.batch as SpriteBatch).renderCalls}" }
+//        LOG.info { "Rendercalls: ${(game.batch as SpriteBatch).renderCalls}" }
         stage.run {
             viewport.apply()
             act()

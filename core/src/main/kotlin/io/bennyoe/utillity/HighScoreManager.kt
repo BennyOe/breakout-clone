@@ -21,6 +21,10 @@ class HighScoreManager(private val game: Main) {
         return highscoreList.sortedByDescending { it.score }.take(10).toMutableList()
     }
 
+    fun getLowestHighScore(): Int {
+        return loadHighScores().last().score
+    }
+
     fun saveHighScore(playerHighscore: PlayerHighscore) {
         val json = Json()
         val prevHighscore = loadHighScores()

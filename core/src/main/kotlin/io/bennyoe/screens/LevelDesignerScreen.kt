@@ -278,7 +278,7 @@ class LevelDesignerScreen(
             stage.clear()
             ui.remove()
             game.removeScreen<LevelDesignerScreen>()
-            game.addScreen<GameScreen>(GameScreen(game, assets, true, bearoutMap, true))
+            game.addScreen<GameScreen>(GameScreen(game, assets, bearoutMap, true))
             game.setScreen<GameScreen>()
         }
     }

@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Align
 import io.bennyoe.GAME_HEIGHT
 import io.bennyoe.GAME_WIDTH
 import io.bennyoe.screens.LevelDesignerScreen
-import ktx.actors.onClick
+import ktx.actors.onChange
 import ktx.actors.onKey
 import ktx.actors.plusAssign
 
@@ -44,11 +44,11 @@ class LevelDesignerUi(leveldesigner: LevelDesignerScreen) : WidgetGroup() {
         val difficultyLabel = Label("Schwierigkeit", customSkin)
         val difficulty = Slider(1f, 5f, 1f, false, customSkin).apply {
             value = 3f
-            onClick { leveldesigner.bearoutMap!!.difficulty = value.toInt() }
+            onChange { leveldesigner.bearoutMap!!.difficulty = value.toInt() }
         }
 
         val saveButton = TextButton("Save", customSkin, "saveButton").apply {
-            onClick {
+            onChange {
                 if (nameInput.text.isNotEmpty()) {
                     leveldesigner.saveMap()
                 }
@@ -56,7 +56,7 @@ class LevelDesignerUi(leveldesigner: LevelDesignerScreen) : WidgetGroup() {
         }
 
         val testButton = TextButton("Testen", customSkin, "saveButton").apply {
-            onClick {
+            onChange {
                 leveldesigner.testMap()
             }
         }

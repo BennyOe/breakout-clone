@@ -21,8 +21,8 @@
 
 ### UI
 
-- [ ] Implement game over screen
-- [ ] Implement game win screen
+- [x] Implement game over screen
+- [x] Implement game win screen
 - [x] Implement Splash Screen
 
 ### Game Mechanics
@@ -30,7 +30,7 @@
 - [x] Implement Hearts
 - [x] Implement Score
 - [x] Implement Highscore
-- [ ] Implement Level System (map editor)
+- [x] Implement Level System (map editor)
     - [x] Implement Screen
     - [x] Implement Gridraster
     - [x] Implement Bricks
@@ -39,7 +39,6 @@
     - [x] Implement Level selection
     - [x] Implement deselect bricks and powerups
     - [x] Implement Save button
-    - [ ] Implement Load button
     - [x] Implement Set level name
     - [x] Implement Set level author
     - [x] Implement Set level difficulty

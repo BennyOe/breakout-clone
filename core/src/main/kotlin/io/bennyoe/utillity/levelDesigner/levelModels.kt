@@ -4,7 +4,7 @@ import io.bennyoe.ecs.systems.BrickType
 data class BearoutMap(
     var name: String = "",
     var author: String = "",
-    var difficulty: Int = 1,
+    var difficulty: Int = 3,
     val rows: Int = 0,
     val columns: Int = 0,
     val grid: Array<Array<MapEntry?>> = Array(rows) { Array(columns) { null } }

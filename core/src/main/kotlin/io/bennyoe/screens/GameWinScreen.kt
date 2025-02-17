@@ -1,5 +1,7 @@
 package io.bennyoe.screens
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
@@ -16,6 +18,7 @@ import ktx.scene2d.table
 class GameWinScreen(
     game: Main,
     val assets: AssetStorage = game.assets,
+    val score: Int
 ) : Screen(game) {
     private val bg = Texture("images/win.jpg")
     private lateinit var pressToBegin: Label
@@ -56,11 +59,12 @@ class GameWinScreen(
         batch.use(viewport.camera.combined) {
             it.draw(bg, 0f, 0f, WORLD_WIDTH, WORLD_HEIGHT)
         }
-
-        game.removeScreen<GameWinScreen>()
-        dispose()
-        game.addScreen(MenuScreen(game, assets))
-        game.setScreen<MenuScreen>()
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+            game.removeScreen<GameWinScreen>()
+            dispose()
+            game.addScreen(MenuScreen(game, score, assets))
+            game.setScreen<MenuScreen>()
+        }
 
         stage.run {
             viewport.apply()
