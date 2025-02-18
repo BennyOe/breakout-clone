@@ -55,6 +55,8 @@ class GameOverUi(
             .padBottom(20f)
             .row()
 
+        val label = Label("ESC um in das Menu zu kommen", Scene2DSkin.defaultSkin)
+        table.add(label)
         this += table
     }
 }

@@ -51,8 +51,8 @@ class GameStateSystem(
     var scoreMultiplier = 1
 
     override fun addedToEngine(engine: Engine?) {
-        super.addedToEngine(engine)
         initializeGame()
+        super.addedToEngine(engine)
     }
 
     override fun update(deltaTime: Float) {
@@ -106,6 +106,9 @@ class GameStateSystem(
     }
 
     private fun initializeGame() {
+        val middleOfPlayer = 1f + (128 * UNIT_SCALE / 2 - 32 * UNIT_SCALE / 2)
+        createNewBall(middleOfPlayer)
+
         val brickSystem = engine.getSystem<BrickSystem>()
         brickSystem.initializeBricks()
         engine.entity {
@@ -121,9 +124,6 @@ class GameStateSystem(
             }
             with<PlayerComponent>()
         }
-
-        val middleOfPlayer = 1f + (128 * UNIT_SCALE / 2 - 32 * UNIT_SCALE / 2)
-        createNewBall(middleOfPlayer)
     }
 
     private fun resetPowerUps() {

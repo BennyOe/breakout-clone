@@ -11,7 +11,9 @@ import io.bennyoe.ui.EnterHighscoreUi
 import io.bennyoe.ui.GameOverUi
 import io.bennyoe.utillity.HighScoreManager
 import ktx.graphics.use
+import ktx.log.logger
 
+private val LOG = logger<GameOverScreen>()
 class GameOverScreen(
     game: Main,
     private val score: Int

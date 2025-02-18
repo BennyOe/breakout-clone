@@ -52,7 +52,7 @@ class MenuUi(
 
         table.add().expandY()
 
-        var label = Label("Bearout", skin)
+        var label = if (menuScreen.hasAlreadyPlayed) Label("Deine Punkte ${menuScreen.score}", skin) else Label("Bearout", skin)
         table.add(label)
 
         table.add()
@@ -60,7 +60,7 @@ class MenuUi(
         table.row()
         table.add()
 
-        label = Label("Level Liste", skin, "secondary")
+        label = if (menuScreen.hasAlreadyPlayed) Label("Naechstes Level", skin) else Label("Level Liste", skin, "secondary")
         table.add(label).spaceBottom(10f)
 
         table.add()
@@ -70,6 +70,7 @@ class MenuUi(
 
         val selectBox = SelectBox<BearoutMap>(skin).apply {
             items = getLevelInformation().toGdxArray()
+            selected = items.firstOrNull { it.name == "Bearout" }
             setAlignment(Align.center)
             onChange {
                 menuScreen.selectedLevel = selected
@@ -101,14 +102,14 @@ class MenuUi(
         var textButton = TextButton("Highscores", skin, "secondary").apply {
             onChange { menuScreen.setHighscoreScreen() }
         }
-        table.add(textButton).spaceTop(50f)
+        if (!menuScreen.hasAlreadyPlayed) table.add(textButton).spaceTop(50f)
 
         table.add()
 
         textButton = TextButton("Level Designer", skin, "secondary").apply {
             onChange { menuScreen.setLevelDesignerScreen() }
         }
-        table.add(textButton).spaceTop(50f)
+        if (!menuScreen.hasAlreadyPlayed) table.add(textButton).spaceTop(50f)
 
         table.row()
         table.add().expandY()

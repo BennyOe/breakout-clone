@@ -17,6 +17,7 @@ private val LOG = logger<MenuScreen>()
 class MenuScreen(
     game: Main,
     val score: Int = 0,
+    val hasAlreadyPlayed: Boolean = false,
     val assets: AssetStorage = game.assets
 ) : Screen(game) {
     private val bg = Texture("images/splash-screen.jpg")

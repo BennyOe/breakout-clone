@@ -56,6 +56,8 @@ class GameScreen(
     private val ui by lazy { GameUI(this, isTestMode) }
 
     override fun show() {
+        Gdx.input.isCursorCatched = true
+        Gdx.input.setCursorPosition(Gdx.graphics.width / 2, Gdx.graphics.height / 2)
         registerSystems()
         if (player == null) {
             LOG.error { "Player entity not found! Make sure GameStateSystem creates it." }
@@ -67,12 +69,12 @@ class GameScreen(
 
     private fun registerSystems() {
         systemManager.addSystem(BrickSystem(assets, selectedLevel))
-        systemManager.addSystem(SimpleCollisionSystem(viewport, audioService))
-        systemManager.addSystem(MoveSystem(audioService))
         val gameStateSystem = systemManager.addSystem(GameStateSystem(audioService, game, ballsAtlas, engine, isTestMode, assets, selectedLevel,
             _score = score)
         ) as
             GameStateSystem
+        systemManager.addSystem(SimpleCollisionSystem(viewport, audioService))
+        systemManager.addSystem(MoveSystem(audioService))
         systemManager.addSystem(BrickCollisionSystem(audioService, gameStateSystem))
         systemManager.addSystem(TimerSystem())
         systemManager.addSystem(ShooterCollisionSystem(gameStateSystem))
@@ -87,10 +89,11 @@ class GameScreen(
     }
 
     override fun hide() {
+        Gdx.input.isCursorCatched = false
         stage.clear()
-        systemManager.removeAllSystems()
         ColorOverlaySystem.color = Color.CLEAR
         engine.removeAllEntities()
+        systemManager.removeAllSystems()
     }
 
     override fun render(delta: Float) {

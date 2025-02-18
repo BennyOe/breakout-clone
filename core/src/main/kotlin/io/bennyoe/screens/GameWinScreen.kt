@@ -9,6 +9,7 @@ import io.bennyoe.Main
 import io.bennyoe.WORLD_HEIGHT
 import io.bennyoe.WORLD_WIDTH
 import io.bennyoe.assets.SoundAsset
+import io.bennyoe.ui.GameWinUi
 import ktx.assets.async.AssetStorage
 import ktx.graphics.use
 import ktx.scene2d.actors
@@ -36,12 +37,7 @@ class GameWinScreen(
         stage.actors {
             table {
                 defaults().fillX().expandX()
-                pressToBegin = label("Press space to play with Keyboard", "default") {
-                    setWrap(true)
-                    setAlignment(Align.center)
-                }
-                row()
-                pressToBegin = label("Click to play with mouse", "default") {
+                pressToBegin = label("Druecke eine Taste um fortzufahren", "default") {
                     setWrap(true)
                     setAlignment(Align.center)
                 }
@@ -60,10 +56,7 @@ class GameWinScreen(
             it.draw(bg, 0f, 0f, WORLD_WIDTH, WORLD_HEIGHT)
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
-            game.removeScreen<GameWinScreen>()
-            dispose()
-            game.addScreen(MenuScreen(game, score, assets))
-            game.setScreen<MenuScreen>()
+            stage.addActor(GameWinUi(assets, this))
         }
 
         stage.run {
@@ -71,5 +64,18 @@ class GameWinScreen(
             act()
             draw()
         }
+    }
+
+    fun continueGame() {
+        game.removeScreen<GameWinScreen>()
+        game.addScreen(MenuScreen(game, score, true, assets))
+        game.setScreen<MenuScreen>()
+    }
+
+    fun quitGame() {
+        game.addScreen(GameOverScreen(game, score))
+        game.setScreen<GameOverScreen>()
+        game.removeScreen<GameWinScreen>()
+        dispose()
     }
 }
