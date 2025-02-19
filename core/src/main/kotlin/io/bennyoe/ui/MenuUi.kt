@@ -2,6 +2,7 @@ package io.bennyoe.ui
 
 import BearoutMap
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -35,6 +36,9 @@ class MenuUi(
 ) : WidgetGroup() {
     private val menuBgTexture = assets.get<Texture>(TextureAsset.MENU_BG.descriptor)
     private val levelList = Gdx.files.local("levels").list()
+    private val bearoutLevel =  json.fromJson(BearoutMap::class.java, Gdx.files.internal("levels/Bearout.json"))
+    private val jojoLevel =  json.fromJson(BearoutMap::class.java, Gdx.files.internal("levels/Jojo.json"))
+    private val miraLevel =  json.fromJson(BearoutMap::class.java, Gdx.files.internal("levels/Mira.json"))
     private val menuBg = NinePatch(TextureRegion(menuBgTexture), 5, 5, 5, 5)
 
     init {
@@ -69,7 +73,7 @@ class MenuUi(
         table.add()
 
         val selectBox = SelectBox<BearoutMap>(skin).apply {
-            items = getLevelInformation().toGdxArray()
+            items = (getLevelInformation(levelList) + bearoutLevel + jojoLevel + miraLevel).toGdxArray()
             selected = items.firstOrNull { it.name == "Bearout" }
             setAlignment(Align.center)
             onChange {
@@ -123,7 +127,7 @@ class MenuUi(
         this += table
     }
 
-    private fun getLevelInformation(): List<BearoutMap> {
+    private fun getLevelInformation(levelList: Array<FileHandle>): List<BearoutMap> {
         val mapList = mutableListOf<BearoutMap>()
         levelList.forEach { level ->
             mapList.add(

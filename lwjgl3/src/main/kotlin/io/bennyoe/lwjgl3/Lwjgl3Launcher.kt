@@ -14,7 +14,7 @@ fun main() {
     if (StartupHelper.startNewJvmIfRequired())
       return
     Lwjgl3Application(Main(), Lwjgl3ApplicationConfiguration().apply {
-        setTitle("GdxHelloWorld")
+        setTitle("Bearout")
         setWindowedMode(GAME_WIDTH, GAME_HEIGHT)
         setWindowIcon(*(arrayOf(128, 64, 32, 16).map { "libgdx$it.png" }.toTypedArray()))
     })
