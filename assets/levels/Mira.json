@@ -1,0 +1,946 @@
+{
+  name: Mira,
+  author: Benni,
+  difficulty: 3,
+  rows: 27,
+  columns: 24,
+  grid: [
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      {
+        type: RED
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        type: RED,
+        powerUp: REVERSE_CONTROL
+      },
+      null,
+      null,
+      {
+        type: YELLOW,
+        powerUp: REVERSE_CONTROL
+      },
+      null,
+      {
+        type: GREEN,
+        powerUp: MULTIBALL
+      },
+      null,
+      null,
+      {
+        type: GREEN,
+        powerUp: SHOOTER
+      },
+      null,
+      {
+        type: ORANGE
+      },
+      null,
+      null,
+      null,
+      {
+        type: ORANGE,
+        powerUp: PENETRATION
+      },
+      null,
+      null,
+      null
+    ],
+    [
+      {
+        type: RED
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        type: RED
+      },
+      null,
+      null,
+      {
+        type: YELLOW
+      },
+      null,
+      {
+        type: GREEN,
+        powerUp: EXPLODING_BALL
+      },
+      null,
+      null,
+      {
+        type: GREEN
+      },
+      null,
+      {
+        type: ORANGE,
+        powerUp: REVERSE_CONTROL
+      },
+      null,
+      null,
+      null,
+      {
+        type: ORANGE
+      },
+      null,
+      null,
+      null
+    ],
+    [
+      {
+        type: RED,
+        powerUp: PENETRATION
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        type: RED
+      },
+      null,
+      null,
+      {
+        type: YELLOW
+      },
+      null,
+      {
+        type: GREEN
+      },
+      null,
+      null,
+      {
+        type: GREEN
+      },
+      null,
+      {
+        type: ORANGE
+      },
+      null,
+      null,
+      null,
+      {
+        type: ORANGE
+      },
+      null,
+      null,
+      null
+    ],
+    [
+      {
+        type: RED
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        type: RED
+      },
+      null,
+      null,
+      {
+        type: YELLOW
+      },
+      null,
+      {
+        type: GREEN
+      },
+      null,
+      {
+        type: GREEN
+      },
+      null,
+      null,
+      {
+        type: ORANGE
+      },
+      null,
+      null,
+      null,
+      {
+        type: ORANGE
+      },
+      null,
+      null,
+      null
+    ],
+    [
+      {
+        type: RED
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        type: RED,
+        powerUp: CHANGE_SIZE
+      },
+      null,
+      null,
+      {
+        type: YELLOW
+      },
+      null,
+      {
+        type: GREEN,
+        powerUp: SHOOTER
+      },
+      null,
+      {
+        type: GREEN
+      },
+      null,
+      null,
+      {
+        type: ORANGE
+      },
+      null,
+      null,
+      null,
+      {
+        type: ORANGE
+      },
+      null,
+      null,
+      null
+    ],
+    [
+      {
+        type: RED
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        type: RED
+      },
+      null,
+      null,
+      {
+        type: YELLOW
+      },
+      null,
+      {
+        type: GREEN
+      },
+      {
+        type: GREEN
+      },
+      null,
+      null,
+      null,
+      {
+        type: ORANGE
+      },
+      {
+        type: ORANGE
+      },
+      {
+        type: ORANGE,
+        powerUp: SHEEP
+      },
+      {
+        type: ORANGE
+      },
+      {
+        type: ORANGE
+      },
+      null,
+      null,
+      null
+    ],
+    [
+      {
+        type: RED
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        type: RED
+      },
+      null,
+      null,
+      {
+        type: YELLOW,
+        powerUp: STICKY_BALL
+      },
+      null,
+      {
+        type: GREEN
+      },
+      {
+        type: GREEN
+      },
+      null,
+      null,
+      null,
+      {
+        type: ORANGE
+      },
+      null,
+      null,
+      null,
+      {
+        type: ORANGE
+      },
+      null,
+      null,
+      null
+    ],
+    [
+      {
+        type: RED
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        type: RED
+      },
+      null,
+      null,
+      {
+        type: YELLOW
+      },
+      null,
+      {
+        type: GREEN
+      },
+      {
+        type: GREEN
+      },
+      {
+        type: GREEN
+      },
+      null,
+      null,
+      {
+        type: ORANGE
+      },
+      null,
+      null,
+      null,
+      {
+        type: ORANGE
+      },
+      null,
+      null,
+      null
+    ],
+    [
+      {
+        type: RED
+      },
+      null,
+      null,
+      {
+        type: RED,
+        powerUp: SHOOTER
+      },
+      null,
+      null,
+      {
+        type: RED,
+        powerUp: SHOOTER
+      },
+      null,
+      null,
+      {
+        type: YELLOW
+      },
+      null,
+      {
+        type: GREEN
+      },
+      null,
+      null,
+      {
+        type: GREEN
+      },
+      null,
+      {
+        type: ORANGE,
+        powerUp: CHANGE_SIZE
+      },
+      null,
+      null,
+      null,
+      {
+        type: ORANGE
+      },
+      null,
+      null,
+      null
+    ],
+    [
+      {
+        type: RED,
+        powerUp: EXPLODING_BALL
+      },
+      null,
+      {
+        type: RED
+      },
+      null,
+      {
+        type: RED
+      },
+      null,
+      {
+        type: RED
+      },
+      null,
+      null,
+      {
+        type: YELLOW
+      },
+      null,
+      {
+        type: GREEN,
+        powerUp: SHOOTER
+      },
+      null,
+      null,
+      {
+        type: GREEN,
+        powerUp: EXPLODING_BALL
+      },
+      null,
+      {
+        type: ORANGE
+      },
+      null,
+      null,
+      null,
+      {
+        type: ORANGE
+      },
+      null,
+      null,
+      null
+    ],
+    [
+      {
+        type: RED
+      },
+      null,
+      {
+        type: RED
+      },
+      null,
+      {
+        type: RED
+      },
+      null,
+      {
+        type: RED
+      },
+      null,
+      null,
+      {
+        type: YELLOW
+      },
+      null,
+      {
+        type: GREEN
+      },
+      null,
+      null,
+      {
+        type: GREEN
+      },
+      null,
+      {
+        type: ORANGE
+      },
+      null,
+      null,
+      null,
+      {
+        type: ORANGE,
+        powerUp: STICKY_BALL
+      },
+      null,
+      null,
+      null
+    ],
+    [
+      {
+        type: RED
+      },
+      {
+        type: RED,
+        powerUp: MULTIBALL
+      },
+      null,
+      null,
+      null,
+      {
+        type: RED
+      },
+      {
+        type: RED
+      },
+      null,
+      null,
+      null,
+      null,
+      {
+        type: GREEN
+      },
+      null,
+      null,
+      {
+        type: GREEN
+      },
+      null,
+      {
+        type: ORANGE,
+        powerUp: PENETRATION
+      },
+      null,
+      null,
+      null,
+      {
+        type: ORANGE
+      },
+      null,
+      null,
+      null
+    ],
+    [
+      {
+        type: RED
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        type: RED,
+        powerUp: STICKY_BALL
+      },
+      null,
+      null,
+      {
+        type: YELLOW,
+        powerUp: PENETRATION
+      },
+      null,
+      {
+        type: GREEN
+      },
+      {
+        type: GREEN,
+        powerUp: SHEEP
+      },
+      {
+        type: GREEN
+      },
+      null,
+      null,
+      {
+        type: ORANGE
+      },
+      {
+        type: ORANGE
+      },
+      {
+        type: ORANGE,
+        powerUp: SHEEP
+      },
+      {
+        type: ORANGE
+      },
+      {
+        type: ORANGE
+      },
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  ]
+}

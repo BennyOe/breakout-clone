@@ -1,0 +1,146 @@
+
+bearout.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+splash-screen
+  rotate: false
+  xy: 1, 718
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: -1
+bearout
+  rotate: false
+  xy: 1027, 1449
+  size: 287, 293
+  orig: 287, 293
+  offset: 0, 0
+  index: -1
+gradbubble-32x32-wip export
+  rotate: false
+  xy: 1, 575
+  size: 297, 141
+  orig: 297, 141
+  offset: 0, 0
+  index: -1
+nuskool_krome_64x64 export
+  rotate: false
+  xy: 1, 51
+  size: 271, 522
+  orig: 271, 522
+  offset: 0, 0
+  index: -1
+normalFont
+  rotate: false
+  xy: 1027, 1273
+  size: 177, 174
+  orig: 177, 174
+  offset: 0, 0
+  index: -1
+UI_Flat_BarFill01g
+  rotate: false
+  xy: 366, 713
+  size: 32, 3
+  orig: 32, 3
+  offset: 0, 0
+  index: -1
+UI_Flat_IconPlay01a
+  rotate: false
+  xy: 1, 1
+  size: 10, 14
+  orig: 10, 14
+  offset: 0, 0
+  index: -1
+bar-vertical
+  rotate: false
+  xy: 1027, 1207
+  size: 3, 32
+  orig: 3, 32
+  offset: 0, 0
+  index: -1
+button_down
+  rotate: false
+  xy: 1316, 1710
+  size: 64, 32
+  split: 12, 12, 5, 14
+  pad: 0, 0, 0, 0
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+button_up
+  rotate: false
+  xy: 1, 17
+  size: 62, 32
+  split: 10, 11, 2, 14
+  pad: 0, 0, 0, 0
+  orig: 62, 32
+  offset: 0, 0
+  index: -1
+down
+  rotate: false
+  xy: 274, 563
+  size: 14, 10
+  orig: 14, 10
+  offset: 0, 0
+  index: -1
+left
+  rotate: false
+  xy: 65, 35
+  size: 10, 14
+  orig: 10, 14
+  offset: 0, 0
+  index: -1
+list-select
+  rotate: false
+  xy: 1316, 1698
+  size: 30, 10
+  split: 3, 3, 4, 4
+  pad: 0, 0, 0, 0
+  orig: 30, 10
+  offset: 0, 0
+  index: -1
+menu-bg10
+  rotate: false
+  xy: 300, 652
+  size: 64, 64
+  split: 14, 14, 14, 14
+  pad: 0, 65, 0, 65
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+radio_down
+  rotate: false
+  xy: 1206, 1415
+  size: 32, 32
+  split: 11, 11, 12, 11
+  pad: 0, 0, 0, 0
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+radio_up
+  rotate: false
+  xy: 300, 618
+  size: 32, 32
+  split: 11, 11, 10, 10
+  pad: 0, 0, 0, 0
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+secondary_button
+  rotate: false
+  xy: 1027, 1241
+  size: 62, 30
+  split: 7, 7, 6, 8
+  pad: 0, 0, 0, 0
+  orig: 62, 30
+  offset: 0, 0
+  index: -1
+up
+  rotate: false
+  xy: 1382, 1732
+  size: 14, 10
+  orig: 14, 10
+  offset: 0, 0
+  index: -1

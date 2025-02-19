@@ -1,0 +1,227 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	bearout: {
+		file: bearout.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
+	greenfont: {
+		file: gradbubble-32x32-wip export.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
+	normalFont: {
+		file: normalFont.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
+	nuskol: {
+		file: nuskool_krome_64x64 export.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	black: {
+		r: 0
+		g: 0
+		b: 0
+		a: 1
+	}
+	orange: {
+		r: 1
+		g: 0.6292135
+		b: 0
+		a: 1
+	}
+	purple: {
+		r: 0.69382024
+		g: 0.105882354
+		b: 1
+		a: 1
+	}
+	white: {
+		r: 1
+		g: 1
+		b: 1
+		a: 1
+	}
+	yellow: {
+		r: 1
+		g: 0.96348315
+		b: 0
+		a: 1
+	}
+}
+com.ray3k.tenpatch.TenPatchDrawable: {
+	button_up10: {
+		region: button_up
+		horizontalStretchAreas: [ 10, 50 ]
+		verticalStretchAreas: [ 14, 29 ]
+		tiling: false
+		minWidth: 62
+		minHeight: 32
+		rightWidth: 10
+		leftWidth: 10
+		bottomHeight: 14
+		topHeight: 2
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	button_down10: {
+		region: button_down
+		horizontalStretchAreas: [ 12, 51 ]
+		verticalStretchAreas: [ 14, 26 ]
+		tiling: false
+		minWidth: 64
+		minHeight: 32
+		rightWidth: 12
+		leftWidth: 12
+		bottomHeight: 14
+		topHeight: 5
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	secondary_button10: {
+		region: secondary_button
+		horizontalStretchAreas: [ 7, 54 ]
+		verticalStretchAreas: [ 8, 23 ]
+		tiling: false
+		minWidth: 62
+		minHeight: 30
+		rightWidth: 7
+		leftWidth: 7
+		bottomHeight: 8
+		topHeight: 6
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	list-select10: {
+		region: list-select
+		horizontalStretchAreas: [ 5, 24 ]
+		verticalStretchAreas: [ 4, 5 ]
+		tiling: false
+		minWidth: 30
+		minHeight: 10
+		rightWidth: 3
+		leftWidth: 3
+		bottomHeight: 4
+		topHeight: 4
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	menu-bg11: {
+		region: menu-bg10
+		horizontalStretchAreas: [ 14, 49 ]
+		verticalStretchAreas: [ 14, 49 ]
+		tiling: false
+		minWidth: 64
+		minHeight: 64
+		rightWidth: 11
+		leftWidth: 11
+		bottomHeight: 11
+		topHeight: 11
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+	default: {
+		checkboxOn: radio_down
+		checkboxOff: radio_up
+		font: normalFont
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: bearout
+	}
+	secondary: {
+		font: normalFont
+	}
+	headline: {
+		font: greenfont
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
+	default: {
+		font: normalFont
+		fontColorSelected: orange
+		fontColorUnselected: white
+		selection: list-select10
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
+	default: {
+		hScroll: UI_Flat_BarFill01g
+		hScrollKnob: left
+		vScroll: bar-vertical
+		vScrollKnob: down
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
+	default: {
+		font: normalFont
+		fontColor: white
+		background: list-select10
+		scrollStyle: default
+		listStyle: default
+		backgroundOver: list-select10
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		font: bearout
+		fontColor: purple
+		up: button_up10
+		down: button_down10
+	}
+	secondary: {
+		font: normalFont
+		fontColor: purple
+		up: secondary_button10
+		down: secondary_button10
+		pressedOffsetX: -1
+		pressedOffsetY: -1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
+	}
+}
+}
