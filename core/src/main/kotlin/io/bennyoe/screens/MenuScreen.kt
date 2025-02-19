@@ -58,7 +58,7 @@ class MenuScreen(
 
     fun setHighscoreScreen() {
         game.removeScreen<MenuScreen>()
-        game.addScreen(GameOverScreen(game, 0))
+        game.addScreen(GameOverScreen(game, 0, true))
         game.setScreen<GameOverScreen>()
     }
 

@@ -16,7 +16,8 @@ import ktx.log.logger
 private val LOG = logger<GameOverScreen>()
 class GameOverScreen(
     game: Main,
-    private val score: Int
+    private val score: Int,
+    private val showHighscoreTable: Boolean = false
 ) : Screen(game) {
     private val bg = Texture("images/gameover.jpg")
     private val gameOverui by lazy { GameOverUi(game) }
@@ -33,7 +34,7 @@ class GameOverScreen(
     }
 
     private fun setupUserInterface() {
-        if (highScoreManager.getLowestHighScore() >= score) {
+        if ((highScoreManager.loadHighScores().size >= 10 && highScoreManager.getLowestHighScore() >= score) || showHighscoreTable) {
             stage.addActor(gameOverui)
         } else {
             stage.addActor(enterHighScoreUi)

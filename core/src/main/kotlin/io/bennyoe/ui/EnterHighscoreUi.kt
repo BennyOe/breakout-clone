@@ -32,6 +32,11 @@ class EnterHighscoreUi(
         val skin = Skin(Gdx.files.internal("bearout.json"))
         setSize(GAME_WIDTH, GAME_HEIGHT)
         setPosition(0f, 0f)
+        val headline = scene2d.label(
+            "Du bist sooooo gut...",
+            skin = Scene2DSkin.defaultSkin
+        ).apply {
+        }
 
         val showScore = scene2d.label(
             "Deine Punkte: $score",
@@ -59,6 +64,9 @@ class EnterHighscoreUi(
             align(Align.top)
             padTop(50f)
         }
+        table.add(headline)
+            .spaceBottom(20f)
+            .row()
 
         table.add(showScore)
             .padBottom(10f)
@@ -68,6 +76,7 @@ class EnterHighscoreUi(
             .width(300f)
             .height(40f)
             .padBottom(20f)
+            .spaceTop(50f)
             .row()
 
         table.add(textButton)

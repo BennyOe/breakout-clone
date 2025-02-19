@@ -22,7 +22,7 @@ class HighScoreManager(private val game: Main) {
     }
 
     fun getLowestHighScore(): Int {
-        return loadHighScores().last().score
+        return loadHighScores().lastOrNull()?.score ?: 0
     }
 
     fun saveHighScore(playerHighscore: PlayerHighscore) {

@@ -53,9 +53,10 @@ class GameScreen(
     private val powerUpsAtlas by lazy { assets[TextureAtlasAsset.POWERUPS.descriptor] }
     private val explosionAtlas by lazy { assets[AnimationAsset.EXPLOSION.descriptor] }
     private val player by lazy { engine.getEntitiesFor(allOf(PlayerComponent::class).get()).firstOrNull() }
-    private val ui by lazy { GameUI(this, isTestMode) }
+    private val ui by lazy { GameUI() }
 
     override fun show() {
+        audioService.stop(true)
         Gdx.input.isCursorCatched = true
         Gdx.input.setCursorPosition(Gdx.graphics.width / 2, Gdx.graphics.height / 2)
         registerSystems()
@@ -141,11 +142,5 @@ class GameScreen(
 
     private fun setupUserInterface() {
         stage.addActor(ui)
-    }
-
-    fun backToLevelDesigner() {
-        game.removeScreen<GameScreen>()
-        game.addScreen(LevelDesignerScreen(game, assets, selectedLevel))
-        game.setScreen<LevelDesignerScreen>()
     }
 }
